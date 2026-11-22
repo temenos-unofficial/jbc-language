@@ -1,0 +1,10 @@
+# jBC Programmers Reference Guide
+
+> An unofficial reference for jBC, the Basic-like programming language of the
+> jBASE multi-value database, used in Temenos TAFC and TAFJ and in T24. It
+> covers syntax, compilation, environment variables, data files, system
+> variables and every function and statement, with notes on where TAFJ behaves
+> differently from TAFC.
+
+Every chapter below is a Markdown file. The whole guide in one file is at
+{{base}}llms-full.txt ({{size}}). This is not a Temenos document.
