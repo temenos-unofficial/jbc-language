@@ -182,9 +182,9 @@ to print or to save for reading offline.
 
 Every page links to it with "Single page" at the top right, and it links back
 with "Chapters". Its sidebar and the links between chapters jump within the
-page. Each chapter keeps its own "Last update" date. The page asks search
-engines not to index it, so that they keep sending readers to the chapter
-pages.
+page. It ends with one "Last update" date, that of the chapter changed most
+recently. The page asks search engines not to index it, so that they keep
+sending readers to the chapter pages.
 
 ### Markdown for AI assistants
 
