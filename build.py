@@ -572,11 +572,17 @@ def build(source, out):
         footer=single_footer,
     )
     files["search.json"] = render_search_index(groups)
-    for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css"):
+    for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
         if write_text(out / relative, text):
             written.append(relative)
+    # Made from favicon.svg by hand; the build has no way to draw an image.
+    for name in ("favicon-32.png", "apple-touch-icon.png"):
+        data = (SITE / name).read_bytes()
+        if not (out / name).exists() or (out / name).read_bytes() != data:
+            (out / name).write_bytes(data)
+            written.append(name)
 
     # Chapters that were renamed or removed leave no page behind.
     wanted = {"%s.html" % slug for slug in slugs}
@@ -604,7 +610,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg")]
     state = {"build": 0}
 
     def stamps():
