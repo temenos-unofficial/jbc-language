@@ -6,7 +6,6 @@ index.html, index.css and one HTML file per chapter in pages/.
 
     python3 build.py                  build into _site/
     python3 build.py --serve 8000     build, serve and rebuild on change
-    python3 build.py --verify DIR     compare a rebuild with a published copy
 
 Only the Python standard library is used.
 """
@@ -17,7 +16,6 @@ import http.server
 import json
 import re
 import sys
-import tempfile
 import threading
 import time
 from datetime import datetime, timezone
@@ -487,32 +485,26 @@ def write_text(path, text):
     return False
 
 
-def build(source, out, previous=None, redirect="pages/preface.html", extras=True):
+def build(source, out):
     """Build the site into `out`.
 
-    A page keeps the "Last update" stamp it has in `previous` (by default the
-    output directory itself) for as long as its text is unchanged, the same
-    way the original generator worked.
+    A page keeps the "Last update" stamp it already has in `out` for as long
+    as its text is unchanged, so `out` is also the previous build.
 
-    With `extras` the build also adds what is specific to this deployment:
-    the analytics snippet in site/head.html, the contact line in
-    site/footer.html, the CNAME file, the Markdown files for language
-    models (llms.txt, llms-full.txt, pages/*.md), all.html, the whole
-    guide in one page, the full-text search (search.js, search.css and its
-    index, search.json) and the layout for narrow screens (mobile.js,
-    mobile.css).
+    Besides the chapter pages the build writes the CNAME file, the Markdown
+    files for language models (llms.txt, llms-full.txt, pages/*.md), all.html
+    with the whole guide in one page, the full-text search (search.js,
+    search.css and its index, search.json) and the layout for narrow screens
+    (mobile.js, mobile.css).
 
     Returns the list of files that were written.
     """
-    previous = Path(previous) if previous else out
     now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M UTC")
     template = (SITE / "template.html").read_text(encoding="utf-8")
-    head = (SITE / "head.html").read_text(encoding="utf-8") if extras else ""
-    footer = single_footer = ""
-    if extras:
-        text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
-        footer = fill(text, view='<a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a>')
-        single_footer = fill(text, view='<a href="/" style="color: inherit; text-decoration: none;">Chapters</a>')
+    head = (SITE / "head.html").read_text(encoding="utf-8")
+    text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
+    footer = fill(text, view='<a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a>')
+    single_footer = fill(text, view='<a href="/" style="color: inherit; text-decoration: none;">Chapters</a>')
     groups = parse(source.read_text(encoding="utf-8").replace("\r\n", "\n"))
     pages = [page for group, chapters in groups for page in [group] + chapters]
     slugs = {page.slug for page in pages}
@@ -525,7 +517,7 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
     stamps = {}
 
     def emit(relative, title, root, sidebar, content, redirect_line):
-        old = read_text(previous / relative)
+        old = read_text(out / relative)
         parts = split_page(old) if old else None
         stamp = now
         if parts and same_text(parts[0], content):
@@ -560,73 +552,40 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
         "",
         render_sidebar(groups, "pages/", for_index=True),
         "",
-        'window.location = "%s";' % redirect,
+        'window.location = "pages/preface.html";',
     )
-    if write_text(out / "index.css", (SITE / "index.css").read_text(encoding="utf-8")):
-        written.append("index.css")
-    if extras and write_text(out / "CNAME", (SITE / "CNAME").read_text(encoding="utf-8")):
-        written.append("CNAME")
 
-    wanted = {"%s.html" % slug for slug in slugs}
-    if extras:
-        base = "https://%s/" % (SITE / "CNAME").read_text(encoding="utf-8").strip()
-        intro = (SITE / "llms.txt").read_text(encoding="utf-8")
-        # Without .nojekyll GitHub Pages would turn every pages/*.md into an
-        # HTML file of the same name as the chapter page.
-        files = dict(render_llms(groups, slugs, base, intro), **{".nojekyll": ""})
-        files["all.html"] = fill(
-            template,
-            title=groups[0][0].title,
-            root="",
-            sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
-            content=render_single(groups, slugs, stamps),
-            redirect="",
-            head=head + (SITE / "single.html").read_text(encoding="utf-8"),
-            footer=single_footer,
-        )
-        files["search.json"] = render_search_index(groups)
-        for name in ("search.js", "search.css", "mobile.js", "mobile.css"):
-            files[name] = (SITE / name).read_text(encoding="utf-8")
-        for relative, text in files.items():
-            if write_text(out / relative, text):
-                written.append(relative)
-        wanted |= {Path(relative).name for relative in files}
+    cname = (SITE / "CNAME").read_text(encoding="utf-8")
+    base = "https://%s/" % cname.strip()
+    intro = (SITE / "llms.txt").read_text(encoding="utf-8")
+    # Without .nojekyll GitHub Pages would turn every pages/*.md into an HTML
+    # file of the same name as the chapter page.
+    files = dict(render_llms(groups, slugs, base, intro), **{".nojekyll": "", "CNAME": cname})
+    files["all.html"] = fill(
+        template,
+        title=groups[0][0].title,
+        root="",
+        sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
+        content=render_single(groups, slugs, stamps),
+        redirect="",
+        head=head + (SITE / "single.html").read_text(encoding="utf-8"),
+        footer=single_footer,
+    )
+    files["search.json"] = render_search_index(groups)
+    for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css"):
+        files[name] = (SITE / name).read_text(encoding="utf-8")
+    for relative, text in files.items():
+        if write_text(out / relative, text):
+            written.append(relative)
 
     # Chapters that were renamed or removed leave no page behind.
+    wanted = {"%s.html" % slug for slug in slugs}
+    wanted |= {Path(relative).name for relative in files if relative.startswith("pages/")}
     for path in sorted(p for p in (out / "pages").iterdir() if p.suffix in (".html", ".md")):
         if path.name not in wanted:
             path.unlink()
             written.append("pages/%s (removed)" % path.name)
     return written
-
-
-def verify(reference, source, redirect):
-    """Rebuild against `reference` and report every file that differs from it.
-
-    Line endings and a final newline are ignored: some reference pages were
-    saved on Windows.
-    """
-    normal = lambda text: text.rstrip("\n")
-    with tempfile.TemporaryDirectory() as scratch:
-        out = Path(scratch)
-        build(source, out, reference, redirect, extras=False)
-        names = sorted(
-            {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()}
-            | {
-                p.relative_to(reference).as_posix()
-                for p in reference.rglob("*")
-                if p.is_file() and ".git" not in p.parts and p.suffix in (".html", ".css")
-            }
-        )
-        different = []
-        for name in names:
-            mine, theirs = read_text(out / name), read_text(reference / name)
-            if mine is None or theirs is None or normal(mine) != normal(theirs):
-                different.append(name)
-    print("%d files compared, %d differ" % (len(names), len(different)))
-    for name in different:
-        print("  " + name)
-    return 1 if different else 0
 
 
 RELOAD = b"""<script>
@@ -643,7 +602,7 @@ RELOAD = b"""<script>
 """
 
 
-def serve(source, out, previous, redirect, port):
+def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
     watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css")]
     state = {"build": 0}
@@ -653,7 +612,7 @@ def serve(source, out, previous, redirect, port):
 
     def rebuild():
         try:
-            written = build(source, out, previous, redirect)
+            written = build(source, out)
             state["build"] += 1
             print("built: %d files changed" % len(written), flush=True)
         except (Exception, SystemExit) as error:
@@ -710,30 +669,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--source", type=Path, default=SOURCE, help="the markdown guide")
     parser.add_argument("--out", type=Path, default=ROOT / "_site", help="output directory")
-    parser.add_argument(
-        "--previous",
-        type=Path,
-        help="an earlier build to carry 'Last update' stamps over from "
-        "(default: the output directory)",
-    )
-    parser.add_argument(
-        "--redirect",
-        default="pages/preface.html",
-        help="where index.html sends the browser (the original used /pages/preface.html)",
-    )
     parser.add_argument("--serve", type=int, metavar="PORT", help="serve and rebuild on change")
-    parser.add_argument(
-        "--verify",
-        type=Path,
-        metavar="DIR",
-        help="compare a rebuild with a published copy of the site instead of building",
-    )
     args = parser.parse_args()
-    if args.verify:
-        return verify(args.verify, args.source, args.redirect)
     if args.serve:
-        return serve(args.source, args.out, args.previous, args.redirect, args.serve)
-    written = build(args.source, args.out, args.previous, args.redirect)
+        return serve(args.source, args.out, args.serve)
+    written = build(args.source, args.out)
     total = len(list((args.out / "pages").glob("*.html")))
     print("%d pages in %s, %d files changed" % (total, args.out, len(written)))
     for name in written[:20]:
