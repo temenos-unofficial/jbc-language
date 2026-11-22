@@ -1,0 +1,48 @@
+#search input {
+padding-right: 24px;
+width: 169px;
+}
+#search-clear {
+position: absolute; top: 19px; right: 26px;
+width: 24px; height: 28px;
+padding: 0; border: 0;
+background: none;
+color: #767573; font-size: 18px; line-height: 28px;
+cursor: pointer;
+}
+#search-clear:hover {
+color: #242220;
+}
+#search-clear[hidden] {
+display: none;
+}
+#search-mentions p {
+color: #767573; font-size: 12px;
+margin: 15px 0px 30px 0px;
+}
+#search-mentions .search-count {
+color: #BBB; font-size: 12px;
+}
+#content mark.search-hit {
+background: #FFE680; color: inherit;
+border-radius: 2px;
+}
+#content pre mark.search-hit {
+background: #6B5A00; color: #FFF;
+}
+#content.searching > :not(#search-results) {
+display: none;
+}
+#search-results .search-result {
+margin: 0 0 1.6em 0;
+}
+#search-results .search-result a {
+font-size: 1.2em; font-weight: bold;
+color: #302F2D;
+}
+#search-results .search-group, #search-results .search-summary {
+color: #767573;
+}
+#search-results .search-result p {
+margin: 0.3em 0 0 0;
+}
