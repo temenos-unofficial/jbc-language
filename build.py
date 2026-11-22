@@ -289,6 +289,82 @@ def render_content(page, slugs):
 
 
 # --------------------------------------------------------------------------
+# Markdown for language models: llms.txt, llms-full.txt and pages/*.md
+# --------------------------------------------------------------------------
+
+INLINE_IMAGE_RE = re.compile(r"!\[([^\]]*)\]\(data:[^)]*\)")
+CHAPTER_LINK_RE = re.compile(r"\[([^\]]*)\]\(#([^)]*)\)")
+PLAIN_LINK_RE = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")
+SENTENCE_END_RE = re.compile(r"(?<=\.)\s+(?=[A-Z])")
+# The guide's own anchors and markers, which mean nothing outside the HTML build.
+BUILD_ONLY_RE = re.compile(r'<!--jBC-->|<a name="[^"]*"/>')
+
+
+def plain_markdown(lines, slugs, base):
+    """Chapter text without build markers and image data, with absolute links."""
+
+    def link(match):
+        text, slug = match.group(1), slugify(match.group(2))
+        if slug not in slugs:
+            slug = slugify(text)
+        if slug not in slugs:
+            return text
+        return "[%s](%spages/%s.md)" % (text, base, slug)
+
+    out = []
+    for line in lines:
+        if BUILD_ONLY_RE.fullmatch(line.strip()):
+            continue
+        if not is_code(line):
+            line = INLINE_IMAGE_RE.sub(r"(image: \1)", line)
+            line = CHAPTER_LINK_RE.sub(link, line)
+        out.append(line.rstrip())
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(out)).strip("\n")
+
+
+def summary(page, limit=140):
+    """The first sentence of a chapter, for its line in llms.txt."""
+    block = []
+    for line in page.lines:
+        if not line.strip() or BUILD_ONLY_RE.fullmatch(line.strip()):
+            if block:
+                break
+        elif is_code(line) or line.startswith(("#", "|", "- ", "<", "!")):
+            break
+        else:
+            block.append(line.strip())
+    text = PLAIN_LINK_RE.sub(r"\1", " ".join(block))
+    text = re.sub(r"\*+|__", "", SENTENCE_END_RE.split(text)[0]).rstrip(".:;")
+    if len(text) > limit:
+        text = text[:limit].rsplit(" ", 1)[0] + "..."
+    return text
+
+
+def render_llms(groups, slugs, base, intro):
+    """Return {relative path: text} of the files published for language models."""
+    files = {}
+    index, full = [], []
+    for group, pages in groups:
+        index.append("\n## %s\n" % group.title)
+        full.append("# %s" % group.title)
+        for page in pages:
+            body = plain_markdown(page.lines, slugs, base)
+            files["pages/%s.md" % page.slug] = "# %s\n\n%s\n" % (
+                page.title,
+                re.sub(r"^### ", "## ", body, flags=re.M),
+            )
+            full.append("## %s\n\n%s" % (page.title, body))
+            about = summary(page)
+            index.append(
+                "- [%s](%spages/%s.md)%s" % (page.title, base, page.slug, ": " + about if about else "")
+            )
+    files["llms-full.txt"] = "\n\n".join(full) + "\n"
+    size = "%d KB" % round(len(files["llms-full.txt"].encode("utf-8")) / 1000)
+    files["llms.txt"] = fill(intro, base=base, size=size).rstrip("\n") + "\n" + "\n".join(index) + "\n"
+    return files
+
+
+# --------------------------------------------------------------------------
 # Page assembly
 # --------------------------------------------------------------------------
 
@@ -361,7 +437,8 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
 
     With `extras` the build also adds what is specific to this deployment:
     the analytics snippet in site/head.html, the contact line in
-    site/footer.html and the CNAME file.
+    site/footer.html, the CNAME file and the Markdown files for language
+    models (llms.txt, llms-full.txt, pages/*.md).
 
     Returns the list of files that were written.
     """
@@ -422,9 +499,20 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
     if extras and write_text(out / "CNAME", (SITE / "CNAME").read_text(encoding="utf-8")):
         written.append("CNAME")
 
-    # Chapters that were renamed or removed leave no page behind.
     wanted = {"%s.html" % slug for slug in slugs}
-    for path in sorted((out / "pages").glob("*.html")):
+    if extras:
+        base = "https://%s/" % (SITE / "CNAME").read_text(encoding="utf-8").strip()
+        intro = (SITE / "llms.txt").read_text(encoding="utf-8")
+        # Without .nojekyll GitHub Pages would turn every pages/*.md into an
+        # HTML file of the same name as the chapter page.
+        files = dict(render_llms(groups, slugs, base, intro), **{".nojekyll": ""})
+        for relative, text in files.items():
+            if write_text(out / relative, text):
+                written.append(relative)
+        wanted |= {Path(relative).name for relative in files}
+
+    # Chapters that were renamed or removed leave no page behind.
+    for path in sorted(p for p in (out / "pages").iterdir() if p.suffix in (".html", ".md")):
         if path.name not in wanted:
             path.unlink()
             written.append("pages/%s (removed)" % path.name)
@@ -476,7 +564,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, previous, redirect, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt")]
     state = {"build": 0}
 
     def stamps():
