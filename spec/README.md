@@ -105,3 +105,35 @@ cmp "$work/original-pp.output" "$work/pp.output"
 
 These checks cover parser tables. Source lexing, preprocessing effects,
 semantic diagnostics, and execution require separate conformance cases.
+
+## Checking a local source corpus
+
+From the repository root, run the [corpus checker](tools/check_corpus.py) with
+Python 3.8+, GNU Bison and a C99 compiler. The command reads the corpus and
+writes a JSON report to standard output. Generated parsers and executables
+live in a temporary directory.
+
+```sh
+python3 spec/tools/check_corpus.py ~/Downloads/t24 > /tmp/jbc-corpus.json
+```
+
+The checker visits regular files recursively, including extensionless files.
+It inventories routine declarations, identifies probable insert fragments by
+their `I_` names, and records NUL-containing files and read errors. For
+simple include directives it compares the literal operand with basenames in
+the corpus. Actual include resolution depends on the compiler's search path.
+
+For the main grammar it checks individual physical lines from a bounded
+subset: scalar assignments, direct branches, PRINT, CRT, RETURN, STOP and
+NULL. It maps keywords through the checked-in lexer table and replaces names
+and literals with their token classes. It parses each distinct sequence once
+and weights the result by occurrences. For the preprocessor it checks simple
+single-name includes and single numeric equates. A syntax error counts as a
+rejection even if Bison recovers.
+
+The report counts skipped lines separately. It gives a relative filename and
+line number for an example of each rejected main-parser sequence. Inspect the
+surrounding lines before proposing a grammar change: a statement can belong
+to a larger construct such as LOOP ... REPEAT. Full routines require a
+context-sensitive scanner, include expansion and declaration tracking. This
+check measures coverage of isolated token sequences.
