@@ -27,6 +27,7 @@ jbc-lang.org.
 | Path | What it is |
 |------|------------|
 | `jBC_Programmers_Reference_Guide.markdown` | The guide. This is the file to edit. |
+| [`spec/`](spec/README.md) | jBC and preprocessor grammars, lexer keywords, and function declarations cross-checked against the guide. |
 | `build.py` | The site generator. |
 | `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
 | `site/index.css` | The stylesheet. |
