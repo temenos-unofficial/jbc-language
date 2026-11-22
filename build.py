@@ -12,7 +12,9 @@ Only the Python standard library is used.
 """
 
 import argparse
+import html
 import http.server
+import json
 import re
 import sys
 import tempfile
@@ -367,6 +369,39 @@ def render_llms(groups, slugs, base, intro):
 
 
 # --------------------------------------------------------------------------
+# Index for the full-text search in site/search.js
+# --------------------------------------------------------------------------
+
+MARKUP_RE = re.compile(r"</?(?:pre|a)\b[^>]*>|\*\*|__|^###? ")
+
+
+def plain_text(page):
+    """Chapter text on one line, as it reads on the page."""
+    out = []
+    for line in page.lines:
+        if BUILD_ONLY_RE.fullmatch(line.strip()) or re.fullmatch(r"\|[-| :]+\|", line.strip()):
+            continue
+        if not is_code(line):
+            line = PLAIN_LINK_RE.sub(r"\1", line)
+            line = html.unescape(MARKUP_RE.sub("", line))
+            if line.startswith("|"):
+                line = line.replace("|", " ")
+        out.append(line)
+    return " ".join(" ".join(out).split())
+
+
+def render_search_index(groups):
+    """JSON read by site/search.js: [group number, slug, title, text] per chapter."""
+    chapters = [
+        [number, page.slug, page.title, plain_text(page)]
+        for number, (group, pages) in enumerate(groups)
+        for page in pages
+    ]
+    index = {"groups": [group.title for group, pages in groups], "chapters": chapters}
+    return json.dumps(index, ensure_ascii=False, separators=(",", ":"))
+
+
+# --------------------------------------------------------------------------
 # Page assembly
 # --------------------------------------------------------------------------
 
@@ -451,8 +486,9 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
     With `extras` the build also adds what is specific to this deployment:
     the analytics snippet in site/head.html, the contact line in
     site/footer.html, the CNAME file, the Markdown files for language
-    models (llms.txt, llms-full.txt, pages/*.md) and all.html, the whole
-    guide in one page.
+    models (llms.txt, llms-full.txt, pages/*.md), all.html, the whole
+    guide in one page, and the full-text search (search.js, search.css and
+    its index, search.json).
 
     Returns the list of files that were written.
     """
@@ -536,6 +572,9 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
             head=head + (SITE / "single.html").read_text(encoding="utf-8"),
             footer=single_footer,
         )
+        files["search.json"] = render_search_index(groups)
+        for name in ("search.js", "search.css"):
+            files[name] = (SITE / name).read_text(encoding="utf-8")
         for relative, text in files.items():
             if write_text(out / relative, text):
                 written.append(relative)
@@ -594,7 +633,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, previous, redirect, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css")]
     state = {"build": 0}
 
     def stamps():
