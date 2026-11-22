@@ -1,0 +1,83 @@
+#menu-toggle {
+display: none;
+}
+#content img {
+max-width: 100%; height: auto;
+}
+@media (max-width: 760px) {
+#search {
+right: 0; width: auto; height: 54px;
+box-shadow: 0 2px 8px #CCC; -webkit-box-shadow: 0 2px 8px #CCC;
+}
+#menu-toggle {
+display: block;
+position: absolute; top: 11px; left: 8px;
+width: 38px; height: 32px;
+padding: 0; border: 0;
+background: none;
+color: #302F2D; font-size: 22px; line-height: 32px;
+cursor: pointer;
+}
+body.menu-open #menu-toggle {
+background: #E9E9E9; border-radius: 4px;
+}
+#search input {
+box-sizing: border-box;
+margin: 11px 15px 11px 54px; padding: 5px 30px 5px 8px;
+width: calc(100% - 69px); height: 32px;
+font-size: 16px;
+}
+#search-clear {
+top: 11px; right: 17px;
+width: 30px; height: 32px;
+font-size: 22px; line-height: 32px;
+}
+#sidebar {
+display: none;
+top: 54px; right: 0; z-index: 1;
+width: auto; padding: 0 20px 30px 20px;
+border-right: 0;
+box-shadow: none; -webkit-box-shadow: none;
+-webkit-overflow-scrolling: touch;
+}
+body.menu-open #sidebar {
+display: block;
+}
+#sidebar li, #sidebar li a {
+font-size: 16px;
+}
+#search-mentions p, #search-mentions .search-count {
+font-size: 14px;
+}
+#scrollable {
+top: 54px; left: 0;
+-webkit-overflow-scrolling: touch;
+}
+#content {
+font-size: 15px;
+max-width: none;
+margin: 15px;
+}
+#content h1 {
+font-size: 1.6em;
+overflow-wrap: anywhere;
+}
+#content pre {
+font-size: 12px;
+overflow-wrap: anywhere;
+}
+#content table {
+display: block;
+max-width: 100%;
+overflow-x: auto;
+}
+#links {
+position: static !important;
+margin-top: 6px;
+font-size: 13px !important;
+}
+#contact {
+font-size: 13px !important; line-height: 20px !important;
+margin-top: 8px;
+}
+}
