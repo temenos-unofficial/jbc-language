@@ -1,0 +1,3 @@
+# @TERMTYPE
+
+The Terminal type

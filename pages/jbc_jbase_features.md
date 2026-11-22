@@ -1,0 +1,33 @@
+# jBC/jBASE features
+
+- Case sensitive keywords and variable names.
+- Optional statement labels.
+- Code sections accessed by GOSUB.
+- IF...THEN..ELSE conditional statement.
+- BEGIN CASE...CASE...END CASE conditional statement.
+- FOR...NEXT loop.
+- DO..WHILE/UNTIL...REPEAT loop.
+- External subroutines and functions.
+- Weak variables typing; implicit types conversion.
+- Dimensioned and dynamic arrays.
+- String, number, and date data conversion.
+- Patterns matching.
+- Unary operators support.
+- Single- and multi-byte character sets support.
+- Bitwise operations.
+- Standard industry encryption algorithms support.
+- Named and unnamed COMMON areas.
+- Operations with SELECT lists.
+- File and record level locking capability; distributed lock system.
+- Text files processing.
+- Functions for XML processing.
+- Manipulations with environment variables.
+- Emulation modes for compatibility with numerous MV platforms.
+- Practically unlimited data file size (OS limits apply).
+- Data files distribution.
+- Transactions support.
+- Transparent access to jBASE data and dictionary files converted to Oracle, DB2 or MS SQL.
+- Possibility to call C or Java code.
+- Possibility to execute any jBASE, system or database enquiry command.
+- Source code editor - JED (also capable of editing data files).
+- Debugger.

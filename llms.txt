@@ -1,0 +1,450 @@
+# jBC Programmers Reference Guide
+
+> An unofficial reference for jBC, the Basic-like programming language of the
+> jBASE multi-value database, used in Temenos TAFC and TAFJ and in T24. It
+> covers syntax, compilation, environment variables, data files, system
+> variables and every function and statement, with notes on where TAFJ behaves
+> differently from TAFC.
+
+Every chapter below is a Markdown file. The whole guide in one file is at
+https://jbc-lang.org/llms-full.txt (574 KB). This is not a Temenos document.
+
+## jBC Programmers Reference Guide
+
+- [Preface](https://jbc-lang.org/pages/preface.md): jBC is a programming language that is used in jBASE post-relational (multi-value) DBMS
+- [What is TAFC](https://jbc-lang.org/pages/what_is_tafc.md): TAFC stands for "Temenos application framework for C"
+- [TAFC releases](https://jbc-lang.org/pages/tafc_releases.md): TAFC release number normally reflects T24 release for which it is intended to be used, e.g
+- [What is T24](https://jbc-lang.org/pages/what_is_t24.md): T24 is the core banking system developed by Temenos company
+- [jBC/jBASE features](https://jbc-lang.org/pages/jbc_jbase_features.md)
+
+## Introduction to some jBC syntax features
+
+- [Note](https://jbc-lang.org/pages/note.md): In examples presented here and below deleting and creation of temporary file called F.TEMP is often used, so if you have such file with...
+- [Note 2](https://jbc-lang.org/pages/note_2.md): OCONV() or FMT() with second parameter 'MCP' is often used; its only purpose is to convert FM, VM and SM delimiters to a printable form, e.g
+- [Variables visibility and lifetime](https://jbc-lang.org/pages/variables_visibility_and_lifetime.md): Variable is visible throughout the program or its subroutine (i.e. in the bounds of particular source code file)
+- [To wrap a long line](https://jbc-lang.org/pages/to_wrap_a_long_line.md): Use a backslash
+- [Several statements on the same line](https://jbc-lang.org/pages/several_statements_on_the_same_line.md): Use semicolon to delimit several statements on the same line; don't forget about code readability
+- [Comments](https://jbc-lang.org/pages/comments.md): Comments can be defined in different ways
+- [String variables](https://jbc-lang.org/pages/string_variables.md): Strings can be delimited with single quotes, double quotes or backslashes
+- [Numeric variables](https://jbc-lang.org/pages/numeric_variables.md)
+- [Boolean variables](https://jbc-lang.org/pages/boolean_variables.md): Boolean variables as such don't exist in jBC; the result of a statement like IF (VAR) THEN... depends on that variable contents
+- [Dynamic arrays](https://jbc-lang.org/pages/dynamic_arrays.md): To assign or extract a field/value/subvalue from a dynamic array, use string concatenation method (:) or angle brackets
+- [Dimensioned arrays](https://jbc-lang.org/pages/dimensioned_arrays.md): Dimensioned arrays use parentheses
+- [Other notes](https://jbc-lang.org/pages/other_notes.md): "=" character can be used both for assignment and for a comparison, though it's possible to use "EQ" in the latter case
+
+## Guidelines for writing the source code
+
+- [Recommendations (not rules)](https://jbc-lang.org/pages/recommendations_not_rules.md): Note: some examples in this documentation don't fully follow these rules - they were taken from other sources or it's done intentionally to...
+
+## Environment variables relevant to jBC programming
+
+- [Minimum set of variables necessary to start development](https://jbc-lang.org/pages/minimum_set_of_variables_necessary_to_start_development.md): Windows
+- [Customize work folders and files location](https://jbc-lang.org/pages/customize_work_folders_and_files_location.md): Main dictionary location (usually points to VOC file)
+- [Runtime errors handling](https://jbc-lang.org/pages/runtime_errors_handling.md): This variable allows to suppress error messages and/or a program entering the debugger when divide by zero is encountered
+- [Regional settings](https://jbc-lang.org/pages/regional_settings.md): Locale setting
+- [Diagnostics and tracing](https://jbc-lang.org/pages/diagnostics_and_tracing.md): Being set to 1 redirects stderr to stdout (useful to catch errors to COMO output)
+- [Other](https://jbc-lang.org/pages/other.md): Being set to 1 improves performance when distributed files are used
+
+## Compilation
+
+- [Introduction to BASIC...CATALOG and jcompile](https://jbc-lang.org/pages/introduction_to_basiccatalog_and_jcompile.md)
+
+## Data files
+
+- [Introduction to jBASE/TAFC data files](https://jbc-lang.org/pages/introduction_to_jbase_tafc_data_files.md): The most widely used formats for data files nowadays are "J4" and "JR"
+- [Create/delete hashed file](https://jbc-lang.org/pages/create_delete_hashed_file.md): Create both data and dictionary
+- [Create and list the data](https://jbc-lang.org/pages/create_and_list_the_data.md): Put some data to file
+- [Adding dictionary items](https://jbc-lang.org/pages/adding_dictionary_items.md): Add a dictionary item to assign the name to a field
+- [Change of size and format, statistics, properties](https://jbc-lang.org/pages/change_of_size_and_format_statistics_properties.md): See file statistics
+- [UD type](https://jbc-lang.org/pages/ud_type.md): Folders are also treated like data files (type UD); flat files in them - like records
+
+## System ("@") variables
+
+- [@AM (@FM), @VM, @SM, @TM](https://jbc-lang.org/pages/@am_@fm_@vm_@sm_@tm.md): Attribute (field) mark (ASCII 254), value mark (ASCII 253), subvalue mark (ASCII 252) and text mark (ASCII 251) respectively
+- [@CALLSTACK](https://jbc-lang.org/pages/@callstack.md): TAFJ note: not supported
+- [@CODEPAGE](https://jbc-lang.org/pages/@codepage.md): Returns current codepage setting
+- [@DATA](https://jbc-lang.org/pages/@data.md): TAFJ note: not supported
+- [@DATE](https://jbc-lang.org/pages/@date.md): Returns the internal date; on some systems, this differs from the DATE() function in that the variable is set when program execution...
+- [@DAY](https://jbc-lang.org/pages/@day.md): Day of month from @DATE (no leading zero included)
+- [@EOF](https://jbc-lang.org/pages/@eof.md): End of File character from TTY characteristics
+- [@FILENAME](https://jbc-lang.org/pages/@filename.md): Current file name (is to be assigned for such operations as ITYPE function call)
+- [@FOOTER.BREAK](https://jbc-lang.org/pages/@footerbreak.md): For B options in heading
+- [@HEADER.BREAK](https://jbc-lang.org/pages/@headerbreak.md): For B options in heading
+- [@ID](https://jbc-lang.org/pages/@id.md): Used to reference the record-id in a query language statement
+- [@LEVEL](https://jbc-lang.org/pages/@level.md): The nesting level of execution statements - non stacked
+- [@LOCALE](https://jbc-lang.org/pages/@locale.md): Returns current Locale as jbase_locale
+- [@LPTRHIGH](https://jbc-lang.org/pages/@lptrhigh.md): Number of lines on the device to which you are printing (that is, terminal or printer
+- [@MONTH](https://jbc-lang.org/pages/@month.md): Current Month
+- [@PARASENTENCE](https://jbc-lang.org/pages/@parasentence.md): The last sentence or paragraph that invoked the current process
+- [@PATH](https://jbc-lang.org/pages/@path.md): Pathname of the current account
+- [@PID](https://jbc-lang.org/pages/@pid.md): Returns current process ID
+- [@RECORD](https://jbc-lang.org/pages/@record.md): Entire current record
+- [@SELECTED](https://jbc-lang.org/pages/@selected.md): Number of elements from the last select list - Non stacked
+- [@TERMTYPE](https://jbc-lang.org/pages/@termtype.md): The Terminal type
+- [@TIME](https://jbc-lang.org/pages/@time.md): Returns the internal time - on some systems, this differs from the TIME function in that the variable is set when program execution starts,...
+- [@TIMEZONE](https://jbc-lang.org/pages/@timezone.md): As per jBASE Timezone
+- [@TTY](https://jbc-lang.org/pages/@tty.md): Returns the terminal port name
+- [@UID](https://jbc-lang.org/pages/@uid.md): Returns information from ROOT.THREAD for port @user
+- [@USER.ROOT, @USER.THREAD and @USERSTATS](https://jbc-lang.org/pages/@userroot_@userthread_and_@userstats.md): The use of the @USER.ROOT command allows a jBC program to store and retrieve a string of up to 63 bytes that is unique to that user
+
+## jBC Functions and Statements (@ - E)
+
+- [@](https://jbc-lang.org/pages/@.md): Use the @ function to position the cursor to a specific point on the terminal screen
+- [@ (SCREENCODE)](https://jbc-lang.org/pages/@_screencode.md): Use @(SCREENCODE) to output control sequences according to the capabilities of the terminal
+- [ABORT](https://jbc-lang.org/pages/abort.md): The ABORT statement terminates the current running program and the program that called it
+- [ABS](https://jbc-lang.org/pages/abs.md): ABS function returns the absolute value of a number or an expression that evaluates to a number
+- [ABSS](https://jbc-lang.org/pages/abss.md): Use the ABSS function to return the absolute values of all the elements in a dynamic array
+- [ADDS](https://jbc-lang.org/pages/adds.md): Use ADDS function to create a dynamic array of the element-by-element addition of two dynamic arrays
+- [ALPHA](https://jbc-lang.org/pages/alpha.md): The ALPHA function is used to check if the expression consists entirely of alphabetic characters
+- [ANDS](https://jbc-lang.org/pages/ands.md): Use the ANDS function to create a dynamic array of the logical AND of corresponding elements of two dynamic arrays
+- [ASCII](https://jbc-lang.org/pages/ascii.md): The ASCII function converts all the characters in the expression from the EBCDIC character set to the ASCII character set
+- [ASSIGNED](https://jbc-lang.org/pages/assigned.md): The ASSIGNED function is used to determine whether a variable has an assigned value or not
+- [BITAND](https://jbc-lang.org/pages/bitand.md): Use the BITAND function to perform the bitwise AND comparison of two integers specified by numeric expressions
+- [BITCHANGE](https://jbc-lang.org/pages/bitchange.md): BITCHANGE toggles the state of a specified bit in the local bit table, and returns the original value of the bit
+- [BITCHECK](https://jbc-lang.org/pages/bitcheck.md): BITCHECK returns the current value of a specified bit from the local bit table
+- [BITLOAD](https://jbc-lang.org/pages/bitload.md): BITLOAD assigns all values in the local bit table, or retrieves all the values
+- [BITNOT](https://jbc-lang.org/pages/bitnot.md): Use the BITNOT function to return the bitwise negation of an integer specified by any numeric expression
+- [BITOR](https://jbc-lang.org/pages/bitor.md): Use the BITOR function to perform the bitwise OR comparison of two integers specified by numeric expressions
+- [BITRESET](https://jbc-lang.org/pages/bitreset.md): BITRESET resets the value of a specified bit in the local bit table to zero and returns the previous value of the bit
+- [BITSET](https://jbc-lang.org/pages/bitset.md): BITSET sets the value of a specified bit in the bit table to one and returns the value of the bit before it was changed
+- [BITTEST](https://jbc-lang.org/pages/bittest.md): Use the BITTEST function to test the bit number of the integer specified by expression
+- [BITXOR](https://jbc-lang.org/pages/bitxor.md): Use the BITXOR function to perform the bitwise XOR comparison of two integers specified by numeric expressions
+- [BREAK](https://jbc-lang.org/pages/break.md): Terminate the currently executing loop
+- [BREAK ON/OFF](https://jbc-lang.org/pages/break_on_off.md): Enables or disables the BREAK key
+- [BYTELEN](https://jbc-lang.org/pages/bytelen.md): The BYTELEN function will return the length of the expression as the number of bytes rather than the number of characters
+- [CacheBucketList](https://jbc-lang.org/pages/cachebucketlist.md): The CacheBucketList function will return a list of all buckets in the cache
+- [CacheClear](https://jbc-lang.org/pages/cacheclear.md): The CacheClear function will delete all items in a bucket of the cache
+- [CacheClearAll](https://jbc-lang.org/pages/cacheclearall.md): The CacheClearAll function will clean all buckets in the cache
+- [CacheClearStats](https://jbc-lang.org/pages/cacheclearstats.md): The CacheClearStats function will reset statistics of the specified bucket in the cache
+- [CacheDelete](https://jbc-lang.org/pages/cachedelete.md): The CacheBucketList function will delete an item from a bucket in the cache
+- [CacheExists](https://jbc-lang.org/pages/cacheexists.md): The CacheExists function will return "1" if a item exists in the bucket or "0" otherwise
+- [CacheGet](https://jbc-lang.org/pages/cacheget.md): The CacheExists function will return a value of an item from the specified bucket of the cache
+- [CacheGetOption](https://jbc-lang.org/pages/cachegetoption.md): The CacheGetOption function will return an option of the bucket
+- [CacheKeyList](https://jbc-lang.org/pages/cachekeylist.md): The CacheKeyList function will return a list of all item names in the specified bucket in the cache
+- [CachePut](https://jbc-lang.org/pages/cacheput.md): The CacheExists function will put an item to the specified bucket of the cache
+- [CacheSetOption](https://jbc-lang.org/pages/cachesetoption.md): The CacheSetOption function will set an option of the bucket
+- [CacheStats](https://jbc-lang.org/pages/cachestats.md): The CacheStats function will return a statistics counter of the specified bucket in the cache
+- [CALL](https://jbc-lang.org/pages/call.md): The CALL statement transfers program execution to an external subroutine
+- [CALLC](https://jbc-lang.org/pages/callc.md): The CALLC command transfers program control to an external function (c.sub.name)
+- [CALLdotNET](https://jbc-lang.org/pages/calldotnet.md): The CALLdotNET command allows BASIC to call any .NET assembly and is useful when using third party applications
+- [CALLJ](https://jbc-lang.org/pages/callj.md): The CALLJ command allows BASIC to call a Java method
+- [CALLJEE](https://jbc-lang.org/pages/calljee.md): The CALLJEE function will connect to the JRemote Inbound JCA (TOCF/EE) if not already connected, send the request, and receive the response
+- [CALLONEXIT](https://jbc-lang.org/pages/callonexit.md): The CALLONEXIT function call allows you to specify the name of a SUBROUTINE to call when the program terminates
+- [CASE](https://jbc-lang.org/pages/case.md): The CASE statement allows the programmer to execute a particular sequence of instructions based upon the results of a series of test...
+- [CATALOG Command](https://jbc-lang.org/pages/catalog_command.md): Cataloging and Running your Programs
+- [CATS](https://jbc-lang.org/pages/cats.md): The CATS function concatenates the corresponding elements in two dynamic arrays
+- [CHAIN](https://jbc-lang.org/pages/chain.md): The CHAIN statement exits the current program and transfers process control to the program defined by the expression
+- [CHANGE](https://jbc-lang.org/pages/change.md): The CHANGE statement operates on a variable and replaces all occurrences of one string with another
+- [CHANGETIMESTAMP](https://jbc-lang.org/pages/changetimestamp.md): Use CHANGETIMESTAMP to adjust existing timestamp to return new timestamp value
+- [CHAR](https://jbc-lang.org/pages/char.md): The CHAR function returns the ASCII character specified by the expression
+- [CHARS](https://jbc-lang.org/pages/chars.md): The CHARS function accepts a dynamic array of numeric expressions and returns a dynamic array of the corresponding ASCII characters
+- [CHDIR](https://jbc-lang.org/pages/chdir.md): The CHDIR function allows the current working directory, as seen by the process environment, to be changed
+- [CHECKSUM](https://jbc-lang.org/pages/checksum.md): The CHECKSUM function returns a simple numeric checksum of a character string
+- [CLEAR](https://jbc-lang.org/pages/clear.md): The CLEAR statement will initialize all local variables to numeric 0
+- [CLEARCOMMON](https://jbc-lang.org/pages/clearcommon.md): The CLEARCOMMON statement initializes all unnamed common variables to a value of zero
+- [CLEARDATA](https://jbc-lang.org/pages/cleardata.md): The CLEARDATA statement clears data stacked by the DATA statement
+- [CLEARFILE](https://jbc-lang.org/pages/clearfile.md): Use the CLEARFILE statement to clear all the data from a file previously opened with the OPEN statement
+- [CLEARINPUT](https://jbc-lang.org/pages/clearinput.md): The CLEARINPUT command clears the terminal type-ahead buffer to allow the next INPUT statement to force a response from the user
+- [CLEARSELECT](https://jbc-lang.org/pages/clearselect.md): Use the CLEARSELECT statement to clear active select lists
+- [CLOSE](https://jbc-lang.org/pages/close.md): Use the CLOSE statement to CLOSE an opened file, which is no longer required
+- [CLOSESEQ](https://jbc-lang.org/pages/closeseq.md): CLOSESEQ closes the file previously opened for sequential access
+- [COL1 and COL2](https://jbc-lang.org/pages/col1_and_col2.md): Use these functions in conjunction with the FIELD function to determine the character positions 1 position before and 1 position after the...
+- [COLLECTDATA](https://jbc-lang.org/pages/collectdata.md): Use the COLLECTDATA statement to retrieve data passed from the PASSDATA clause of an EXECUTE statement
+- [COMMON](https://jbc-lang.org/pages/common.md): The COMMON statement declares a list of variables and matrices that can be shared among various programs
+- [COMPARE](https://jbc-lang.org/pages/compare.md): The COMPARE function compares two strings and returns a value indicating whether or not they are equal
+- [CONTINUE](https://jbc-lang.org/pages/continue.md): The CONTINUE statement is the complimentary statement to the BREAK statement without arguments
+- [CONVERT](https://jbc-lang.org/pages/convert.md): The CONVERT function is the function form of the CONVERT statement
+- [CONVERT (STATEMENT)](https://jbc-lang.org/pages/convert_statement.md): The CONVERT statement converts one or more characters in a string to their corresponding replacement characters
+- [COS](https://jbc-lang.org/pages/cos.md): The COS function calculates the cosine of any angle using floating point arithmetic, then rounds to the precision implied by the jBC...
+- [COUNT](https://jbc-lang.org/pages/count.md): The COUNT function returns the number of times that one string occurs in another
+- [COUNTS](https://jbc-lang.org/pages/counts.md): Use the COUNTS function to count the number of times a substring is repeated in each element of a dynamic array
+- [CREATE](https://jbc-lang.org/pages/create.md): Use the CREATE statement after an OPENSEQ statement to create a record in a jBASE directory file or to create a UNIX or DOS file
+- [CRT](https://jbc-lang.org/pages/crt.md): The CRT statement sends data directly to the terminal, even if a PRINTER ON statement is currently active
+- [DATA](https://jbc-lang.org/pages/data.md): The DATA statement stacks the series of expressions on a terminal input FIFO stack
+- [DATE](https://jbc-lang.org/pages/date.md): The DATE() function returns the date in internal system form
+- [DCOUNT](https://jbc-lang.org/pages/dcount.md): The DCOUNT() function counts the number of field elements in a string that are separated by a specified delimiter
+- [DEBUG](https://jbc-lang.org/pages/debug.md): The DEBUG statement causes the executing program to enter the jBC debugger
+- [DECATALOG and DELETE-CATALOG Commands](https://jbc-lang.org/pages/decatalog_and_deletecatalog_commands.md): The DECATALOG and DELETE-CATALOG commands are used to remove the run-time versions of  cataloged jBC programs
+- [DECRYPT](https://jbc-lang.org/pages/decrypt.md): The DECRYPT function decrypts strings
+- [DEFC](https://jbc-lang.org/pages/defc.md): Use the DEFC statement to declare an external C function to the jBC compiler, define its arguments, and return types
+- [DEFCE](https://jbc-lang.org/pages/defce.md): With TAFC the DEFCE statement should be used, rather than the DEFC statement, for calling external C programs, which are pure 'C' code and...
+- [DEFFUN](https://jbc-lang.org/pages/deffun.md): Use the DEFFUN statement to declare an external jBC function to the jBC compiler and optionally define its arguments
+- [DEL](https://jbc-lang.org/pages/del.md): Use the DEL statement to remove a specified element of a dynamic array
+- [DELETE](https://jbc-lang.org/pages/delete.md): Use the DELETE statement to delete a record from a jBASE file
+- [DELETELIST](https://jbc-lang.org/pages/deletelist.md): The DELETELIST statement will delete the previously stored list named by expression
+- [DELETESEQ](https://jbc-lang.org/pages/deleteseq.md): DELETESEQ deletes a sequential file
+- [DELETEU](https://jbc-lang.org/pages/deleteu.md): Use the DELETEU statement to delete a record without releasing the update record lock set by a previous READU statement
+- [DIMENSION](https://jbc-lang.org/pages/dimension.md): Use the DIM statement to declare arrays to the compiler before referencing
+- [DIR](https://jbc-lang.org/pages/dir.md): Use the DIR function to return information about a file
+- [DIV](https://jbc-lang.org/pages/div.md): Use the DIV function to calculate the value of the quotient after division of the dividend by the divisor
+- [DIVS](https://jbc-lang.org/pages/divs.md): Use the DIVS function to create a dynamic array containing the result of the element-by-element division of two dynamic arrays
+- [DOWNCASE](https://jbc-lang.org/pages/downcase.md): DOWNCASE converts all uppercase characters in an expression to lowercase characters
+- [DROUND](https://jbc-lang.org/pages/dround.md): The DROUND function performs double-precision rounding on a value
+- [DTX](https://jbc-lang.org/pages/dtx.md): The DTX function will return the hexadecimal representation of a numeric expression
+- [DYNTOXML](https://jbc-lang.org/pages/dyntoxml.md)
+- [EBCDIC](https://jbc-lang.org/pages/ebcdic.md): The EBCDIC function converts all the characters in an expression from the ASCII character set to the EBCDIC character set
+- [ECHO](https://jbc-lang.org/pages/echo.md): The ECHO statement will turn on or off the echoing of characters typed at the keyboard
+- [ENCRYPT](https://jbc-lang.org/pages/encrypt.md): The ENCRYPT function encrypts strings
+- [ENTER](https://jbc-lang.org/pages/enter.md): The ENTER statement unconditionally passes control to another executable program
+- [EQS](https://jbc-lang.org/pages/eqs.md): Use the EQS function to test if elements of one dynamic array are equal to the elements of another dynamic array
+- [EQUATE](https://jbc-lang.org/pages/equate.md): Use EQUATE to declare a symbol equivalent to a literal, variable or simple expression
+- [EREPLACE](https://jbc-lang.org/pages/ereplace.md): Use the EREPLACE function to replace substring in an expression with another substring
+- [EXECUTE](https://jbc-lang.org/pages/execute.md): The EXECUTE or PERFORM statement allows the currently executing program to pause and execute any other UNIX/NT program, including another...
+- [EXIT](https://jbc-lang.org/pages/exit.md): The EXIT statement halts the execution of a program and returns a numeric exit code to the parent process
+- [EXP](https://jbc-lang.org/pages/exp.md): The EXP function returns the mathematical constant to the specified power
+- [EXTRACT](https://jbc-lang.org/pages/extract.md): The EXTRACT function is an alternative method of accessing values in a dynamic array other than using the <n,n,n> syntax described earlier
+
+## jBC Functions and Statements (F - J)
+
+- [FADD](https://jbc-lang.org/pages/fadd.md): The FADD function performs floating point addition of two numeric values
+- [FDIV](https://jbc-lang.org/pages/fdiv.md): The FDIV function performs floating point division on two numeric values. (Similarly, FMUL does the multiplication.)
+- [FIELD](https://jbc-lang.org/pages/field.md): The FIELD function returns a multi-character delimited field from within a string
+- [FIELDS](https://jbc-lang.org/pages/fields.md): The FIELDS function is an extension of the FIELD function
+- [FILEINFO](https://jbc-lang.org/pages/fileinfo.md): Use the FILEINFO function to return information about the specified file variable
+- [FILELOCK](https://jbc-lang.org/pages/filelock.md): Use the FILELOCK statement to acquire a lock on an entire file
+- [FILEUNLOCK](https://jbc-lang.org/pages/fileunlock.md): Use the FILEUNLOCK statement to release a file lock set by the FILELOCK statement
+- [FIND](https://jbc-lang.org/pages/find.md): The FIND statement determines if a specified string fully matches to an element in a dynamic array
+- [FINDSTR](https://jbc-lang.org/pages/findstr.md): The FINDSTR statement locates a string as a substring of a dynamic array element
+- [FORMLIST](https://jbc-lang.org/pages/formlist.md): The FORMLIST statement creates an active select list from a dynamic array
+- [FLUSH](https://jbc-lang.org/pages/flush.md): Writes all the buffers for a sequential I/O file immediately
+- [FMT](https://jbc-lang.org/pages/fmt.md): Format data according to mask definition
+- [FMTS](https://jbc-lang.org/pages/fmts.md): Use the FMTS function to format elements of dynamic array for output
+- [FOLD](https://jbc-lang.org/pages/fold.md): The FOLD function re-delimits a string by replacing spaces with attribute marks at positions defined by a length parameter
+- [FOOTING](https://jbc-lang.org/pages/footing.md): The FOOTING statement halts all subsequent output to the terminal at the end of each output page
+- [FOR](https://jbc-lang.org/pages/for.md): The FOR statement allows the construction of looping constructs within the program, which is controlled by a counting variable; this can be...
+- [FSUB](https://jbc-lang.org/pages/fsub.md): The FSUB function performs floating-point subtraction on two numeric values
+- [FUNCTION](https://jbc-lang.org/pages/function.md): Identifies a user-defined function, which can be invoked by other jBC programs, arguments to the function can optionally be declared
+- [GES](https://jbc-lang.org/pages/ges.md): Use the GES function to test if elements of one dynamic array are greater than or equal to corresponding elements of another dynamic array
+- [GET](https://jbc-lang.org/pages/get.md): The GET statement reads a block of data directly from a device
+- [GETCWD](https://jbc-lang.org/pages/getcwd.md): The GETCWD function allows a jBC program to determine the current working directory of the program, which is normally be the directory in...
+- [GETENV](https://jbc-lang.org/pages/getenv.md): All processes have an environment associated with them that contains a number of variables indicating the state of various parameters
+- [GETLIST](https://jbc-lang.org/pages/getlist.md): GETLIST allows the program to retrieve a previously stored list (perhaps created with the SAVE-LIST command), into a jBC variable
+- [GETUSERGROUP](https://jbc-lang.org/pages/getusergroup.md): If the statement succeeds in retrieving the list, then the statements the user ID specified by @uid
+- [GETX](https://jbc-lang.org/pages/getx.md): The GETX statement reads a block of data (in ASCII hexadecimal format) directly from a device
+- [GOSUB](https://jbc-lang.org/pages/gosub.md): The GOSUB statement causes execution of a local subroutine, after which execution will continue with the next line of code
+- [GOTO](https://jbc-lang.org/pages/goto.md): The GOTO statement causes program execution to jump to the code at a specified label
+- [GROUP](https://jbc-lang.org/pages/group.md): The GROUP function is equivalent to the FIELD function
+- [GROUPSTORE](https://jbc-lang.org/pages/groupstore.md): Insert the variable contents into dynamic array (or replace an element in it)
+- [HEADING](https://jbc-lang.org/pages/heading.md): Heading halts all subsequent output to the terminal at the end of each page
+- [HEADINGE and HEADINGN](https://jbc-lang.org/pages/headinge_and_headingn.md): The HEADINGE statement is the same as the HEADING statement, which causes a page eject with the HEADING statement
+- [HUSH](https://jbc-lang.org/pages/hush.md): Use the HUSH statement to suppress the display of all output normally sent to a terminal during processing
+- [ICONV](https://jbc-lang.org/pages/iconv.md): The ICONV function converts data in external form such as dates to their internal form
+- [ICONVS](https://jbc-lang.org/pages/iconvs.md): Use ICONVS to convert each element of dynamic.array to a specified internal storage format
+- [IF (statement)](https://jbc-lang.org/pages/if_statement.md): Allows other statements to be conditionally executed
+- [IFS](https://jbc-lang.org/pages/ifs.md): Use the IFS function to return a dynamic array whose elements are chosen individually from one of two dynamic arrays based on the contents...
+- [IN](https://jbc-lang.org/pages/in.md): The IN statement allows the program to receive raw data from the input device, which is normally the terminal keyboard, one character at a...
+- [INDEX](https://jbc-lang.org/pages/index.md): The INDEX function will return the position of a character or characters within another string
+- [INMAT](https://jbc-lang.org/pages/inmat.md): The INMAT() function returns the number of dimensioned array elements
+- [INPUT](https://jbc-lang.org/pages/input.md): The INPUT statement allows the program to collect data from the current input device, which will normally be the terminal keyboard but may...
+- [INPUTCLEAR](https://jbc-lang.org/pages/inputclear.md): The INPUTCLEAR statement clears the type-ahead buffer
+- [INPUTNULL](https://jbc-lang.org/pages/inputnull.md): The INPUTNULL statement allows the definition of a character that will allow a null input to be seen by the INPUT@ statement
+- [INS](https://jbc-lang.org/pages/ins.md): The INS statement allows the insertion of elements into a dynamic array
+- [INSERT](https://jbc-lang.org/pages/insert.md): INSERT is the function form of the INS statement, with preference given to the use of INS
+- [INT](https://jbc-lang.org/pages/int.md): The INT function truncates a numeric value into its nearest integer form
+- [IOCTL](https://jbc-lang.org/pages/ioctl.md): The jBC language provides an intrinsic function called IOCTL that behaves in a similar manner to the C function ioctl()
+- [ISALPHA](https://jbc-lang.org/pages/isalpha.md): The ISALPHA function will check that the expression consists of entirely alphabetic characters
+- [ISALNUM](https://jbc-lang.org/pages/isalnum.md): The ISALNUM function will check that the expression consists of entirely alphanumeric characters
+- [ISCNTRL](https://jbc-lang.org/pages/iscntrl.md): The ISCNTRL function will check that the expression consists entirely of control characters
+- [ISDIGIT](https://jbc-lang.org/pages/isdigit.md): The ISDIGIT function will check that the expression consists of entirely numeric characters
+- [ISLOWER](https://jbc-lang.org/pages/islower.md): The ISLOWER function will check that the expression consists of entirely lower case characters
+- [ISPRINT](https://jbc-lang.org/pages/isprint.md): The ISPRINT function will check that the expression consists of entirely printable characters
+- [ISSPACE](https://jbc-lang.org/pages/isspace.md): The ISSPACE function will check that the expression consists of entirely space type characters
+- [ISUPPER](https://jbc-lang.org/pages/isupper.md): The ISUPPER function will check that the expression consists of entirely upper case characters
+- [ITYPE](https://jbc-lang.org/pages/itype.md): ITYPE function is used to return the value resulting from the evaluation of an I-type expression in a jBASE file dictionary
+- [JBASECOREDUMP](https://jbc-lang.org/pages/jbasecoredump.md): JBASECOREDUMP is used as a diagnostic tool for applications
+- [JBASESubroutineExist](https://jbc-lang.org/pages/jbasesubroutineexist.md): Check if a subroutine exists in current environment
+- [JBASETHREADCreate](https://jbc-lang.org/pages/jbasethreadcreate.md): JBASETHREADCreate command is used to start a new thread
+- [JBASETHREADStatus](https://jbc-lang.org/pages/jbasethreadstatus.md): JBASETHREADStatus command shows the status of all running threads
+- [JQLCOMPILE](https://jbc-lang.org/pages/jqlcompile.md): JQLCOMPILE compiles a jQL statement
+- [JQLEXECUTE](https://jbc-lang.org/pages/jqlexecute.md): JQLEXECUTE starts executing a compiled jQL statement
+- [JQLFETCH](https://jbc-lang.org/pages/jqlfetch.md): JQLFETCH is used to fetch the next result in a compiled jQL statement
+- [JQLGETPROPERTY](https://jbc-lang.org/pages/jqlgetproperty.md): JQLGETPROPERTY is used to get the property of a compiled jQL statement
+- [JQLPUTPROPERTY](https://jbc-lang.org/pages/jqlputproperty.md): JQLPUTPROPERTY sets a property in a compiled jQL statement
+- [Sample program illustrating the usage of compiled jQL statement:](https://jbc-lang.org/pages/sample_program_illustrating_the_usage_of_compiled_jql_statement.md)
+
+## jBC Functions and Statements (K - O)
+
+- [KEYIN](https://jbc-lang.org/pages/keyin.md): KEYIN function is used to read a single character from the input buffer and return it
+- [LATIN1](https://jbc-lang.org/pages/latin1.md): LATIN1 function converts a UTF-8 byte sequence into the binary or latin1 equivalent
+- [LEFT](https://jbc-lang.org/pages/left.md): The LEFT function extracts a sub-string of a specified length from the beginning of a string
+- [LEN](https://jbc-lang.org/pages/len.md): LEN function returns the character length of the supplied expression
+- [LENDP](https://jbc-lang.org/pages/lendp.md): LENDP function returns the display length of an expression
+- [LENS](https://jbc-lang.org/pages/lens.md): LENS function is used to return a dynamic array of the number of bytes in each element of the dynamic.array
+- [LES](https://jbc-lang.org/pages/les.md): LES function is used to determine whether elements of one dynamic array are less than or equal to the elements of another dynamic array
+- [LN](https://jbc-lang.org/pages/ln.md): LN function returns the value of the natural logarithm of the supplied value
+- [LOCALDATE](https://jbc-lang.org/pages/localdate.md): LOCALDATE returns an internal date using the specified Timestamp and TimeZone combination
+- [LOCALTIME](https://jbc-lang.org/pages/localtime.md): LOCALTIME returns an internal time using the specified Timestamp and TimeZone combination
+- [LOCATE](https://jbc-lang.org/pages/locate.md): LOCATE statement finds the position of an element within a specified dimension of a dynamic array
+- [LOCK](https://jbc-lang.org/pages/lock.md): LOCK statement is used to set an execution lock thus preventing any other jBC program to wait until this program has released it
+- [Logger](https://jbc-lang.org/pages/logger.md): The logger function allows you to log your message in a file or display to screen
+- [LOOP](https://jbc-lang.org/pages/loop.md): LOOP allows the programmer to specify loops with multiple exit conditions
+- [LOWER](https://jbc-lang.org/pages/lower.md): This function lowers system delimiters in a string to the next lowest delimiter
+- [MAKETIMESTAMP](https://jbc-lang.org/pages/maketimestamp.md): MAKETIMESTAMP generates a timestamp using combination of internal date, time and timezone
+- [MAT](https://jbc-lang.org/pages/mat.md): This command is used to assign a single value for every element in a specified array or to assign the entire contents of one array to...
+- [MATBUILD](https://jbc-lang.org/pages/matbuild.md): This statement is used to create a dynamic array out of a dimensioned array
+- [MATCHES](https://jbc-lang.org/pages/matches.md): MATCH or MATCHES clause applies pattern matching to an expression
+- [MATCHFIELD](https://jbc-lang.org/pages/matchfield.md): This function is used to check a string against a match pattern
+- [MATPARSE](https://jbc-lang.org/pages/matparse.md): MATPARSE statement is used to assign the elements of a matrix from the elements of a dynamic array
+- [MATREAD](https://jbc-lang.org/pages/matread.md): The MATREAD statement allows a record stored in a jBASE file to be read and mapped directly into a dimensioned array
+- [MATREADU](https://jbc-lang.org/pages/matreadu.md): MATREADU statement allows a record stored in a jBASE file to be read and mapped directly into a dimensioned array
+- [MATWRITE](https://jbc-lang.org/pages/matwrite.md): The MATWRITE statement transfers the entire contents of a dimensioned array to a specified record on disc
+- [MATWRITEU](https://jbc-lang.org/pages/matwriteu.md): MATWRITEU statement transfers the entire contents of a dimensioned array to a specified record on file, in the same manner as the MATWRITE...
+- [MAXIMUM](https://jbc-lang.org/pages/maximum.md): MAXIMUM function is used to return the element of a dynamic array with the highest numerical value
+- [MINIMUM](https://jbc-lang.org/pages/minimum.md): MINIMUM function is used to return the element of a dynamic array with the lowest numerical value
+- [MOD](https://jbc-lang.org/pages/mod.md): MOD function returns the arithmetic modulo of two numeric expressions
+- [MODS](https://jbc-lang.org/pages/mods.md): MODS function is used to create a dynamic array of the remainder after the integer division of corresponding elements of two dynamic arrays
+- [MSLEEP](https://jbc-lang.org/pages/msleep.md): MSLEEP allows the program to pause execution for a specified number of milliseconds
+- [MULS](https://jbc-lang.org/pages/muls.md): MULS function is used to create a dynamic array of the element-by-element multiplication of two dynamic arrays
+- [NEGS](https://jbc-lang.org/pages/negs.md): NEGS function returns the negative values for all the elements in a dynamic array
+- [NES](https://jbc-lang.org/pages/nes.md): NES function is used to determine whether elements of one dynamic array are equal to the elements of another dynamic array
+- [NEXT](https://jbc-lang.org/pages/next.md): Terminator statement for FOR loop
+- [NOBUF](https://jbc-lang.org/pages/nobuf.md): NOBUF statement turns off buffering for a file previously opened for sequential processing
+- [NOT](https://jbc-lang.org/pages/not.md): NOT function is used to invert the Boolean value of an expression
+- [NOTS](https://jbc-lang.org/pages/nots.md): NOTS function is used to return a dynamic array of the logical complements of each element of dynamic.array
+- [NULL](https://jbc-lang.org/pages/null.md): NULL statement performs no function but can be useful in clarifying syntax and where the language requires a statement but the programmer...
+- [NUM](https://jbc-lang.org/pages/num.md): NUM function is used to test arguments for numeric values
+- [NUMS](https://jbc-lang.org/pages/nums.md): NUMS function is used to determine whether the elements of a dynamic array are numeric or nonnumeric strings
+- [OBJEXCALLBACK](https://jbc-lang.org/pages/objexcallback.md): jBASE OBjEX provides the facility to call a subroutine from a front-end program written in a tool that supports OLE, such as Delphi or...
+- [OCONV](https://jbc-lang.org/pages/oconv.md): OCONV statement converts internal representations of data to their external form
+- [OCONVS](https://jbc-lang.org/pages/oconvs.md): OCONVS function converts the elements of dynamic.array to a specified format for external output
+- [ONGOTO](https://jbc-lang.org/pages/ongoto.md): The ON...GOSUB and ON...GOTO statements are used to transfer program execution to a label based upon a calculation
+- [OPEN](https://jbc-lang.org/pages/open.md): OPEN statement is used to open a file or device to a descriptor variable within jBC
+- [OPENDEV](https://jbc-lang.org/pages/opendev.md): OPENDEV statement is used to open a device (or file) for sequential writing and/or reading
+- [OPENINDEX](https://jbc-lang.org/pages/openindex.md): OPENINDEX statement is used to open a particular index definition for a particular file
+- [OPENPATH](https://jbc-lang.org/pages/openpath.md): OPENPATH statement is used to open a file (given an absolute or relative path) to a descriptor variable within jBC
+- [OPENSEQ](https://jbc-lang.org/pages/openseq.md): OPENSEQ is used to open a file for sequential writing and/or reading
+- [OPENSER](https://jbc-lang.org/pages/openser.md): OPENSER statement is used to handle the Serial IO
+- [ORS](https://jbc-lang.org/pages/ors.md): ORS function is used to create a dynamic array of the logical OR of corresponding elements of two dynamic arrays
+- [OSBREAD](https://jbc-lang.org/pages/osbread.md): OSBREAD command reads data from a file starting at a specified byte location for a certain length of bytes, and assigns the data to a...
+- [OSBWRITE](https://jbc-lang.org/pages/osbwrite.md): OSBWRITE command writes an expression to a sequential file starting at a specified byte location
+- [OSCLOSE](https://jbc-lang.org/pages/osclose.md): OSCLOSE command closes a sequential file that you have opened with the OSOPEN or OPENSEQ command
+- [OSDELETE](https://jbc-lang.org/pages/osdelete.md): OSDELETE command deletes a NT or UNIX file
+- [OSOPEN](https://jbc-lang.org/pages/osopen.md): OSOPEN command opens a sequential file that does not use CHAR (10) as the line delimiter
+- [OSREAD](https://jbc-lang.org/pages/osread.md): OSREAD reads an OS file
+- [OSWRITE](https://jbc-lang.org/pages/oswrite.md): The OSWRITE command writes the contents of an expression to a sequential file
+- [OUT](https://jbc-lang.org/pages/out.md): OUT statement is used to send raw characters to the current output device (normally the terminal)
+
+## jBC Functions and Statements (P - T)
+
+- [PAGE](https://jbc-lang.org/pages/page.md): PAGE command is used to print any FOOTING statement, throw a PAGE and print any heading statement on the current output device
+- [PAUSE](https://jbc-lang.org/pages/pause.md): PAUSE statement allows processing to be suspended until an external event triggered by a WAKE statement from another process or a timeout...
+- [PERFORM](https://jbc-lang.org/pages/perform.md): PERFORM is synonymous with EXECUTE
+- [PRECISION](https://jbc-lang.org/pages/precision.md): PRECISION statement informs the number of digits of precision used after the decimal point
+- [PRINT](https://jbc-lang.org/pages/print.md): PRINT statement sends data directly to the current output device like terminal or printer
+- [PRINTER](https://jbc-lang.org/pages/printer.md): PRINTER statement controls the destination of output from the PRINT statement
+- [PRINTERR](https://jbc-lang.org/pages/printerr.md): PRINTERR statement is used to print standard jBASE error messages
+- [PROCREAD](https://jbc-lang.org/pages/procread.md): PROCREAD statement is used to retrieve data passed to programs from a jCL program
+- [PROCWRITE](https://jbc-lang.org/pages/procwrite.md): PROCWRITE statement is used to pass data back to the primary input buffer of a calling jCL program
+- [PROGRAM](https://jbc-lang.org/pages/program.md): PROGRAM statement performs no function other than to document the source code
+- [PROMPT](https://jbc-lang.org/pages/prompt.md): PROMPT statement is used to change the PROMPT character used by terminal input commands
+- [PUTENV](https://jbc-lang.org/pages/putenv.md): PUTENV is used to set environment variables for the current process
+- [PWR](https://jbc-lang.org/pages/pwr.md): PWR function raises a number to the n'th power
+- [QUOTE / DQUOTE / SQUOTE](https://jbc-lang.org/pages/quote___dquote___squote.md): These three functions will enclose a single or double quotation mark at the beginning and end of a string
+- [RAISE](https://jbc-lang.org/pages/raise.md): RAISE function raises system delimiters in a string to the next highest delimiter
+- [READ](https://jbc-lang.org/pages/read.md): READ statement allows a program to read a record from a previously opened file into a variable
+- [READBLK](https://jbc-lang.org/pages/readblk.md): READBLK statement is used to read a block of data of a specified length from a file opened for sequential processing and assign it to a...
+- [READL](https://jbc-lang.org/pages/readl.md): READL statement allows a process to read a record from a previously opened file into a variable and takes a read-only shared lock on the...
+- [READLIST](https://jbc-lang.org/pages/readlist.md): READLIST allows the program to retrieve a previously stored list (perhaps created with the SAVE-LIST command), into a jBC variable
+- [READNEXT](https://jbc-lang.org/pages/readnext.md): READNEXT retrieves the next element in a list variable
+- [READPREV](https://jbc-lang.org/pages/readprev.md): This statement is syntactically similar to the READNEXT but it works in reverse order
+- [READSELECT](https://jbc-lang.org/pages/readselect.md): See also: READLIST
+- [READSEQ](https://jbc-lang.org/pages/readseq.md): READSEQ reads data from a file opened for sequential access
+- [READT](https://jbc-lang.org/pages/readt.md): READT statement is used to read a range of tape devices 0-9
+- [READU](https://jbc-lang.org/pages/readu.md): READU statement allows a program to read a record from previously opened file into variable
+- [READV](https://jbc-lang.org/pages/readv.md): READV statement allows a program to read a specific field from a record in a previously opened file into a variable
+- [READVL](https://jbc-lang.org/pages/readvl.md): READVL statement is used to acquire a shared record lock and then read a field from the record
+- [READVU](https://jbc-lang.org/pages/readvu.md): READVU statement allows a program to read a specific field in a record in a previously opened file into a variable
+- [READXML](https://jbc-lang.org/pages/readxml.md): READXML rec FROM file, id ELSE STOP 202,id
+- [RECORDLOCKED](https://jbc-lang.org/pages/recordlocked.md): RECORDLOCKED function is called to ascertain the status of a record lock
+- [REGEXP](https://jbc-lang.org/pages/regexp.md): REGEXP function is a powerful function that allows pattern matching using UNIX regular expressions
+- [RELEASE](https://jbc-lang.org/pages/release.md): RELEASE statement enables a program to explicitly release record locks without updating the records using WRITE
+- [REMOVE](https://jbc-lang.org/pages/remove.md): REMOVE will successively extract delimited strings from a dynamic array
+- [REPLACE](https://jbc-lang.org/pages/replace.md): REPLACE is an obsolete way to assign to dynamic arrays via a function
+- [RETURN](https://jbc-lang.org/pages/return.md): RETURN statement transfers program execution to the caller of a subroutine/function or to a specific label in the program
+- [REWIND](https://jbc-lang.org/pages/rewind.md): REWIND statement issueS a rewind command to the device attached to the specified channel
+- [RIGHT](https://jbc-lang.org/pages/right.md): RIGHT function returns a sub-string composed of the last n characters of a specified string
+- [RND](https://jbc-lang.org/pages/rnd.md): RND function allows the generation of random numbers by a program
+- [RQM](https://jbc-lang.org/pages/rqm.md): RQM is synonymous with SLEEP
+- [RTNDATA](https://jbc-lang.org/pages/rtndata.md): RTNDATA statement allows a jBC program to return specific data to the RTNDATA clause of another program's EXECUTE statement
+- [SADD](https://jbc-lang.org/pages/sadd.md): SADD function performs string addition of two base 10-string numbers
+- [SDIV](https://jbc-lang.org/pages/sdiv.md): SDIV function performs a string division of two base 10-string numbers and rounds the result to 14 decimal places
+- [SEEK](https://jbc-lang.org/pages/seek.md): SEEK statement is used to move the file pointer by an offset specified in bytes, relative to the current position, the beginning of the...
+- [SELECT](https://jbc-lang.org/pages/select.md): SELECT statement creates a select list of elements in a specified variable
+- [SEND](https://jbc-lang.org/pages/send.md): SEND statement sends a block of data directly to a device
+- [SENDX](https://jbc-lang.org/pages/sendx.md): SENDX statement sends a block of data (in hexidecimal) directly to a device
+- [SENTENCE](https://jbc-lang.org/pages/sentence.md): SENTENCE function allows a program to locate the command used to invoke it and the arguments it was given
+- [SEQ](https://jbc-lang.org/pages/seq.md): SEQ function returns numeric ASCII value of a character
+- [SEQS](https://jbc-lang.org/pages/seqs.md): SEQS function is used to convert a dynamic array of ASCII characters to their numeric string equivalents
+- [SIN](https://jbc-lang.org/pages/sin.md): SIN function returns the mathematical sine value of a numeric expression
+- [SLEEP](https://jbc-lang.org/pages/sleep.md): SLEEP function allows the program to pause execution for a specified period
+- [SMUL](https://jbc-lang.org/pages/smul.md): SMUL function performs string multiplication of two base 10-string numbers
+- [SORT](https://jbc-lang.org/pages/sort.md): The SORT function sorts all elements of a dynamic array in ascending left-justified order
+- [SOUNDEX](https://jbc-lang.org/pages/soundex.md): SOUNDEX function allows phonetic conversions of strings
+- [SPACE](https://jbc-lang.org/pages/space.md): SPACE function generates a specific number of ASCII space characters
+- [SPACES](https://jbc-lang.org/pages/spaces.md): SPACES function is used to return a dynamic array with elements composed of blank spaces
+- [SPLICE](https://jbc-lang.org/pages/splice.md): SPLICE function is used to create a dynamic array of the element-by-element concatenation of two dynamic arrays, separating concatenated...
+- [SPOOLER](https://jbc-lang.org/pages/spooler.md): SPOOLER function returns information from the jBASE spooler
+- [SQRT](https://jbc-lang.org/pages/sqrt.md): SQRT function returns the mathematical square root of a value
+- [SSELECT](https://jbc-lang.org/pages/sselect.md): SSELECT statement is used to create
+- [SSELECTN](https://jbc-lang.org/pages/sselectn.md): See: SSELECT
+- [SSELECTV](https://jbc-lang.org/pages/sselectv.md): See: SSELECT
+- [SSUB](https://jbc-lang.org/pages/ssub.md): SSUB function performs string subtraction of two base 10-string numbers
+- [STATUS](https://jbc-lang.org/pages/status.md): STATUS function after an OPENPATH statement to find the cause of a file open failure (that is, for an  tatement in which the ELSE clause is...
+- [STATUS statement](https://jbc-lang.org/pages/status_statement.md): STATUS statement is used to determine the status of an open file
+- [STOP](https://jbc-lang.org/pages/stop.md): STOP statement is virtually identical in function to the ABORT statement except that it does not terminate a calling jCL program
+- [STR](https://jbc-lang.org/pages/str.md): STR function allows the duplication of a string a number of times
+- [STRS](https://jbc-lang.org/pages/strs.md): STRS function is used to produce a dynamic array containing the specified number of repetitions of each element of dynamic.array
+- [SUBROUTINE](https://jbc-lang.org/pages/subroutine.md): SUBROUTINE statement is used at the start of any program that will be called externally by the CALL statement
+- [SUBS](https://jbc-lang.org/pages/subs.md): SUBS function returns a dynamic array, the content of which is derived by subtracting each element of the second dynamic array argument...
+- [SUBSTRINGS](https://jbc-lang.org/pages/substrings.md): SUBSTRINGS function returns a dynamic array of elements, which are sub-strings of the corresponding elements in a supplied dynamic array
+- [SUM](https://jbc-lang.org/pages/sum.md): SUM function sums numeric elements in a dynamic array
+- [SWAP](https://jbc-lang.org/pages/swap.md): SWAP function operates on a variable and replaces all occurrences of one string with another
+- [System Functions](https://jbc-lang.org/pages/system_functions.md): The following system functions are supported by TAFC
+- [TAN](https://jbc-lang.org/pages/tan.md): TAN function returns the mathematical tangent of an angle
+- [TIME](https://jbc-lang.org/pages/time.md): TIME() function returns the current system time
+- [TIMEDATE](https://jbc-lang.org/pages/timedate.md): TIMEDATE() function returns the current time and date as a printable string
+- [TIMEDIFF](https://jbc-lang.org/pages/timediff.md): TIMEDIFF returns the interval between two timestamp values as a dynamic array
+- [TIMEOUT](https://jbc-lang.org/pages/timeout.md): If no data is read in the specified time, use the TIMEOUT statement to terminate a READSEQ or READBLK statement
+- [TIMESTAMP](https://jbc-lang.org/pages/timestamp.md): TIMESTAMP returns a UTC timestamp value as decimal seconds
+- [TRANS](https://jbc-lang.org/pages/trans.md): TRANS function returns the data value of a field, given the name of the file, the record key, the field number, and an action code
+- [TRANSABORT](https://jbc-lang.org/pages/transabort.md): TRANSABORT statement is used to abort the current transaction and reverse any updates to the database
+- [TRANSEND](https://jbc-lang.org/pages/transend.md): TRANSEND statement is used to mark the end of a successfully completed transaction
+- [TRANSQUERY](https://jbc-lang.org/pages/transquery.md): TRANSQUERY function is used to detect whether or not a transaction is active on the current process
+- [TRANSTART](https://jbc-lang.org/pages/transtart.md): In transaction processing, TRANSTART statement is used to mark the beginning of a transaction
+- [TRIM](https://jbc-lang.org/pages/trim.md): TRIM statement allows characters to be removed from a string in a number of ways
+- [TRIMB](https://jbc-lang.org/pages/trimb.md): TRIMB() function is equivalent to TRIM(expression, " ", "T")
+- [TRIMBS](https://jbc-lang.org/pages/trimbs.md): TRIMBS function is used to remove all trailing spaces from each element of dynamic.array
+- [TRIMF](https://jbc-lang.org/pages/trimf.md): TRIMF() function is equivalent to TRIM(expression, " ", "L")
+- [TRIMFS](https://jbc-lang.org/pages/trimfs.md): TRIMFS function is used to remove all leading spaces from each element of dynamic.array
+
+## jBC Functions and Statements (U - X)
+
+- [UNASSIGNED](https://jbc-lang.org/pages/unassigned.md): UNASSIGNED function allows a program to determine whether a variable has been assigned a value
+- [UNIQUEKEY](https://jbc-lang.org/pages/uniquekey.md): UNIQUEKEY returns a unique 36-byte character key
+- [UNLOCK](https://jbc-lang.org/pages/unlock.md): UNLOCK statement releases a previously LOCKed execution lock
+- [UDTEXECUTE](https://jbc-lang.org/pages/udtexecute.md): See also: EXECUTE
+- [UPCASE](https://jbc-lang.org/pages/upcase.md): See: DOWNCASE
+- [UTF8](https://jbc-lang.org/pages/utf8.md): UTF8 function converts a latin1 or binary string into the UTF-8 equivalent byte sequence
+- [WAKE](https://jbc-lang.org/pages/wake.md): WAKE statement is used to wake a suspended process, which has executed a PAUSE statement
+- [WEOF](https://jbc-lang.org/pages/weof.md): WEOF statement allows the program to write an EOF mark on an attached tape device
+- [WEOFSEQ](https://jbc-lang.org/pages/weofseq.md): WEOFSEQ truncates a file opened for sequential access
+- [WRITE](https://jbc-lang.org/pages/write.md): WRITE statement allows a program to write a record into a previously opened file
+- [WRITEBLK](https://jbc-lang.org/pages/writeblk.md): WRITEBLK statement writes a block of data to a file opened for sequential processing
+- [WRITELIST](https://jbc-lang.org/pages/writelist.md): WRITELIST allows the program to store a list held in a jBC variable to the global list file
+- [WRITESEQ](https://jbc-lang.org/pages/writeseq.md): WRITESEQ writes data to a file opened for sequential access
+- [WRITESEQF](https://jbc-lang.org/pages/writeseqf.md): WRITESEQF statement is used to write new lines to a file opened for sequential processing, and to ensure that data is physically written to...
+- [WRITET](https://jbc-lang.org/pages/writet.md): WRITET statement enables data to be written to a range of tape devices between 0-9
+- [WRITEU](https://jbc-lang.org/pages/writeu.md): WRITEU statement allows a program to write a record into a previously opened file
+- [WRITEV](https://jbc-lang.org/pages/writev.md): WRITEV statement allows a program to write a specific field of a record in a previously opened file
+- [WRITEVU](https://jbc-lang.org/pages/writevu.md): WRITEVU statement allows a program to write a specific field on a record in a previously opened file
+- [WRITEXML](https://jbc-lang.org/pages/writexml.md): Use WRITEXML to write an XML record to a hashed file
+- [XLATE](https://jbc-lang.org/pages/xlate.md): The XLATE function will return the data value of a field, given the name of the file, the record key, the field number, and an action code
+- [XMLTODYN](https://jbc-lang.org/pages/xmltodyn.md): XMLTODYN converts the XML to a dynamic array using the optional XSL
+- [XMLTOXML](https://jbc-lang.org/pages/xmltoxml.md): XMLTOXML transforms the XML using the XSL
+- [XTD](https://jbc-lang.org/pages/xtd.md): XTD function converts hexadecimal numbers into its decimal equivalent
+
+## Embedded SQL for jBC
+
+- [Introduction to embedded SQL](https://jbc-lang.org/pages/introduction_to_embedded_sql.md): The name "SQL" is an abbreviation for "Structured Query Language"
+- [EMBEDDED SQL COMPILER OPTION](https://jbc-lang.org/pages/embedded_sql_compiler_option.md): In order to compile jBC programs containing Embedded SQL statements the TAFC compiler option "Jq" must be invoked with the jBC compiler...
+- [TROUBLESHOOTING](https://jbc-lang.org/pages/troubleshooting.md): When attempting to compile a program with Embedded SQL and you get an error along the lines of
