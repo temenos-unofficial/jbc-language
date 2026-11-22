@@ -36,11 +36,12 @@ jbc-lang.org.
 | `site/footer.html` | The contact line shown under each page and the links at its top right. |
 | `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
+| `site/favicon.svg`, `site/favicon-32.png`, `site/apple-touch-icon.png` | The browser-tab icon. The two PNG files are made from the SVG by hand. |
 | `site/llms.txt` | The opening lines of the published `llms.txt`. |
 | `justfile` | Shortcuts for the commands below. |
 | `skills/jbc/SKILL.md` | A skill that teaches Claude Code and Codex to answer from the guide. |
 | `.github/workflows/publish.yml` | Rebuilds and publishes the site on every change. |
-| `images/` | Original image files; the guide embeds its images inline. |
+| `images/` | Original image files; the guide embeds its images inline. Also the project logo, `jbc-logo.svg` and `jbc-logo.png`. |
 | `markdown.css` | Stylesheet of the old single-file HTML export; not used by the site. |
 
 The built site lives on the `gh-pages` branch, not on `master`.
