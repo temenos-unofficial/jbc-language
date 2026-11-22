@@ -79,6 +79,10 @@ There are no unit tests. A change to the build is checked with:
   replacing it. That filter walks a live list of every link in the sidebar,
   including the ones the search adds, so the search redraws its list after
   the filter has run.
+- **Narrow screens.** `site/mobile.css` overrides `index.css` below 760
+  pixels, and `site/mobile.js` repeats that width. `#links` and `#contact` in
+  `site/footer.html` carry inline styles, so the overrides for them need
+  `!important`. Check a visible change at both widths.
 - **Text for other readers.** `plain_markdown` feeds the `.md` files and
   `plain_text` feeds the search index. New markup in the guide may need
   handling in both, as well as in `render_content`.

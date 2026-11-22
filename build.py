@@ -498,8 +498,9 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
     the analytics snippet in site/head.html, the contact line in
     site/footer.html, the CNAME file, the Markdown files for language
     models (llms.txt, llms-full.txt, pages/*.md), all.html, the whole
-    guide in one page, and the full-text search (search.js, search.css and
-    its index, search.json).
+    guide in one page, the full-text search (search.js, search.css and its
+    index, search.json) and the layout for narrow screens (mobile.js,
+    mobile.css).
 
     Returns the list of files that were written.
     """
@@ -584,7 +585,7 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
             footer=single_footer,
         )
         files["search.json"] = render_search_index(groups)
-        for name in ("search.js", "search.css"):
+        for name in ("search.js", "search.css", "mobile.js", "mobile.css"):
             files[name] = (SITE / name).read_text(encoding="utf-8")
         for relative, text in files.items():
             if write_text(out / relative, text):
@@ -644,7 +645,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, previous, redirect, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css")]
     state = {"build": 0}
 
     def stamps():

@@ -30,8 +30,9 @@ jbc-lang.org.
 | `build.py` | The site generator. |
 | `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
 | `site/index.css` | The stylesheet. |
-| `site/head.html` | Extra tags for the page head (analytics, search). |
+| `site/head.html` | Extra tags for the page head (analytics, search, narrow screens). |
 | `site/search.js`, `site/search.css` | The full-text search. |
+| `site/mobile.js`, `site/mobile.css` | The layout for narrow screens. |
 | `site/footer.html` | The contact line shown under each page and the links at its top right. |
 | `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
@@ -66,6 +67,7 @@ This writes the site to `_site/`:
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),
 - `search.json`, `search.js` and `search.css`, the full-text search (see below),
+- `mobile.js` and `mobile.css`, the layout for narrow screens (see below),
 - `llms.txt`, `llms-full.txt` and `pages/*.md`, the guide as Markdown for AI
   assistants (see below).
 
@@ -173,6 +175,22 @@ Highlighting works within one piece of text, so a phrase that the syntax
 highlighter splits into colours, such as `OCONV(`, is found but not marked in
 code examples.
 
+### Narrow screens
+
+In a window narrower than 760 pixels, which covers phones, the page changes:
+
+- the search box becomes a bar across the top, with a button that opens the
+  list of chapters;
+- the list of chapters is a panel under that bar. It also opens while the
+  search box is in use, and closes when a chapter is chosen or Enter shows
+  the search results;
+- the text uses the full width in a larger size, wide tables scroll sideways
+  and long lines of code wrap;
+- the links at the top right move to the end of the page.
+
+`site/mobile.css` holds the rules and `site/mobile.js` adds the button. The
+width appears in both files.
+
 ### Single-page view
 
 <https://jbc-lang.org/all.html> holds the whole guide in one page of about
@@ -220,8 +238,8 @@ The generator was written in 2026 to reproduce the pages of the previous,
 hand-published site exactly, including a few oddities of the original tool.
 `just verify` rebuilds the guide and compares the result with that site
 (<https://vladimirk2.github.io/>). It leaves out the analytics tag, the contact
-line, the `CNAME` file, the full-text search, the single-page view and the
-Markdown files for AI assistants, which are new.
+line, the `CNAME` file, the full-text search, the layout for narrow screens,
+the single-page view and the Markdown files for AI assistants, which are new.
 
 ## Publishing
 
