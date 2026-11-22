@@ -1,6 +1,3 @@
-# The site as last published by hand; used for "Last update" stamps and checks.
-published := "https://github.com/VladimirK2/vladimirk2.github.io"
-
 # list the recipes
 default:
     @just --list
@@ -13,23 +10,15 @@ build:
 dev port="8000":
     python3 build.py --serve {{port}}
 
-# build, taking "Last update" stamps of unchanged pages from the published site
-seed url=published:
+# rebuild over a copy of the published site and list the files that would change
+check:
     #!/usr/bin/env bash
     set -euo pipefail
     copy=$(mktemp -d)
     trap 'rm -rf "$copy"' EXIT
-    git clone --quiet --depth 1 {{url}} "$copy/site"
-    python3 build.py --previous "$copy/site"
-
-# check that a rebuild reproduces the published site byte for byte
-verify url=published:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    copy=$(mktemp -d)
-    trap 'rm -rf "$copy"' EXIT
-    git clone --quiet --depth 1 {{url}} "$copy/site"
-    python3 build.py --verify "$copy/site" --redirect /pages/preface.html
+    git fetch --quiet origin gh-pages
+    git archive origin/gh-pages | tar -x -C "$copy"
+    python3 build.py --out "$copy" | sed "s#$copy#the published site#"
 
 # remove the build output
 clean:
