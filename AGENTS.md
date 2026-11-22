@@ -18,23 +18,23 @@ built. This file covers the constraints that are easy to break.
 - `skills/jbc/SKILL.md` is a skill for Claude Code and Codex that reads the
   published site. It is not used by the build.
 
-## The comparison with the earlier site
+## The published site is the reference
 
-`just verify` rebuilds the guide and compares it byte for byte with the site
-published before this generator existed. It must keep reporting `0 differ`.
-It clones a repository from GitHub, so it needs network access.
+`just check` fetches `gh-pages`, rebuilds over a copy of it and lists the
+files that come out different: what the next publish would change. It needs
+network access. Run it for every change to `build.py` or `site/`, and compare
+the list with what the change was meant to do.
 
-- `site/template.html` and `site/index.css` are part of that comparison. Do
-  not edit them, not even to reformat. Anything new goes in through the
-  deployment extras: `site/head.html`, `site/footer.html`, or a separate file
-  written in the `if extras:` part of `build()`.
-- `build()` is called with `extras=False` by `verify`. Everything specific to
-  this deployment must stay behind that flag.
-- Several things in `build.py` look like bugs and are deliberate, because the
-  original generator did them: `&gt` without a semicolon in code, emphasis left
+- Several things in `build.py` look like bugs and are left over from the tool
+  this generator replaced: `&gt` without a semicolon in code, emphasis left
   alone on some lines, every line of a list block becoming an item, the missing
   links of the last group on `index.html`, the fallback for a mistyped anchor.
-  Leave them unless `just verify` proves a change harmless.
+  Fixing one changes the text of every page it touches, and so their dates.
+  Do it only when asked.
+- `site/template.html` and `site/index.css` came from the original site and
+  were frozen until the comparison with it was retired. They can be edited
+  now. The search, the narrow-screen layout and the single-page view still
+  live in their own files and are loaded through `site/head.html`.
 
 ## "Last update" dates
 
@@ -54,7 +54,8 @@ build is the only record (README "Last update dates").
 There are no unit tests. A change to the build is checked with:
 
 1. `just build` twice: the second run must report `0 files changed`.
-2. `just verify`: `0 differ`.
+2. `just check`: the list is what the change was meant to alter, and
+   `0 files changed` when it was not meant to alter the pages.
 3. `just dev 18765` and a look at the pages in a browser, for anything visible.
    Use a high port; 8000 is often taken.
 
@@ -65,7 +66,7 @@ There are no unit tests. A change to the build is checked with:
   `all.html` and the rule described in `skills/jbc/SKILL.md` and in the README.
   Change them together, and remember that published addresses are linked from
   elsewhere.
-- **Absolute addresses.** The extras use `/search.js`, `/all.html` and
+- **Absolute addresses.** The pages use `/search.js`, `/all.html` and
   `/llms.txt`. The site is served from the root of its domain; keep it so.
 - **Anchors in `all.html`** carry the prefix in `ANCHOR`, which `site/search.js`
   repeats. Without it the TIMESTAMP chapter takes the id of the page's own

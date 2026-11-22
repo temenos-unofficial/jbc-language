@@ -51,8 +51,7 @@ The built site lives on the `gh-pages` branch, not on `master`.
   there is nothing to install.
 - **[just](https://github.com/casey/just)**, optional. It only wraps the
   commands; each one can be run directly with `python3 build.py`.
-- **git**, needed by `just seed` and `just verify`, which download a published
-  copy of the site.
+- **git**, needed by `just check`, which fetches the published site.
 
 ## Building
 
@@ -89,8 +88,7 @@ browser. `just dev 9000` uses another port.
 |---------|--------------|
 | `just build` | Build into `_site/`. |
 | `just dev [port]` | Build, serve locally and rebuild on change. |
-| `just seed [url]` | Build, taking "Last update" dates from a published copy of the site. |
-| `just verify [url]` | Check that a rebuild matches a published copy byte for byte. |
+| `just check` | Rebuild over a copy of the published site and list the files that would change. |
 | `just clean` | Delete `_site/`. |
 
 ## How the build works
@@ -232,14 +230,30 @@ opening lines of `llms.txt` come from `site/llms.txt`.
 The build also writes an empty `.nojekyll` file. Without it GitHub Pages would
 convert each `pages/*.md` into an HTML file with the name of the chapter page.
 
-### Compatibility with the earlier site
+### Checking what a change publishes
+
+```sh
+just check
+```
+
+This fetches the `gh-pages` branch, rebuilds the site over a copy of it and
+lists the files that come out different. It is what the next publish would
+change:
+
+- after editing a chapter, only that chapter's files, `all.html`, the search
+  index and the Markdown files should be listed;
+- after a change to `build.py` that is not meant to alter the pages, nothing
+  should be listed;
+- a long list of `pages/*.html` means every one of those pages changes, and
+  if their text changed they also get a new "Last update" date.
+
+### Where the generator comes from
 
 The generator was written in 2026 to reproduce the pages of the previous,
-hand-published site exactly, including a few oddities of the original tool.
-`just verify` rebuilds the guide and compares the result with that site
-(<https://vladimirk2.github.io/>). It leaves out the analytics tag, the contact
-line, the `CNAME` file, the full-text search, the layout for narrow screens,
-the single-page view and the Markdown files for AI assistants, which are new.
+hand-published site (<https://vladimirk2.github.io/>) exactly. It was checked
+against that site byte for byte until the site had moved here, and a few
+oddities of the original tool remain in `build.py` for that reason. Removing
+one changes the text of the pages it affects, and with it their dates.
 
 ## Publishing
 
