@@ -30,7 +30,8 @@ jbc-lang.org.
 | `build.py` | The site generator. |
 | `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
 | `site/index.css` | The stylesheet. |
-| `site/head.html` | Extra tags for the page head (analytics). |
+| `site/head.html` | Extra tags for the page head (analytics, search). |
+| `site/search.js`, `site/search.css` | The full-text search. |
 | `site/footer.html` | The contact line shown under each page and the links at its top right. |
 | `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
@@ -64,6 +65,7 @@ This writes the site to `_site/`:
 - `index.css`,
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),
+- `search.json`, `search.js` and `search.css`, the full-text search (see below),
 - `llms.txt`, `llms-full.txt` and `pages/*.md`, the guide as Markdown for AI
   assistants (see below).
 
@@ -145,6 +147,32 @@ git archive origin/gh-pages | tar -x -C _site
 just build
 ```
 
+### Search
+
+The search box filters the sidebar by chapter title, as the original site did.
+`site/search.js` adds a search through the text of the guide:
+
+- under the matching titles the sidebar lists the chapters that mention the
+  words, with the number of matches;
+- the words are highlighted in the page, and a chapter opened from the list
+  scrolls to its first match;
+- Enter shows every matching chapter with the text around the match;
+- the cross in the search box, or Escape, clears the search.
+
+Several words find the chapters that contain all of them, in any order. Words
+in double quotes must occur together. The match is a plain, case-insensitive
+comparison of characters, so `@FM`, `MCP` or `OCONV(` are found as typed; there
+is no correction of typing mistakes. Chapters whose title matches come first,
+then those with the most matches.
+
+The build writes the text of every chapter to `search.json` (about 480 KB,
+140 KB compressed). The browser fetches it once, when the search box is first
+used. No search library is involved.
+
+Highlighting works within one piece of text, so a phrase that the syntax
+highlighter splits into colours, such as `OCONV(`, is found but not marked in
+code examples.
+
 ### Single-page view
 
 <https://jbc-lang.org/all.html> holds the whole guide in one page of about
@@ -192,8 +220,8 @@ The generator was written in 2026 to reproduce the pages of the previous,
 hand-published site exactly, including a few oddities of the original tool.
 `just verify` rebuilds the guide and compares the result with that site
 (<https://vladimirk2.github.io/>). It leaves out the analytics tag, the contact
-line, the `CNAME` file, the single-page view and the Markdown files for AI
-assistants, which are new.
+line, the `CNAME` file, the full-text search, the single-page view and the
+Markdown files for AI assistants, which are new.
 
 ## Publishing
 
