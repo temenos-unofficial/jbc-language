@@ -31,7 +31,8 @@ jbc-lang.org.
 | `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
 | `site/index.css` | The stylesheet. |
 | `site/head.html` | Extra tags for the page head (analytics). |
-| `site/footer.html` | The contact line shown under each page. |
+| `site/footer.html` | The contact line shown under each page and the links at its top right. |
+| `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
 | `site/llms.txt` | The opening lines of the published `llms.txt`. |
 | `justfile` | Shortcuts for the commands below. |
@@ -62,6 +63,7 @@ This writes the site to `_site/`:
 - `index.html`, which redirects to the preface,
 - `index.css`,
 - `pages/`, one HTML file per chapter (414 at the moment),
+- `all.html`, every chapter in one page (see below),
 - `llms.txt`, `llms-full.txt` and `pages/*.md`, the guide as Markdown for AI
   assistants (see below).
 
@@ -143,6 +145,19 @@ git archive origin/gh-pages | tar -x -C _site
 just build
 ```
 
+### Single-page view
+
+<https://jbc-lang.org/all.html> holds the whole guide in one page of about
+1 MB. The search box of the site only filters chapter titles; in this page the
+browser's own search finds a word anywhere in the guide. It is also the page
+to print or to save for reading offline.
+
+Every page links to it with "Single page" at the top right, and it links back
+with "Chapters". Its sidebar and the links between chapters jump within the
+page. Each chapter keeps its own "Last update" date. The page asks search
+engines not to index it, so that they keep sending readers to the chapter
+pages.
+
 ### Markdown for AI assistants
 
 The site also publishes the guide in the form proposed at
@@ -177,7 +192,8 @@ The generator was written in 2026 to reproduce the pages of the previous,
 hand-published site exactly, including a few oddities of the original tool.
 `just verify` rebuilds the guide and compares the result with that site
 (<https://vladimirk2.github.io/>). It leaves out the analytics tag, the contact
-line, the `CNAME` file and the Markdown files for AI assistants, which are new.
+line, the `CNAME` file, the single-page view and the Markdown files for AI
+assistants, which are new.
 
 ## Publishing
 
