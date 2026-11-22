@@ -206,7 +206,7 @@ def highlight(line):
 # --------------------------------------------------------------------------
 
 
-def inline_line(line, slugs):
+def inline_line(line, slugs, single=False):
     def link(match):
         text, target = match.group(1), match.group(2)
         if target.startswith("#"):
@@ -214,7 +214,7 @@ def inline_line(line, slugs):
             if slug not in slugs:
                 # A mistyped anchor falls back to the page named by the text.
                 slug = slugify(text)
-            target = slug + ".html"
+            target = "#" + slug if single else slug + ".html"
         return '<a href="%s">%s</a>' % (target, text)
 
     line = re.sub(r"!\[([^\]]*)\]\(([^)]*)\)", r'<img src="\2" alt="\1">', line)
@@ -229,17 +229,19 @@ def inline_line(line, slugs):
     return line
 
 
-def inline(lines, slugs):
-    return "\n ".join(inline_line(line, slugs) for line in lines)
+def inline(lines, slugs, single=False):
+    return "\n ".join(inline_line(line, slugs, single) for line in lines)
 
 
 def is_code(line):
     return line.startswith("    ")
 
 
-def render_content(page, slugs):
+def render_content(page, slugs, single=False):
+    """Render a chapter; `single` is for the page that holds all of them,
+    where the heading is the link target and chapter links stay in the page."""
     lines = page.lines
-    out = ["<h1>%s</h1>" % page.title]
+    out = ['<h1 id="%s">%s</h1>' % (page.slug, page.title) if single else "<h1>%s</h1>" % page.title]
     i, n = 0, len(lines)
     while i < n:
         line = lines[i]
@@ -261,7 +263,7 @@ def render_content(page, slugs):
             while i < n and lines[i].strip():
                 items.append(re.sub(r"^(- |\s+)", "", lines[i]))
                 i += 1
-            body = "".join("<li>%s\n</li>" % inline([x], slugs) for x in items)
+            body = "".join("<li>%s\n</li>" % inline([x], slugs, single) for x in items)
             out.append("<ul>%s</ul>" % body)
         elif line.startswith("|"):
             rows = []
@@ -276,7 +278,7 @@ def render_content(page, slugs):
                 tag = "th" if r == 0 else "td"
                 html_rows.append(
                     "<tr>%s</tr>"
-                    % "".join("<%s>%s</%s>" % (tag, inline([c], slugs), tag) for c in cells)
+                    % "".join("<%s>%s</%s>" % (tag, inline([c], slugs, single), tag) for c in cells)
                 )
             out.append("<table>%s</table>" % "".join(html_rows))
         else:
@@ -284,7 +286,7 @@ def render_content(page, slugs):
             while i < n and lines[i].strip() and not lines[i].startswith(("### ", "|")):
                 block.append(lines[i])
                 i += 1
-            out.append("<p>%s\n</p>" % inline(block, slugs))
+            out.append("<p>%s\n</p>" % inline(block, slugs, single))
     return "\n".join(out)
 
 
@@ -372,7 +374,7 @@ CONTENT_OPEN = '<div id="content">'
 TIMESTAMP_RE = re.compile(r'<div id="timestamp">Last update: ([^<]*)</div>')
 
 
-def render_sidebar(groups, prefix, for_index=False):
+def render_sidebar(groups, prefix, for_index=False, suffix=".html"):
     out = []
     for number, (group, pages) in enumerate(groups, 1):
         out.append("<h2>%s</h2>\n" % group.title)
@@ -382,11 +384,22 @@ def render_sidebar(groups, prefix, for_index=False):
             out.append("\n")
         elif pages:
             items = "\n".join(
-                '<li><a href="%s%s.html">%s</a></li>' % (prefix, p.slug, p.title)
+                '<li><a href="%s%s%s">%s</a></li>' % (prefix, p.slug, suffix, p.title)
                 for p in pages
             )
             out.append("<ul>%s\n</ul>\n" % items)
     return "".join(out)
+
+
+def render_single(groups, slugs, stamps):
+    """Every chapter in one page, each under its own "Last update" stamp."""
+    out = []
+    for group, pages in groups:
+        out.append('<h1 id="%s" class="group">%s</h1>' % (group.slug, group.title))
+        for page in pages:
+            out.append(render_content(page, slugs, single=True))
+            out.append('<div class="timestamp">Last update: %s</div>' % stamps[page.slug])
+    return "\n".join(out)
 
 
 def fill(template, **values):
@@ -437,8 +450,9 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
 
     With `extras` the build also adds what is specific to this deployment:
     the analytics snippet in site/head.html, the contact line in
-    site/footer.html, the CNAME file and the Markdown files for language
-    models (llms.txt, llms-full.txt, pages/*.md).
+    site/footer.html, the CNAME file, the Markdown files for language
+    models (llms.txt, llms-full.txt, pages/*.md) and all.html, the whole
+    guide in one page.
 
     Returns the list of files that were written.
     """
@@ -446,7 +460,11 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
     now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M UTC")
     template = (SITE / "template.html").read_text(encoding="utf-8")
     head = (SITE / "head.html").read_text(encoding="utf-8") if extras else ""
-    footer = (SITE / "footer.html").read_text(encoding="utf-8").strip() if extras else ""
+    footer = single_footer = ""
+    if extras:
+        text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
+        footer = fill(text, view='<a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a>')
+        single_footer = fill(text, view='<a href="/" style="color: inherit; text-decoration: none;">Chapters</a>')
     groups = parse(source.read_text(encoding="utf-8").replace("\r\n", "\n"))
     pages = [page for group, chapters in groups for page in [group] + chapters]
     slugs = {page.slug for page in pages}
@@ -456,6 +474,7 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
         raise SystemExit("Two chapters share a file name: %s" % ", ".join(twice))
 
     written = []
+    stamps = {}
 
     def emit(relative, title, root, sidebar, content, redirect_line):
         old = read_text(previous / relative)
@@ -463,6 +482,7 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
         stamp = now
         if parts and same_text(parts[0], content):
             content, stamp = parts
+        stamps[Path(relative).stem] = stamp
         text = fill(
             template,
             title=title,
@@ -506,6 +526,16 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
         # Without .nojekyll GitHub Pages would turn every pages/*.md into an
         # HTML file of the same name as the chapter page.
         files = dict(render_llms(groups, slugs, base, intro), **{".nojekyll": ""})
+        files["all.html"] = fill(
+            template,
+            title=groups[0][0].title,
+            root="",
+            sidebar=render_sidebar(groups, "#", suffix=""),
+            content=render_single(groups, slugs, stamps),
+            redirect="",
+            head=head + (SITE / "single.html").read_text(encoding="utf-8"),
+            footer=single_footer,
+        )
         for relative, text in files.items():
             if write_text(out / relative, text):
                 written.append(relative)
@@ -564,7 +594,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, previous, redirect, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html")]
     state = {"build": 0}
 
     def stamps():
