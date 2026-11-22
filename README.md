@@ -33,7 +33,9 @@ jbc-lang.org.
 | `site/head.html` | Extra tags for the page head (analytics). |
 | `site/footer.html` | The contact line shown under each page. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
+| `site/llms.txt` | The opening lines of the published `llms.txt`. |
 | `justfile` | Shortcuts for the commands below. |
+| `skills/jbc/SKILL.md` | A skill that teaches Claude Code and Codex to answer from the guide. |
 | `.github/workflows/publish.yml` | Rebuilds and publishes the site on every change. |
 | `images/` | Original image files; the guide embeds its images inline. |
 | `markdown.css` | Stylesheet of the old single-file HTML export; not used by the site. |
@@ -59,7 +61,9 @@ This writes the site to `_site/`:
 
 - `index.html`, which redirects to the preface,
 - `index.css`,
-- `pages/`, one HTML file per chapter (414 at the moment).
+- `pages/`, one HTML file per chapter (414 at the moment),
+- `llms.txt`, `llms-full.txt` and `pages/*.md`, the guide as Markdown for AI
+  assistants (see below).
 
 `_site/` is ignored by git.
 
@@ -139,13 +143,41 @@ git archive origin/gh-pages | tar -x -C _site
 just build
 ```
 
+### Markdown for AI assistants
+
+The site also publishes the guide in the form proposed at
+<https://llmstxt.org/>, so that a coding assistant can read it without parsing
+HTML:
+
+| Address | What it is |
+|---------|------------|
+| <https://jbc-lang.org/llms.txt> | An index: every chapter with a one-line summary and a link to its Markdown file. |
+| <https://jbc-lang.org/llms-full.txt> | The whole guide in one file. |
+| `https://jbc-lang.org/pages/<chapter>.md` | One chapter, next to its `.html` page. |
+
+To use it, give the assistant the address of `llms.txt` and ask your question.
+
+For Claude Code and Codex there is also a skill, `skills/jbc/SKILL.md`, which
+tells the assistant how to find a chapter and to answer from the guide rather
+than from memory. To install it, copy the `skills/jbc` folder into
+`~/.claude/skills/` or `~/.codex/skills/`.
+
+These files are the guide's own text with three changes: links between
+chapters become full addresses, the two inline images are replaced by their
+captions, and the anchors and markers that only the HTML build needs are
+dropped. The summary in `llms.txt` is the first sentence of the chapter. The
+opening lines of `llms.txt` come from `site/llms.txt`.
+
+The build also writes an empty `.nojekyll` file. Without it GitHub Pages would
+convert each `pages/*.md` into an HTML file with the name of the chapter page.
+
 ### Compatibility with the earlier site
 
 The generator was written in 2026 to reproduce the pages of the previous,
 hand-published site exactly, including a few oddities of the original tool.
 `just verify` rebuilds the guide and compares the result with that site
 (<https://vladimirk2.github.io/>). It leaves out the analytics tag, the contact
-line and the `CNAME` file, which are new.
+line, the `CNAME` file and the Markdown files for AI assistants, which are new.
 
 ## Publishing
 
