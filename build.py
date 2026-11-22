@@ -208,6 +208,11 @@ def highlight(line):
 # --------------------------------------------------------------------------
 
 
+# Chapters in the single page are link targets. The prefix keeps a chapter
+# such as TIMESTAMP from taking the id, and the style, of a part of the page.
+ANCHOR = "chapter-"
+
+
 def inline_line(line, slugs, single=False):
     def link(match):
         text, target = match.group(1), match.group(2)
@@ -216,7 +221,7 @@ def inline_line(line, slugs, single=False):
             if slug not in slugs:
                 # A mistyped anchor falls back to the page named by the text.
                 slug = slugify(text)
-            target = "#" + slug if single else slug + ".html"
+            target = "#" + ANCHOR + slug if single else slug + ".html"
         return '<a href="%s">%s</a>' % (target, text)
 
     line = re.sub(r"!\[([^\]]*)\]\(([^)]*)\)", r'<img src="\2" alt="\1">', line)
@@ -243,7 +248,7 @@ def render_content(page, slugs, single=False):
     """Render a chapter; `single` is for the page that holds all of them,
     where the heading is the link target and chapter links stay in the page."""
     lines = page.lines
-    out = ['<h1 id="%s">%s</h1>' % (page.slug, page.title) if single else "<h1>%s</h1>" % page.title]
+    out = ['<h1 id="%s%s">%s</h1>' % (ANCHOR, page.slug, page.title) if single else "<h1>%s</h1>" % page.title]
     i, n = 0, len(lines)
     while i < n:
         line = lines[i]
@@ -426,14 +431,20 @@ def render_sidebar(groups, prefix, for_index=False, suffix=".html"):
     return "".join(out)
 
 
+def stamp_time(stamp):
+    """'Sat, 16 Jul 2022 15:34' or '... 15:34 UTC' as a datetime."""
+    return datetime.strptime(stamp.replace(" UTC", ""), "%a, %d %b %Y %H:%M")
+
+
 def render_single(groups, slugs, stamps):
-    """Every chapter in one page, each under its own "Last update" stamp."""
+    """Every chapter in one page, under the stamp of the newest chapter."""
     out = []
     for group, pages in groups:
-        out.append('<h1 id="%s" class="group">%s</h1>' % (group.slug, group.title))
+        out.append('<h1 id="%s%s" class="group">%s</h1>' % (ANCHOR, group.slug, group.title))
         for page in pages:
             out.append(render_content(page, slugs, single=True))
-            out.append('<div class="timestamp">Last update: %s</div>' % stamps[page.slug])
+    newest = max((stamps[page.slug] for group, pages in groups for page in pages), key=stamp_time)
+    out.append('<div id="timestamp">Last update: %s</div>' % newest)
     return "\n".join(out)
 
 
@@ -566,7 +577,7 @@ def build(source, out, previous=None, redirect="pages/preface.html", extras=True
             template,
             title=groups[0][0].title,
             root="",
-            sidebar=render_sidebar(groups, "#", suffix=""),
+            sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
             content=render_single(groups, slugs, stamps),
             redirect="",
             head=head + (SITE / "single.html").read_text(encoding="utf-8"),

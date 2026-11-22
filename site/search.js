@@ -14,7 +14,7 @@
   const MENTIONS_SHOWN = 30;
   const MARKS_LIMIT = 2000;
   const SNIPPET_RADIUS = 70;
-  const SKIPPED = "#timestamp, .timestamp, #contact, #links, #search-results, script, style";
+  const SKIPPED = "#timestamp, #contact, #links, #search-results, script, style";
 
   let chapters = null;
   let loading = null;
@@ -126,7 +126,8 @@
   }
 
   function address(chapter) {
-    return SINGLE_PAGE ? "#" + chapter.slug : "/pages/" + chapter.slug + ".html";
+    // "chapter-" is ANCHOR in build.py.
+    return SINGLE_PAGE ? "#chapter-" + chapter.slug : "/pages/" + chapter.slug + ".html";
   }
 
   function renderMentions(query) {
