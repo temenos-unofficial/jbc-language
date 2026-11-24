@@ -5,6 +5,9 @@ jBASE multi-value database, used in Temenos TAFC and TAFJ and in T24.
 
 Read it online at **<https://jbc-lang.org/>**.
 
+Try the language with [jbcc](https://github.com/jbc-lang/jbcc), an
+experimental compiler that translates jBC programs to C.
+
 The guide is one Markdown file,
 [`jBC_Programmers_Reference_Guide.markdown`](jBC_Programmers_Reference_Guide.markdown).
 This repository holds that file and the generator that turns it into the
