@@ -7,7 +7,9 @@ with the usage of standard C compiler.
 
 For TAFJ it is converted to Java code rather than to C.
 
-This is unofficial document; use it at your own risk - like TAFC :)) .. no, no joke - read its license agreement carefully.
+This is an unofficial document. Use it at your own risk, and read its license agreement carefully.
+
+The experimental compiler [jbcc](https://github.com/jbc-lang/jbcc) translates the T24 R07 and R10 source corpora to C in about two minutes per release.
 
 ## Latest changes
 
