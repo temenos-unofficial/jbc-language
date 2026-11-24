@@ -7,6 +7,9 @@ on:
       - jBC_Programmers_Reference_Guide.markdown
       - build.py
       - site/**
+      - spec/*.y
+      - spec/keywords.tsv
+      - spec/tools/grammar_diagrams.py
       - .github/workflows/publish.yml
   workflow_dispatch:
 
