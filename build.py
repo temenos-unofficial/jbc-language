@@ -12,6 +12,7 @@ Only the Python standard library is used.
 
 import argparse
 import html
+import importlib.util
 import http.server
 import json
 import re
@@ -24,6 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "jBC_Programmers_Reference_Guide.markdown"
 SITE = ROOT / "site"
+SPEC = ROOT / "spec"
 
 # --------------------------------------------------------------------------
 # Document model
@@ -494,8 +496,9 @@ def build(source, out):
     Besides the chapter pages the build writes the CNAME file, the Markdown
     files for language models (llms.txt, llms-full.txt, pages/*.md), all.html
     with the whole guide in one page, the full-text search (search.js,
-    search.css and its index, search.json) and the layout for narrow screens
-    (mobile.js, mobile.css).
+    search.css and its index, search.json), the layout for narrow screens
+    (mobile.js, mobile.css) and the railroad diagrams of the grammars in
+    spec/ (grammar/*.html).
 
     Returns the list of files that were written.
     """
@@ -572,6 +575,7 @@ def build(source, out):
         footer=single_footer,
     )
     files["search.json"] = render_search_index(groups)
+    files.update(render_grammars())
     for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
@@ -594,6 +598,32 @@ def build(source, out):
     return written
 
 
+def render_grammars():
+    """Railroad diagrams of the grammars in spec/, as grammar/*.html.
+
+    The generator is loaded afresh on every build so that `--serve` picks up
+    changes to it.
+    """
+    location = SPEC / "tools" / "grammar_diagrams.py"
+    spec = importlib.util.spec_from_file_location("grammar_diagrams", location)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    pages = {}
+    for grammar, name, rules, title in module.GRAMMARS:
+        others = " &middot; ".join(
+            '<a href="/grammar/%s">%s</a>' % (other, html.escape(other_title))
+            for _, other, _, other_title in module.GRAMMARS
+            if other != name
+        )
+        links = (
+            '<a href="/">jBC Programmers Reference Guide</a> &middot; %s &middot; '
+            '<a href="https://github.com/jbc-lang/jbc-language/tree/master/spec">Grammar files on GitHub</a>'
+            % others
+        )
+        pages["grammar/" + name] = module.render(SPEC / grammar, rules, title, links=links)[0]
+    return pages
+
+
 RELOAD = b"""<script>
 (function () {
   var seen = null;
@@ -610,7 +640,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():

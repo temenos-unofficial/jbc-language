@@ -27,7 +27,7 @@ jbc-lang.org.
 | Path | What it is |
 |------|------------|
 | `jBC_Programmers_Reference_Guide.markdown` | The guide. This is the file to edit. |
-| [`spec/`](spec/README.md) | jBC and preprocessor grammars, lexer keywords, and function declarations cross-checked against the guide. |
+| [`spec/`](spec/README.md) | jBC and preprocessor grammars, lexer keywords, and function declarations cross-checked against the guide. The site draws the grammars as [railroad diagrams](#grammar-diagrams). |
 | `build.py` | The site generator. |
 | `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
 | `site/index.css` | The stylesheet. |
@@ -71,6 +71,8 @@ This writes the site to `_site/`:
 - `mobile.js` and `mobile.css`, the layout for narrow screens (see below),
 - `llms.txt`, `llms-full.txt` and `pages/*.md`, the guide as Markdown for AI
   assistants (see below).
+- `grammar/jbc.html` and `grammar/preprocessor.html`, railroad diagrams of
+  the grammars in `spec/` (see below).
 
 `_site/` is ignored by git.
 
@@ -81,7 +83,7 @@ just dev          # or: python3 build.py --serve 8000
 ```
 
 This serves the site at <http://localhost:8000/>, rebuilds it whenever the
-guide, the template or the stylesheet changes, and reloads the page in the
+guide, the template, the stylesheet or a grammar in `spec/` changes, and reloads the page in the
 browser. `just dev 9000` uses another port.
 
 ### All commands
@@ -232,6 +234,24 @@ opening lines of `llms.txt` come from `site/llms.txt`.
 The build also writes an empty `.nojekyll` file. Without it GitHub Pages would
 convert each `pages/*.md` into an HTML file with the name of the chapter page.
 
+### Grammar diagrams
+
+| Address | What it is |
+|---------|------------|
+| <https://jbc-lang.org/grammar/jbc.html> | The jBC grammar, `spec/jbc.y`. |
+| <https://jbc-lang.org/grammar/preprocessor.html> | The preprocessor grammar, `spec/preprocessor.y`. |
+
+Each rule of the grammar is drawn as a railroad diagram and written out in
+EBNF. Every page links to them with "Grammar" at the top right. The build
+makes them with `spec/tools/grammar_diagrams.py`, whose `GRAMMARS` list names
+the pages. [spec/README.md](spec/README.md#railroad-diagrams) says how the
+yacc rules are rewritten for reading. These pages have no "Last update" date.
+
+To look at them locally, run `just dev` and open
+<http://localhost:8000/grammar/jbc.html>. The page is rebuilt when a grammar,
+`spec/keywords.tsv` or the generator changes. The publish workflow also runs
+for changes to those files.
+
 ### Checking what a change publishes
 
 ```sh
@@ -244,6 +264,7 @@ change:
 
 - after editing a chapter, only that chapter's files, `all.html`, the search
   index and the Markdown files should be listed;
+- after editing a grammar in `spec/`, only `grammar/*.html` should be listed;
 - after a change to `build.py` that is not meant to alter the pages, nothing
   should be listed;
 - a long list of `pages/*.html` means every one of those pages changes, and

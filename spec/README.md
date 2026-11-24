@@ -10,6 +10,7 @@ compatibility with another jBC release.
 |---|---|
 | [jbc.y](jbc.y) | Start at `program`. Follow `statement` for commands, `resultant` for expressions, and `ident_assignments` for writable references. |
 | [preprocessor.y](preprocessor.y) | Parse the directive language, including EQUATE, macros, includes and conditional compilation. Ordinary program text passes through this stage. |
+| [Railroad diagrams](#railroad-diagrams) | Read either grammar as diagrams with EBNF on the site: [jBC](https://jbc-lang.org/grammar/jbc.html) and [preprocessor](https://jbc-lang.org/grammar/preprocessor.html). |
 | [keywords.tsv](keywords.tsv) | Map each of the 453 distinct spellings in the jBC lexer's reserved-word table to its class and token or dispatch ID. |
 | [functions.md](functions.md) | Look up expression calls, aliases, and guide chapters. |
 | [header-functions.md](header-functions.md) | Compare all 53 direct DEFC prototypes in JBC.h with guide signatures or examples. Sixteen have guide chapters. |
@@ -70,6 +71,48 @@ The guide reserves BITTEST for future use and gives JBASESubroutineExist as
 a CALLC example. These two entries have guide evidence without dedicated
 expression tokens. [BITTEST](https://jbc-lang.org/pages/bittest.html),
 [JBASESubroutineExist](https://jbc-lang.org/pages/jbasesubroutineexist.html).
+
+## Railroad diagrams
+
+<https://jbc-lang.org/grammar/jbc.html> and
+<https://jbc-lang.org/grammar/preprocessor.html> draw every rule of the two
+grammars as a railroad diagram. Each diagram is followed by the same rule in
+EBNF, the rules that use it and the original yacc text. Keywords appear with
+their source spelling from keywords.tsv, and hovering a token class such as
+FUNC_PARM1 lists its members. Each page ends with the precedence table.
+
+The pages are rewritten for reading, not for parsing. Actions, `%prec` and
+`error` alternatives are dropped. Left recursion becomes repetition. Shared
+leading and trailing symbols are factored out of alternatives. One-line
+helper rules such as `rp : ')'` are drawn where they are used. Precedence
+appears only in the table. Use the `.y` files to check whether a token
+sequence parses.
+
+### Regenerating
+
+The site build draws the pages with
+[tools/grammar_diagrams.py](tools/grammar_diagrams.py), so nothing generated
+is checked in. Merging a change to jbc.y, preprocessor.y, keywords.tsv or the
+generator into `master` publishes new pages. To see them before that, run
+this from the repository root and open
+<http://localhost:8000/grammar/jbc.html>:
+
+```sh
+just dev
+```
+
+`just build` writes the same files to `_site/grammar/`. The `GRAMMARS` list
+at the top of the generator names each page, the rules listed first on it
+and its title. To draw a grammar outside the site, Python 3.8+ is enough:
+
+```sh
+python3 spec/tools/grammar_diagrams.py spec/jbc.y /tmp/jbc.html \
+    --rules program statement resultant --title "jBC grammar"
+```
+
+`--rules` names the rules drawn first and linked at the top. The default is
+the `%start` symbol. Every rule reachable from them follows. Output is
+deterministic, so an unchanged grammar gives an unchanged file.
 
 ## Provenance and verification
 

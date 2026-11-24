@@ -8,7 +8,8 @@ built. This file covers the constraints that are easy to break.
 - The guide is one file, `jBC_Programmers_Reference_Guide.markdown`. Do not
   change its text unless the task is about the text; most of it was written by
   another author. Text conventions are in README "Contributing".
-- `build.py` is the whole generator. It uses only the Python standard library
+- `build.py` is the whole generator, apart from the grammar diagrams it loads
+  from `spec/tools/grammar_diagrams.py`. It uses only the Python standard library
   and must keep running on Python 3.8. Do not add dependencies, a package
   manager or a JavaScript build step.
 - `site/` holds the files the generator reads. `_site/` is the build output and
@@ -84,6 +85,11 @@ There are no unit tests. A change to the build is checked with:
   pixels, and `site/mobile.js` repeats that width. `#links` and `#contact` in
   `site/footer.html` carry inline styles, so the overrides for them need
   `!important`. Check a visible change at both widths.
+- **Grammar diagrams.** `build.py` loads `spec/tools/grammar_diagrams.py`
+  and writes `grammar/*.html` from `spec/*.y` and `spec/keywords.tsv`. The
+  generator follows the same rules as `build.py`: standard library only,
+  Python 3.8. The publish workflow lists those spec files among its paths. A
+  new grammar page needs an entry in the generator's `GRAMMARS`.
 - **Text for other readers.** `plain_markdown` feeds the `.md` files and
   `plain_text` feeds the search index. New markup in the guide may need
   handling in both, as well as in `render_content`.
