@@ -5,8 +5,9 @@ jBASE multi-value database, used in Temenos TAFC and TAFJ and in T24.
 
 Read it online at **<https://jbc-lang.org/>**.
 
-Try the language with [jbcc](https://github.com/jbc-lang/jbcc), an
-experimental compiler that translates jBC programs to C.
+Try jBC in your browser with the [jBC Playground](https://online.jbc-lang.org/).
+For native builds, see [jbcc](https://github.com/jbc-lang/jbcc), the
+experimental jBC-to-C compiler.
 
 The guide is one Markdown file,
 [`jBC_Programmers_Reference_Guide.markdown`](jBC_Programmers_Reference_Guide.markdown).
@@ -292,6 +293,16 @@ reaches `master`, the workflow in `.github/workflows/publish.yml`:
 
 GitHub Pages serves `gh-pages` at <https://jbc-lang.org/>. The domain is set by
 `site/CNAME`.
+
+## Analytics
+
+The documentation site loads Google Tag Manager container
+`GTM-MKW38C6B`, which sends page views to GA4 measurement ID
+`G-YJPRDTN9RM`. [Tag setup](site/head.html)
+
+The tag sets the Analytics cookies `_ga` and `_ga_YJPRDTN9RM` on the
+`.jbc-lang.org` domain. A browser that has visited the documentation can
+also send these cookies to the playground at `online.jbc-lang.org`.
 
 ## Contributing
 
