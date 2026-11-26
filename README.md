@@ -36,12 +36,14 @@ jbc-lang.org.
 | `site/template.html` | The HTML shell of every page: sidebar and search box. |
 | `site/index.css` | The stylesheet. Its colours are custom properties at the top, with a second set for `prefers-color-scheme: dark`; `search.css` and `mobile.css` use them too. With `search.css`, `mobile.css` and `print.css` it is copied into a `<style>` in every page, in that order, without comments. |
 | `site/print.css` | Printing: only the chapter, in black on white, without the sidebar, search, pager or buttons. |
-| `site/content.js` | A "Copy" button on code blocks, a link anchor on section headings, with ids such as `#syntax-elements` (on `all.html`, `#chapter-locate-syntax-elements`), and links from statement and function names to their chapters (see "Links between chapters"). Added in the browser so the pages' compared text, and their dates, stay as they are. |
+| `site/content.js` | "Run" and "Copy" buttons on code blocks (see "Running examples in the playground"), a link anchor on section headings, with ids such as `#syntax-elements` (on `all.html`, `#chapter-locate-syntax-elements`), and links from statement and function names to their chapters (see "Links between chapters"). Added in the browser so the pages' compared text, and their dates, stay as they are. |
 | `site/site.webmanifest` | The web app manifest: name, colours and icons for a home-screen shortcut. |
 | `site/sidebar.js` | Keeps the sidebar's scroll position and title filter between pages, and scrolls the current chapter (marked by the build) into the middle of the sidebar when it is out of view. Loaded before `search.js`. |
 | `site/head.html` | Extra tags for the page head (analytics, search, narrow screens). |
 | `site/search.js`, `site/search.css` | The full-text search. |
 | `site/mobile.js`, `site/mobile.css` | The layout for narrow screens. |
+| `site/runnable.txt` | The code blocks that get a "Run" button, written by `check_examples.py`. |
+| `check_examples.py` | Finds the code blocks the playground can run (`just examples`). Not part of the build. |
 | `site/footer.html` | The contact line shown under each page and the links at its top right. `{{report}}` becomes a "Report a problem with this page" mail link whose subject and body name the page. |
 | `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
@@ -62,6 +64,8 @@ The built site lives on the `gh-pages` branch, not on `master`.
 - **[just](https://github.com/casey/just)**, optional. It only wraps the
   commands; each one can be run directly with `python3 build.py`.
 - **git**, needed by `just check`, which fetches the published site.
+- **[uv](https://docs.astral.sh/uv/) and a C compiler**, needed only by
+  `just examples`, which builds the guide's code with jbcc.
 
 ## Building
 
@@ -120,6 +124,7 @@ browser. `just dev 9000` uses another port.
 | `just build` | Build into `_site/`. |
 | `just dev [port]` | Build, serve locally and rebuild on change. |
 | `just check` | Rebuild over a copy of the published site and list the files that would change. |
+| `just examples` | Build, then write `site/runnable.txt`, the code blocks that get a "Run" button. |
 | `just clean` | Delete `_site/`. |
 
 ## How the build works
@@ -233,6 +238,40 @@ such as "Logger" or "BREAK ON/OFF" give no names.
   linked in the text; `IN` and `@` are not linked in code either.
 
 On `all.html` the links go to the chapter's place in the page.
+
+### Running examples in the playground
+
+Code blocks that the [jBC playground](https://online.jbc-lang.org/) can run
+have a "Run" button next to "Copy". It opens the block in the playground in
+a new tab, as a file named after the chapter (`locate.b`), without running
+it. The source travels in the address after `#`
+(`#name=locate&code=<base64url>`), which the browser never sends to a server.
+Locally, `just dev` pages open a playground served on
+`http://127.0.0.1:18767/` (`just dev` in jbc-playground).
+
+`check_examples.py` (`just examples`) decides which blocks get the button.
+It takes every code block of the built chapter pages as `content.js` reads
+it, then:
+
+1. translates it with `jbcc.browser`, the translator the playground runs,
+   which refuses what a browser cannot do (files, `EXECUTE`, terminal
+   control, `SYSTEM`);
+2. builds the rest natively with the same jbcc version and runs each with
+   no input for up to five seconds.
+
+A block that builds, prints something and exits with status 0 is listed in
+`site/runnable.txt` by a hash of its text. The build puts each chapter's
+hashes in `<meta name="jbc-runnable">` in the head, outside the compared
+text, and `content.js` adds the button to the blocks whose text has a listed
+hash. A block whose text changes loses its button until `just examples`
+runs again; it never gets the wrong one. In November 2026, 94 of the 1,016
+blocks qualified.
+
+Run `just examples` after changing code in the guide, and when the
+playground moves to another jbcc version (`JBCC_VERSION` in
+`check_examples.py` follows `version` in jbc-playground's `jbcc-wheel.mjs`).
+It needs uv and a C compiler and takes about 15 seconds. Commit the new
+`site/runnable.txt`.
 
 ### Narrow screens
 
@@ -369,7 +408,8 @@ also send these cookies to the playground at `online.jbc-lang.org`.
 
 1. Create a branch and edit the guide.
 2. Run `just dev` and check the pages you changed.
-3. Open a pull request.
+3. If you changed code, run `just examples` and commit `site/runnable.txt`.
+4. Open a pull request.
 
 Some conventions for the text:
 
