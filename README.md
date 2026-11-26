@@ -317,6 +317,13 @@ GitHub Pages serves `gh-pages` at <https://jbc-lang.org/>. The domain is set by
 
 The documentation site loads the Google tag for GA4 measurement ID
 `G-YJPRDTN9RM` directly, which sends page views. [Tag setup](site/head.html)
+The tag's script is added after the page's `load` event, so it never delays
+the page; the `gtag()` calls before it wait in `dataLayer`.
+
+Google Search Console verifies the site with the
+`google-site-verification` meta tag in `site/head.html`. Keep it: Search
+Console's other method, through Analytics, expects the tag's script in the
+HTML head, which it no longer is.
 
 The tag sets the Analytics cookies `_ga` and `_ga_YJPRDTN9RM` on the
 `.jbc-lang.org` domain. A browser that has visited the documentation can

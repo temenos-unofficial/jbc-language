@@ -1,10 +1,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJPRDTN9RM"></script>
+<meta name="google-site-verification" content="Hda4OPcVvHeEdB2rAks5_Trkkzjd14CV56UL4KxbR0Y">
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-YJPRDTN9RM');
+  // The tag itself loads once the page has, so it never competes with it.
+  // The calls above wait in dataLayer until then.
+  addEventListener("load", function () {
+    var scriptElement = document.createElement("script");
+    scriptElement.async = true;
+    scriptElement.src = "https://www.googletagmanager.com/gtag/js?id=G-YJPRDTN9RM";
+    document.head.appendChild(scriptElement);
+  });
 </script>
 <script defer src="/sidebar.js"></script>
 <script defer src="/search.js"></script>
