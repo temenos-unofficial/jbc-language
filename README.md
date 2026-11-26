@@ -67,7 +67,8 @@ just build        # or: python3 build.py
 
 This writes the site to `_site/`:
 
-- `index.html`, which redirects to the preface,
+- `index.html`, the home page: the introduction from `site/home.html` and a
+  line per group of chapters,
 - `index.css`,
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),
@@ -77,6 +78,11 @@ This writes the site to `_site/`:
   assistants (see below).
 - `grammar/jbc.html` and `grammar/preprocessor.html`, railroad diagrams of
   the grammars in `spec/` (see below).
+- `robots.txt` and `sitemap.xml` for search engines. The sitemap lists every
+  chapter page with the day of its "Last update" and the grammar pages; it
+  leaves out the group pages, which hold only a heading, and `all.html`.
+- `404.html`, which GitHub Pages shows for any missing address (`just dev`
+  does the same). Its text is in `site/notfound.html`.
 
 `_site/` is ignored by git.
 
