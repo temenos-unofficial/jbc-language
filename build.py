@@ -545,10 +545,10 @@ CSS_COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
 
 
 def render_css():
-    """index.css, search.css and mobile.css, in that order, for a <style> in
+    """index.css, search.css, mobile.css and print.css, in that order, for a <style> in
     every page: three small files are not worth three requests that block the
     first paint. Comments and indentation are dropped."""
-    text = "\n".join((SITE / name).read_text(encoding="utf-8") for name in ("index.css", "search.css", "mobile.css"))
+    text = "\n".join((SITE / name).read_text(encoding="utf-8") for name in ("index.css", "search.css", "mobile.css", "print.css"))
     lines = (line.strip() for line in CSS_COMMENT_RE.sub("", text).splitlines())
     return "\n".join(line for line in lines if line)
 
@@ -767,7 +767,7 @@ def build(source, out):
     files.update(grammars)
     files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
     files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, sorted(grammars))
-    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "site.webmanifest", "content.js"):
+    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "site.webmanifest", "content.js", "print.css"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
         if write_text(out / relative, text):
@@ -839,7 +839,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest", "content.js")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest", "content.js", "print.css")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():
