@@ -1,0 +1,60 @@
+name: Correction or addition
+description: Something in the jBC Programmers Reference Guide is wrong, missing or unclear.
+labels: [documentation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping to improve the guide. It is an unofficial reference, so how you know
+        something is as useful as what you know.
+  - type: input
+    id: page
+    attributes:
+      label: Page address
+      description: The chapter at jbc-lang.org.
+      placeholder: "https://jbc-lang.org/pages/locate.html"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem
+      options:
+        - Wrong information
+        - Missing information
+        - An example that doesn't work or prints something else
+        - Typo or wording
+        - Broken link or page
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Quote the text if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested text
+      description: How it should read, if you have a suggestion.
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Applies to
+      options:
+        - label: TAFC
+        - label: TAFJ
+        - label: jBASE
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "TAFC R19, TAFJ R23"
+  - type: textarea
+    id: source
+    attributes:
+      label: How you know
+      description: For example a test run (with its output), a Temenos document or a jBASE manual.

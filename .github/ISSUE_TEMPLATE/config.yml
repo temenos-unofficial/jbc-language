@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Edit the guide yourself
+    url: https://github.com/jbc-lang/jbc-language#contributing
+    about: Pull requests that change jBC_Programmers_Reference_Guide.markdown are welcome.
+  - name: Problem with the jbcc compiler
+    url: https://github.com/jbc-lang/jbcc/issues/new/choose
+    about: jbcc rejects valid code, crashes or prints something different from TAFC or jBASE.
+  - name: Problem in the browser playground
+    url: https://github.com/jbc-lang/jbc-playground/issues/new/choose
+    about: The editor, projects or running programs at online.jbc-lang.org.
+  - name: Email instead
+    url: https://github.com/jbc-lang/jbc-language#contact
+    about: No GitHub account? Send corrections to info@jbc-lang.org.
