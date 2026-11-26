@@ -36,13 +36,13 @@ jbc-lang.org.
 | `site/template.html` | The HTML shell of every page: sidebar and search box. |
 | `site/index.css` | The stylesheet. Its colours are custom properties at the top, with a second set for `prefers-color-scheme: dark`; `search.css` and `mobile.css` use them too. With `search.css`, `mobile.css` and `print.css` it is copied into a `<style>` in every page, in that order, without comments. |
 | `site/print.css` | Printing: only the chapter, in black on white, without the sidebar, search, pager or buttons. |
-| `site/content.js` | A "Copy" button on code blocks and a link anchor on section headings, with ids such as `#syntax-elements` (on `all.html`, `#chapter-locate-syntax-elements`). Added in the browser so the pages' compared text, and their dates, stay as they are. |
+| `site/content.js` | A "Copy" button on code blocks, a link anchor on section headings, with ids such as `#syntax-elements` (on `all.html`, `#chapter-locate-syntax-elements`), and links from statement and function names to their chapters (see "Links between chapters"). Added in the browser so the pages' compared text, and their dates, stay as they are. |
 | `site/site.webmanifest` | The web app manifest: name, colours and icons for a home-screen shortcut. |
-| `site/sidebar.js` | Keeps the sidebar's scroll position and title filter between pages and marks the current chapter. Loaded before `search.js`. |
+| `site/sidebar.js` | Keeps the sidebar's scroll position and title filter between pages, and scrolls the current chapter (marked by the build) into the middle of the sidebar when it is out of view. Loaded before `search.js`. |
 | `site/head.html` | Extra tags for the page head (analytics, search, narrow screens). |
 | `site/search.js`, `site/search.css` | The full-text search. |
 | `site/mobile.js`, `site/mobile.css` | The layout for narrow screens. |
-| `site/footer.html` | The contact line shown under each page and the links at its top right. |
+| `site/footer.html` | The contact line shown under each page and the links at its top right. `{{report}}` becomes a "Report a problem with this page" mail link whose subject and body name the page. |
 | `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
 | `site/favicon.svg`, `site/favicon-32.png`, `site/apple-touch-icon.png` | The browser-tab icon. The two PNG files are made from the SVG by hand. |
@@ -191,7 +191,13 @@ The search box filters the sidebar by chapter title, as the original site did.
   words, with the number of matches;
 - the words are highlighted in the page, and a chapter opened from the list
   scrolls to its first match;
-- Enter shows every matching chapter with the text around the match;
+- Enter goes straight to a chapter when the words name one: its exact title
+  (`oconv`), the first word of only one title (`if` for "IF (statement)"), or
+  the only title the filter leaves; the search is then cleared;
+- otherwise Enter, and Shift+Enter always, shows every matching chapter with
+  the text around the match;
+- `/`, or Ctrl+K (Cmd+K on a Mac), puts the cursor in the search box from
+  anywhere on the page;
 - the cross in the search box, or Escape, clears the search.
 
 Several words find the chapters that contain all of them, in any order. Words
@@ -207,6 +213,26 @@ used. No search library is involved.
 Highlighting works within one piece of text, so a phrase that the syntax
 highlighter splits into colours, such as `OCONV(`, is found but not marked in
 code examples.
+
+
+### Links between chapters
+
+`site/content.js` links the names of statements, functions and `@` variables
+to their chapters. The names come from the sidebar's titles: a title that is
+one name (`LOCATE`, `@ID`, `CacheGet`), or names joined by commas, `/` or
+"and", or followed by "statement" or "Command" (`IF (statement)`,
+`QUOTE / DQUOTE / SQUOTE`, `@AM (@FM), @VM, @SM, @TM`). Titles in plain words
+such as "Logger" or "BREAK ON/OFF" give no names.
+
+- In code, every name the highlighting marks as a function, a statement or an
+  `@` variable is linked, in the code's own colours, underlined on hover.
+- In the text, the first mention of each name in a chapter is linked when it
+  is written in capitals, as the guide writes keywords.
+- A chapter never links to itself, text already inside a link is left alone,
+  and `IN` (also a word of `LOCATE` and `FOR`), `LN`, `NOT` and `@` are not
+  linked in the text; `IN` and `@` are not linked in code either.
+
+On `all.html` the links go to the chapter's place in the page.
 
 ### Narrow screens
 
