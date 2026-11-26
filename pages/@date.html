@@ -15,6 +15,7 @@
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"@DATE","description":"Returns the internal date; on some systems, this differs from the DATE() function in that the variable is set when program execution starts, whereas the...","url":"https://jbc-lang.org/pages/@date.html","dateModified":"2022-07-16T15:34:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"@DATE","item":"https://jbc-lang.org/pages/@date.html"}]}]</script>
 <link rel="prev" href="https://jbc-lang.org/pages/@data.html">
 <link rel="next" href="https://jbc-lang.org/pages/@day.html">
+<meta name="jbc-runnable" content="05a9c1be">
 <style>:root {
 color-scheme: light dark;
 --page: #F4F4F4; --panel: #FFF; --text: #302F2D; --strong: #242220;
@@ -200,8 +201,11 @@ display: block;
 #content pre {
 position: relative;
 }
-.copy-button {
+.code-buttons {
 position: absolute; top: 6px; right: 6px;
+display: flex; gap: 6px;
+}
+.copy-button {
 padding: 2px 8px;
 border: 1px solid #5A5856; border-radius: 4px;
 background: #3C3B39; color: #F2F0EE;
@@ -209,6 +213,7 @@ font-size: 11px; line-height: 16px;
 cursor: pointer;
 opacity: 0; transition: opacity .15s;
 }
+#content a.run-button { color: #F2F0EE; text-decoration: none; }
 #content pre:hover .copy-button, .copy-button:focus-visible {
 opacity: 1;
 }
