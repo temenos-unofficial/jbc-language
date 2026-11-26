@@ -104,30 +104,34 @@ change the "Last update" dates.
 GitHub Pages already serves gzip over HTTP/2 from a CDN, and the pages are
 small. The remaining wins:
 
-- [ ] Load the GA4 tag after the page instead of in the head (inject
-      `gtag/js` on `load` or `requestIdleCallback`; the `dataLayer` stub
-      can stay inline so nothing is lost). It is the only third-party
-      request and the largest script on every page. Check in GA4 Realtime
-      that page views still arrive.
-- [ ] Inline `index.css`, `search.css` and `mobile.css` into each page (or
-      merge them into one file). Three render-blocking requests become zero
-      or one; together they are a few KB.
-- [ ] Move the inline sidebar script from the end of `template.html` into
-      a deferred file shared by all pages, so browsers cache it once.
-- [ ] Replace the base64 PNGs in `pages/calldotnet.html` with
+- [x] Load the GA4 tag after the page instead of in the head: `gtag/js` is
+      injected on `load`, the `dataLayer` stub stays inline. Checked
+      locally that `page_view` is still sent.
+  - [x] Search Console's Analytics verification expects the script in the
+        HTML head, so a `google-site-verification` meta tag is added.
+  - [ ] After publishing: click Verify for the HTML tag method in Search
+        Console (Settings › Ownership verification), and check GA4
+        Realtime.
+- [x] Inline `index.css`, `search.css` and `mobile.css` into each page.
+      Three render-blocking requests become none, for about 2 KB gzipped
+      per page. The files are still published.
+- [x] Move the inline sidebar script from the end of `template.html` into
+      `sidebar.js`, deferred and loaded before `search.js`.
+- [x] Replace the base64 PNGs in `pages/calldotnet.html` with
       `<img src="/images/...">` carrying `width`, `height`, `loading="lazy"`
-      and `decoding="async"`, and copy `images/` into the output. Convert
-      them to WebP or optimise the PNGs. (This changes the page text and its
-      date.)
+      and `decoding="async"`. The build writes them out, so the guide's
+      Markdown is unchanged. The page drops from 79 KB to 35 KB, and it and
+      `all.html` take a new date.
+- [ ] Convert the two screenshots to WebP or optimise the PNGs (35 KB
+      together; the build has no image tools, so by hand).
 - [ ] `search.json` (137 KB gzipped) already loads only when the search is
       used. Consider splitting it into a small title index and the full
       text index, so the first results appear sooner on slow connections.
-- [ ] Add `<link rel="prefetch">` for the next chapter, or prefetch a link
-      on hover or touch, so moving through the guide feels instant.
-- [ ] Look at the 24 KB sidebar repeated on every page: either keep it (it
-      gzips to little and helps crawlers) or load it once from a cached
-      file. Recommended: keep it in the HTML; it is good for crawling and
-      works without JavaScript.
+- [x] Prefetch a chapter on hover: a speculation rule (`eagerness:
+      moderate`) for `/pages/*.html`. Chromium only; others ignore it. Not
+      seen working in the test browser, which has prefetching switched off.
+- [x] Keep the 24 KB sidebar in every page's HTML: it gzips to little,
+      helps crawlers and works without JavaScript.
 - [ ] Optional, a bigger step: put Cloudflare (free plan) in front of
       GitHub Pages for long cache lifetimes on CSS, JS and images, Brotli,
       real 301 redirects and an `X-Robots-Tag` for the `.md` files. Needs a

@@ -33,8 +33,9 @@ jbc-lang.org.
 | `jBC_Programmers_Reference_Guide.markdown` | The guide. This is the file to edit. |
 | [`spec/`](spec/README.md) | jBC and preprocessor grammars, lexer keywords, and function declarations cross-checked against the guide. The site draws the grammars as [railroad diagrams](#grammar-diagrams). |
 | `build.py` | The site generator. |
-| `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
-| `site/index.css` | The stylesheet. |
+| `site/template.html` | The HTML shell of every page: sidebar and search box. |
+| `site/index.css` | The stylesheet. With `search.css` and `mobile.css` it is copied into a `<style>` in every page, in that order, without comments. |
+| `site/sidebar.js` | Keeps the sidebar's scroll position and title filter between pages and marks the current chapter. Loaded before `search.js`. |
 | `site/head.html` | Extra tags for the page head (analytics, search, narrow screens). |
 | `site/search.js`, `site/search.css` | The full-text search. |
 | `site/mobile.js`, `site/mobile.css` | The layout for narrow screens. |
@@ -46,7 +47,7 @@ jbc-lang.org.
 | `justfile` | Shortcuts for the commands below. |
 | `skills/jbc/SKILL.md` | A skill that teaches Claude Code and Codex to answer from the guide. |
 | `.github/workflows/publish.yml` | Rebuilds and publishes the site on every change. |
-| `images/` | Original image files; the guide embeds its images inline. Also the project logo, `jbc-logo.svg` and `jbc-logo.png`. |
+| `images/` | Original image files; the guide embeds its images inline, and the build writes them back out as files (see below). Also the project logo, `jbc-logo.svg` and `jbc-logo.png`. |
 | `markdown.css` | Stylesheet of the old single-file HTML export; not used by the site. |
 
 The built site lives on the `gh-pages` branch, not on `master`.
@@ -69,7 +70,8 @@ This writes the site to `_site/`:
 
 - `index.html`, the home page: the introduction from `site/home.html` and a
   line per group of chapters,
-- `index.css`,
+- `index.css`, `search.css` and `mobile.css`, still published for any page that links them, although the site's own pages carry the rules inline,
+- `sidebar.js`,
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),
 - `search.json`, `search.js` and `search.css`, the full-text search (see below),
@@ -84,6 +86,9 @@ This writes the site to `_site/`:
 - `404.html`, which GitHub Pages shows for any missing address (`just dev`
   does the same). Its text is in `site/notfound.html`.
 - `jbc-logo.png`, copied from `images/`, the picture in link previews.
+- `images/*.png`, the images the guide embeds as base64, written out as files
+  and named after their caption. The pages link them with `width`, `height`
+  and `loading="lazy"`.
 
 Every page's head carries a description (the first sentence of the chapter,
 or a stock sentence when it has none), a canonical address, Open Graph tags
@@ -312,6 +317,13 @@ GitHub Pages serves `gh-pages` at <https://jbc-lang.org/>. The domain is set by
 
 The documentation site loads the Google tag for GA4 measurement ID
 `G-YJPRDTN9RM` directly, which sends page views. [Tag setup](site/head.html)
+The tag's script is added after the page's `load` event, so it never delays
+the page; the `gtag()` calls before it wait in `dataLayer`.
+
+Google Search Console verifies the site with the
+`google-site-verification` meta tag in `site/head.html`. Keep it: Search
+Console's other method, through Analytics, expects the tag's script in the
+HTML head, which it no longer is.
 
 The tag sets the Analytics cookies `_ga` and `_ga_YJPRDTN9RM` on the
 `.jbc-lang.org` domain. A browser that has visited the documentation can
