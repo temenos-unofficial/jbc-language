@@ -51,8 +51,10 @@ reset the "Last update" dates (head, footer and sidebar do not).
         added 2026-11-26, verified through the GA4 tag (keep the tag, or add
         a second verification method under Settings › Ownership
         verification).
-  - [ ] Submit `sitemap.xml` in Search Console once this branch is merged
-        and the file is live.
+  - [x] Submit `sitemap.xml` in Search Console: submitted 2026-11-26 after
+        #16 was published. It showed "Couldn't fetch" on the day of
+        submission although it serves 200 as `application/xml` with 404
+        valid URLs; check that it reads "Success" a day later.
   - [ ] Bing Webmaster Tools: import the site from Search Console.
   - [ ] A week later: read the Page indexing report.
 
