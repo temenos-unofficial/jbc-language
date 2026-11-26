@@ -296,9 +296,8 @@ GitHub Pages serves `gh-pages` at <https://jbc-lang.org/>. The domain is set by
 
 ## Analytics
 
-The documentation site loads Google Tag Manager container
-`GTM-MKW38C6B`, which sends page views to GA4 measurement ID
-`G-YJPRDTN9RM`. [Tag setup](site/head.html)
+The documentation site loads the Google tag for GA4 measurement ID
+`G-YJPRDTN9RM` directly, which sends page views. [Tag setup](site/head.html)
 
 The tag sets the Analytics cookies `_ga` and `_ga_YJPRDTN9RM` on the
 `.jbc-lang.org` domain. A browser that has visited the documentation can
