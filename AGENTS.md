@@ -82,9 +82,8 @@ There are no unit tests. A change to the build is checked with:
   including the ones the search adds, so the search redraws its list after
   the filter has run.
 - **Narrow screens.** `site/mobile.css` overrides `index.css` below 760
-  pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. `#links` and `#contact` in
-  `site/footer.html` carry inline styles, so the overrides for them need
-  `!important`. Check a visible change at both widths.
+  pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. Check a visible change at both
+  widths.
 - **Grammar diagrams.** `build.py` loads `spec/tools/grammar_diagrams.py`
   and writes `grammar/*.html` from `spec/*.y` and `spec/keywords.tsv`. The
   generator follows the same rules as `build.py`: standard library only,

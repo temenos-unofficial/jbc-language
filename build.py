@@ -640,8 +640,8 @@ def build(source, out):
     template = (SITE / "template.html").read_text(encoding="utf-8")
     head = (SITE / "head.html").read_text(encoding="utf-8")
     text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
-    footer = fill(text, view='<a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a>')
-    single_footer = fill(text, view='<a href="/" style="color: inherit; text-decoration: none;">Chapters</a>')
+    footer = fill(text, view='<a href="/all.html">Single page</a>')
+    single_footer = fill(text, view='<a href="/">Chapters</a>')
     groups = parse(source.read_text(encoding="utf-8").replace("\r\n", "\n"))
     pages = [page for group, chapters in groups for page in [group] + chapters]
     slugs = {page.slug for page in pages}
