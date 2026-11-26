@@ -87,6 +87,13 @@ There are no unit tests. A change to the build is checked with:
   chapter. Scripts that walk the page (`site/content.js`, the highlighting in
   `site/search.js`) must treat `<a>` without `href` as transparent and skip
   only `a[href]`.
+- **Run buttons.** `check_examples.py` and `site/content.js` must read a
+  code block into the same text and hash it with the same FNV-1a; change
+  `code_text`/`codeText` and `fnv1a` together, then check that `all.html`
+  shows as many Run buttons as `site/runnable.txt` lists hashes.
+  `JBCC_VERSION` follows the playground's pinned jbcc. `check_examples.py`
+  is not part of the build and may call `uvx`; `build.py` only reads
+  `site/runnable.txt`.
 - **Narrow screens.** `site/mobile.css` overrides `index.css` below 760
   pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. Check a visible change at both
   widths.

@@ -585,6 +585,19 @@ def fill(template, **values):
 REPORT_ADDRESS = "info@jbc-lang.org"
 
 
+def read_runnable():
+    """site/runnable.txt, written by check_examples.py: the code blocks that
+    get a "Run" button, as {chapter file name: "hash hash"}. A hash is of the
+    block's text, so a block that changes loses its button until the file is
+    written again."""
+    runnable = {}
+    for line in (SITE / "runnable.txt").read_text(encoding="utf-8").splitlines():
+        if line.strip() and not line.startswith("#"):
+            slug, numbers = line.split(None, 1)
+            runnable[slug] = " ".join(numbers.split())
+    return runnable
+
+
 def render_report(title, url):
     """A mailto: address for the footer's "Report a problem with this page"
     link, with the page named in the subject and the body."""
@@ -721,6 +734,7 @@ def build(source, out):
         page.slug: (chapters[i - 1] if i else None, chapters[i + 1] if i + 1 < len(chapters) else None)
         for i, page in enumerate(chapters)
     }
+    runnable = read_runnable()
     for page in pages:
         previous, following = neighbours.get(page.slug, (None, None))
         links = "".join(
@@ -728,6 +742,9 @@ def build(source, out):
             for rel, other in (("prev", previous), ("next", following))
             if other
         )
+        if page.slug in runnable:
+            # In the head, so the compared text and the dates stay as they are.
+            links += '<meta name="jbc-runnable" content="%s">\n' % runnable[page.slug]
         url = base + "pages/%s.html" % page.slug
         text = description(page, guide)
         if page.slug in group_pages:
@@ -778,7 +795,9 @@ def build(source, out):
         sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
         content=extract_images(render_single(groups, slugs, stamps), images),
         meta=render_meta(base, guide, base + "all.html", guide, home_text),
-        head=head + (SITE / "single.html").read_text(encoding="utf-8"),
+        head=head
+        + (SITE / "single.html").read_text(encoding="utf-8")
+        + '<meta name="jbc-runnable" content="%s">\n' % " ".join(sorted({h for v in runnable.values() for h in v.split()})),
         footer=fill(
             footer_text,
             view='<a href="/">Chapters</a>',
@@ -862,7 +881,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest", "content.js", "print.css")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest", "content.js", "print.css", "runnable.txt")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():

@@ -8,36 +8,88 @@
   const contentElement = document.getElementById("content");
   if (!contentElement) return;
 
-  // Copy buttons. Each line of a code block is its own block-level <span>.
-  if (navigator.clipboard) {
-    for (const preElement of contentElement.querySelectorAll("pre")) {
-      const buttonElement = document.createElement("button");
-      buttonElement.type = "button";
-      buttonElement.className = "copy-button";
-      buttonElement.textContent = "Copy";
-      buttonElement.setAttribute("aria-label", "Copy the code");
+  // The text of a code block as it should be copied or run. Each line of a
+  // code block is its own block-level <span>; the guide indents code, so the
+  // indent every line shares is dropped.
+  function codeText(preElement) {
+    const lineElements = preElement.querySelectorAll(":scope > span:not(.code-buttons)");
+    const lines = lineElements.length
+      ? [].map.call(lineElements, (lineElement) => lineElement.textContent)
+      : [].filter
+          .call(preElement.childNodes, (node) => node.nodeType === Node.TEXT_NODE)
+          .map((node) => node.textContent)
+          .join("")
+          .split("\n");
+    const indent = Math.min(...lines.filter((line) => line.trim()).map((line) => line.match(/^ */)[0].length));
+    const text = lines.map((line) => line.slice(indent).replace(/\s+$/, "")).join("\n");
+    return text.replace(/^\n+|\n+$/g, "") + "\n";
+  }
+
+  // "Run" opens the block in the playground, in a new tab. check_examples.py
+  // lists in site/runnable.txt the blocks that jbcc builds and runs, by a
+  // hash of their text, and the build puts this page's hashes in
+  // <meta name="jbc-runnable">; a block whose text changed gets no button.
+  const PLAYGROUND = location.hostname === "localhost" ? "http://127.0.0.1:18767/" : "https://online.jbc-lang.org/";
+  const runnableElement = document.querySelector('meta[name="jbc-runnable"]');
+  const runnable = new Set(runnableElement ? runnableElement.content.split(" ") : []);
+
+  // 32-bit FNV-1a of the UTF-8 text, as in check_examples.py.
+  function fnv1a(text) {
+    let value = 0x811c9dc5;
+    for (const byte of new TextEncoder().encode(text)) value = Math.imul(value ^ byte, 0x01000193) >>> 0;
+    return value.toString(16).padStart(8, "0");
+  }
+
+  function playgroundAddress(source, chapter) {
+    let binary = "";
+    for (const byte of new TextEncoder().encode(source)) binary += String.fromCharCode(byte);
+    const code = btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    // The playground names the file after the chapter: "locate" opens as locate.b.
+    const name = chapter.replace(/[^A-Za-z0-9_.-]/g, "_").replace(/^[.-]+/, "").slice(0, 64);
+    return PLAYGROUND + "#" + (name ? "name=" + name + "&" : "") + "code=" + code;
+  }
+
+  function codeButton(text, label) {
+    const buttonElement = document.createElement("button");
+    buttonElement.type = "button";
+    buttonElement.className = "copy-button";
+    buttonElement.textContent = text;
+    buttonElement.setAttribute("aria-label", label);
+    return buttonElement;
+  }
+
+  // On all.html each chapter starts with an <h1 id="chapter-...">.
+  let codeChapter = location.pathname.replace(/^.*\/|\.html$/g, "");
+  for (const preElement of contentElement.querySelectorAll("h1[id^='chapter-'], pre")) {
+    if (preElement.tagName === "H1") {
+      codeChapter = preElement.id.slice("chapter-".length);
+      continue;
+    }
+    const barElement = document.createElement("span");
+    barElement.className = "code-buttons";
+    const text = codeText(preElement);
+    if (runnable.size && text.trim() && runnable.has(fnv1a(text))) {
+      const runElement = document.createElement("a");
+      runElement.className = "copy-button run-button";
+      runElement.textContent = "Run";
+      runElement.target = "_blank";
+      runElement.rel = "noopener";
+      runElement.title = "Open in the jBC playground";
+      runElement.href = playgroundAddress(text, codeChapter);
+      barElement.appendChild(runElement);
+    }
+    if (navigator.clipboard) {
+      const buttonElement = codeButton("Copy", "Copy the code");
       buttonElement.addEventListener("click", () => {
-        const lineElements = preElement.querySelectorAll(":scope > span");
-        const lines = lineElements.length
-          ? [].map.call(lineElements, (lineElement) => lineElement.textContent)
-          : [].filter
-              .call(preElement.childNodes, (node) => node !== buttonElement)
-              .map((node) => node.textContent)
-              .join("")
-              .split("\n");
-        // The guide indents code; drop the indent every line shares.
-        const indent = Math.min(
-          ...lines.filter((line) => line.trim()).map((line) => line.match(/^ */)[0].length)
-        );
-        const text = lines.map((line) => line.slice(indent).replace(/\s+$/, "")).join("\n");
-        navigator.clipboard.writeText(text.replace(/\n+$/, "") + "\n").then(
+        navigator.clipboard.writeText(codeText(preElement)).then(
           () => (buttonElement.textContent = "Copied"),
           () => (buttonElement.textContent = "Failed")
         );
         setTimeout(() => (buttonElement.textContent = "Copy"), 1500);
       });
-      preElement.appendChild(buttonElement);
+      barElement.appendChild(buttonElement);
     }
+    if (barElement.firstChild) preElement.appendChild(barElement);
   }
 
   // Heading anchors. On all.html the ids carry the chapter's id, since the

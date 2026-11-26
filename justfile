@@ -20,6 +20,10 @@ check:
     git archive origin/gh-pages | tar -x -C "$copy"
     python3 build.py --out "$copy" | sed "s#$copy#the published site#"
 
+# build, then list in site/runnable.txt the code blocks that jbcc builds and runs (needs uv and a C compiler)
+examples *args: build
+    python3 check_examples.py {{args}}
+
 # remove the build output
 clean:
     rm -rf _site
