@@ -45,8 +45,9 @@ build is the only record (README "Last update dates").
 - A change to what `render_content` or `highlight` produce gives every affected
   page today's date on the next publish. Avoid it unless that is the intent,
   and say so in the pull request.
-- The head, the footer and the sidebar are outside the compared text, so
-  changing them does not touch the dates.
+- The head, the footer, the sidebar and the pager (`<nav id="pager">`,
+  which `split_page` strips) are outside the compared text, so changing
+  them does not touch the dates.
 - Locally a fresh clone has no previous build. To see real dates, unpack
   `gh-pages` into `_site/` first, as README shows.
 

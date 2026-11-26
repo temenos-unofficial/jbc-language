@@ -581,15 +581,32 @@ def fill(template, **values):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m.group(1)], template)
 
 
+PAGER_RE = re.compile(r'<nav id="pager".*?</nav>', re.S)
+
+
+def render_pager(previous, following):
+    """Links to the chapters before and after, placed above "Last update"."""
+    links = []
+    if previous:
+        links.append('<a rel="prev" href="%s.html"><span>Previous</span>%s</a>' % (previous.slug, previous.title))
+    if following:
+        links.append('<a rel="next" href="%s.html"><span>Next</span>%s</a>' % (following.slug, following.title))
+    return '<nav id="pager" aria-label="Previous and next chapter">%s</nav>' % "".join(links) if links else ""
+
+
 def split_page(text):
-    """Return (content, timestamp) of a previously built page, or None."""
+    """Return (content, timestamp) of a previously built page, or None.
+
+    The pager is left out of the content: it changes when a neighbouring
+    chapter does, which is not a change of this page's text.
+    """
     start = text.find(CONTENT_OPEN)
     stamp = None
     for stamp in TIMESTAMP_RE.finditer(text):
         pass
     if start < 0 or stamp is None:
         return None
-    return text[start + len(CONTENT_OPEN):stamp.start()], stamp.group(1)
+    return PAGER_RE.sub("", text[start + len(CONTENT_OPEN):stamp.start()]), stamp.group(1)
 
 
 TRAILING_SPACE_RE = re.compile(r"[ \t]+((?:</span>)*)$", re.M)
@@ -658,7 +675,7 @@ def build(source, out):
     written = []
     stamps = {}
 
-    def emit(relative, title, sidebar, content, meta):
+    def emit(relative, title, sidebar, content, meta, pager=""):
         """Write one page; `meta(stamp)` gives its head tags."""
         old = read_text(out / relative)
         parts = split_page(old) if old else None
@@ -670,7 +687,7 @@ def build(source, out):
             title=title,
             css=css,
             sidebar=sidebar,
-            content=content + '<div id="timestamp">Last update: %s</div>' % stamp,
+            content=content + pager + '<div id="timestamp">Last update: %s</div>' % stamp,
             meta=meta(stamp),
             head=head,
             footer=footer,
@@ -682,22 +699,34 @@ def build(source, out):
     # Keyed by slug; the INDEX chapter is pages/index.html, not index.html.
     sidebar = render_sidebar(groups, "")
     group_pages = {group.slug for group, chapters in groups}
+    chapters = [page for group, pages_in_group in groups for page in pages_in_group]
+    neighbours = {
+        page.slug: (chapters[i - 1] if i else None, chapters[i + 1] if i + 1 < len(chapters) else None)
+        for i, page in enumerate(chapters)
+    }
     for page in pages:
+        previous, following = neighbours.get(page.slug, (None, None))
+        links = "".join(
+            '<link rel="%s" href="%spages/%s.html">\n' % (rel, base, other.slug)
+            for rel, other in (("prev", previous), ("next", following))
+            if other
+        )
         url = base + "pages/%s.html" % page.slug
         text = description(page, guide)
         if page.slug in group_pages:
             # Only a heading: kept for old links, left out of search results.
             meta = lambda stamp, url=url, text=text, title=page.title: render_meta(base, guide, url, title, text, robots="noindex")
         else:
-            meta = lambda stamp, url=url, text=text, title=page.title: render_meta(
+            meta = lambda stamp, url=url, text=text, title=page.title, links=links: render_meta(
                 base, guide, url, title, text, kind="article", stamp=stamp
-            )
+            ) + links
         stamps[page.slug] = emit(
             "pages/%s.html" % page.slug,
             page.title if page.title == guide else "%s – %s" % (page.title, guide),
             mark_current(sidebar, page.slug),
             extract_images(render_content(page, slugs), images),
             meta,
+            render_pager(previous, following),
         )
     # The first sentence of the quoted paragraph in site/llms.txt.
     quote = re.search(r"^> (.*?)\n\n", intro_text(), re.S | re.M).group(1)

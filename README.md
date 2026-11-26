@@ -161,6 +161,10 @@ keep a database of dates. It reads the previous build of the page and, if the
 text is the same, keeps the date that page already has. A page whose text has
 changed gets the time of the build, in UTC.
 
+The "Previous" and "Next" links above the date are not part of the compared
+text: they change when a neighbouring chapter is added, removed or renamed,
+which does not change this page.
+
 On your machine the previous build is `_site/` itself. A fresh clone has none,
 so a plain `just build` stamps every page with the current time. That only
 affects your local copy: the published site takes its dates from the

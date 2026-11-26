@@ -182,3 +182,22 @@ color: #767573; font-size: 12px;
 #links a {
 color: inherit; text-decoration: none;
 }
+#pager {
+display: flex; gap: 24px;
+margin: 3em 0 1.5em 0;
+font-size: 14px;
+}
+#pager a {
+max-width: 48%;
+color: #302F2D; text-decoration: none;
+}
+#pager a:hover {
+text-decoration: underline;
+}
+#pager span {
+display: block;
+color: #767573; font-size: 12px;
+}
+#pager [rel="next"] {
+margin-left: auto; text-align: right;
+}
