@@ -7,7 +7,7 @@ max-width: 100%; height: auto;
 @media (max-width: 760px) {
 #search {
 right: 0; width: auto; height: 54px;
-box-shadow: 0 2px 8px #CCC; -webkit-box-shadow: 0 2px 8px #CCC;
+box-shadow: 0 2px 8px var(--shadow);
 }
 #menu-toggle {
 display: block;
@@ -15,11 +15,11 @@ position: absolute; top: 11px; left: 8px;
 width: 38px; height: 32px;
 padding: 0; border: 0;
 background: none;
-color: #302F2D; font-size: 22px; line-height: 32px;
+color: var(--text); font-size: 22px; line-height: 32px;
 cursor: pointer;
 }
 body.menu-open #menu-toggle {
-background: #E9E9E9; border-radius: 4px;
+background: var(--pressed); border-radius: 4px;
 }
 #search input {
 box-sizing: border-box;
@@ -72,12 +72,12 @@ max-width: 100%;
 overflow-x: auto;
 }
 #links {
-position: static !important;
+position: static;
 margin-top: 6px;
-font-size: 13px !important;
+font-size: 13px;
 }
 #contact {
-font-size: 13px !important; line-height: 20px !important;
+font-size: 13px; line-height: 20px;
 margin-top: 8px;
 }
 }

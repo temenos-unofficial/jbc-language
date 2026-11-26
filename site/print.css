@@ -1,0 +1,34 @@
+@media print {
+:root {
+--page: #FFF; --panel: #FFF; --text: #000; --strong: #000; --muted: #444;
+--faint: #888; --line: #CCC; --glow: transparent; --table: #000;
+--link: #000; --visited: #000; --hit: transparent; --hit-text: inherit;
+}
+#skip, #search, #sidebar, #links, #pager, #search-results, #menu-toggle, .copy-button, .heading-anchor {
+display: none !important;
+}
+#scrollable {
+position: static; overflow: visible;
+}
+#content {
+max-width: none; margin: 0;
+font-size: 10.5pt;
+}
+#content pre {
+background: #F6F6F6; color: #000;
+border: 1px solid #CCC;
+break-inside: avoid;
+}
+#content pre span {
+color: #000 !important;
+}
+#content h1, #content h2, #content h3 {
+break-after: avoid;
+}
+#content h1.group {
+break-before: page;
+}
+#content table, #content img {
+break-inside: avoid;
+}
+}

@@ -45,8 +45,9 @@ build is the only record (README "Last update dates").
 - A change to what `render_content` or `highlight` produce gives every affected
   page today's date on the next publish. Avoid it unless that is the intent,
   and say so in the pull request.
-- The head, the footer and the sidebar are outside the compared text, so
-  changing them does not touch the dates.
+- The head, the footer, the sidebar and the pager (`<nav id="pager">`,
+  which `split_page` strips) are outside the compared text, so changing
+  them does not touch the dates.
 - Locally a fresh clone has no previous build. To see real dates, unpack
   `gh-pages` into `_site/` first, as README shows.
 
@@ -82,9 +83,8 @@ There are no unit tests. A change to the build is checked with:
   including the ones the search adds, so the search redraws its list after
   the filter has run.
 - **Narrow screens.** `site/mobile.css` overrides `index.css` below 760
-  pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. `#links` and `#contact` in
-  `site/footer.html` carry inline styles, so the overrides for them need
-  `!important`. Check a visible change at both widths.
+  pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. Check a visible change at both
+  widths.
 - **Grammar diagrams.** `build.py` loads `spec/tools/grammar_diagrams.py`
   and writes `grammar/*.html` from `spec/*.y` and `spec/keywords.tsv`. The
   generator follows the same rules as `build.py`: standard library only,

@@ -1,5 +1,7 @@
 # Site improvement plan
 
+`[x]` done, `[ ]` open, `[-]` decided against.
+
 A plan for better search ranking, speed and modern browser behaviour of
 <https://jbc-lang.org>. Every item has to fit the rules in `AGENTS.md`:
 `build.py` stays standard-library Python 3.8, no JavaScript build step, no new
@@ -52,9 +54,8 @@ reset the "Last update" dates (head, footer and sidebar do not).
         a second verification method under Settings › Ownership
         verification).
   - [x] Submit `sitemap.xml` in Search Console: submitted 2026-11-26 after
-        #16 was published. It showed "Couldn't fetch" on the day of
-        submission although it serves 200 as `application/xml` with 404
-        valid URLs; check that it reads "Success" a day later.
+        #16 was published. "Couldn't fetch" at first, "Success" with 404
+        discovered pages the same day.
   - [ ] Bing Webmaster Tools: import the site from Search Console.
   - [ ] A week later: read the Page indexing report.
 
@@ -109,9 +110,10 @@ small. The remaining wins:
       locally that `page_view` is still sent.
   - [x] Search Console's Analytics verification expects the script in the
         HTML head, so a `google-site-verification` meta tag is added.
-  - [ ] After publishing: click Verify for the HTML tag method in Search
-        Console (Settings › Ownership verification), and check GA4
-        Realtime.
+  - [x] After publishing: Verify for the HTML tag method in Search
+        Console (Settings › Ownership verification) succeeded on
+        2026-11-26; both methods show as verified.
+  - [ ] Check GA4 Realtime for page views from the live site.
 - [x] Inline `index.css`, `search.css` and `mobile.css` into each page.
       Three render-blocking requests become none, for about 2 KB gzipped
       per page. The files are still published.
@@ -122,48 +124,50 @@ small. The remaining wins:
       and `decoding="async"`. The build writes them out, so the guide's
       Markdown is unchanged. The page drops from 79 KB to 35 KB, and it and
       `all.html` take a new date.
-- [ ] Convert the two screenshots to WebP or optimise the PNGs (35 KB
-      together; the build has no image tools, so by hand).
-- [ ] `search.json` (137 KB gzipped) already loads only when the search is
-      used. Consider splitting it into a small title index and the full
-      text index, so the first results appear sooner on slow connections.
+- [-] Skipped: convert the two screenshots to WebP or optimise the PNGs
+      (35 KB together; the build has no image tools, so by hand).
+- [-] Skipped: `search.json` (137 KB gzipped) already loads only when the
+      search is used. Splitting it into a small title index and the full
+      text index would make the first results appear sooner on slow
+      connections.
 - [x] Prefetch a chapter on hover: a speculation rule (`eagerness:
       moderate`) for `/pages/*.html`. Chromium only; others ignore it. Not
       seen working in the test browser, which has prefetching switched off.
 - [x] Keep the 24 KB sidebar in every page's HTML: it gzips to little,
       helps crawlers and works without JavaScript.
-- [ ] Optional, a bigger step: put Cloudflare (free plan) in front of
+- [-] Skipped: put Cloudflare (free plan) in front of
       GitHub Pages for long cache lifetimes on CSS, JS and images, Brotli,
       real 301 redirects and an `X-Robots-Tag` for the `.md` files. Needs a
       DNS change; decide before doing it.
 
 ## 4. Modern browser behaviour
 
-- [ ] Real semantic layout: `<header>` for the search bar, `<nav
-      aria-label="Chapters">` for the sidebar, `<main>` for the chapter,
-      `<footer>` for the contact line. A "Skip to content" link first.
-- [ ] Mark the current chapter with `aria-current="page"` in the built HTML
-      (`build.py` knows it) instead of finding it with JavaScript.
-- [ ] Give the search box a `<label>` (visually hidden), `type="search"`
-      and `aria-controls` for the results.
-- [ ] Add "Previous" and "Next" links at the bottom of every chapter, also
-      as `<link rel="prev">`/`<link rel="next">` in the head.
-- [ ] Dark mode: CSS custom properties for the colours in `index.css` and
-      the syntax highlighting, switched by `prefers-color-scheme`, plus
-      `<meta name="color-scheme" content="light dark">`.
-- [ ] `<meta name="theme-color">` and a `site.webmanifest` with the existing
-      icons, so the site looks right when added to a home screen.
-- [ ] A "copy" button on code blocks (plain JavaScript in an existing
-      script file).
-- [ ] Anchor links on `<h2>`/`<h3>` headings inside chapters, so readers can
-      share links to a section.
-- [ ] Move the inline `style=` attributes in `site/footer.html` into CSS
-      and drop the `!important` overrides in `mobile.css` that they force.
-- [ ] Replace the cookie fallback in the template's `js.store` with a
-      plain `try`/`catch` around `sessionStorage`; every browser in use has
-      it.
-- [ ] Print stylesheet: hide the sidebar and search when printing a
-      chapter or `all.html`.
+- [x] Semantic layout: `<nav aria-label="Chapters">` for the sidebar,
+      `<main>` for the scrolling area, `role="search"` on the search bar,
+      `<footer>` for the contact line, and a "Skip to content" link first.
+      `<div id="content">` stays: the build compares the text after it.
+- [x] Mark the current chapter with `class="current"` and
+      `aria-current="page"` in the built HTML instead of finding it with
+      JavaScript.
+- [x] Give the search box a visually hidden `<label>`, `type="search"`
+      and `aria-controls="sidebar"`.
+- [x] "Previous" and "Next" links above "Last update" on every chapter,
+      also as `<link rel="prev">`/`<link rel="next">`. `split_page` leaves
+      them out of the compared text, so no dates change.
+- [x] Dark mode: custom properties for the colours, switched by
+      `prefers-color-scheme`, plus `<meta name="color-scheme">`. Code blocks
+      were already dark and keep their highlighting colours.
+- [x] `<meta name="theme-color">` for both schemes and a
+      `site.webmanifest` with the existing icons.
+- [x] A "Copy" button on code blocks, in a new `content.js`; it drops the
+      indent the lines share.
+- [x] Anchor links on `<h2>`/`<h3>` headings, added by `content.js` so the
+      compared text stays the same (ids carry the chapter on `all.html`).
+- [x] Move the inline `style=` attributes in `site/footer.html` into CSS
+      and drop the `!important` overrides in `mobile.css`.
+- [x] Replace the cookie fallback in `js.store` with `sessionStorage`
+      behind `try`/`catch` (`sidebar.js` was rewritten).
+- [x] Print stylesheet (`print.css`): only the chapter, black on white.
 
 ## 5. Checking
 

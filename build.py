@@ -429,6 +429,13 @@ def render_sidebar(groups, prefix, suffix=".html"):
     return "".join(out)
 
 
+def mark_current(sidebar, slug):
+    """The sidebar of one chapter page, with its own link marked."""
+    return sidebar.replace(
+        '<li><a href="%s.html">' % slug, '<li class="current"><a href="%s.html" aria-current="page">' % slug, 1
+    )
+
+
 def render_home(groups):
     """Content of index.html: the introduction and one line per group."""
     items = []
@@ -538,10 +545,10 @@ CSS_COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
 
 
 def render_css():
-    """index.css, search.css and mobile.css, in that order, for a <style> in
+    """index.css, search.css, mobile.css and print.css, in that order, for a <style> in
     every page: three small files are not worth three requests that block the
     first paint. Comments and indentation are dropped."""
-    text = "\n".join((SITE / name).read_text(encoding="utf-8") for name in ("index.css", "search.css", "mobile.css"))
+    text = "\n".join((SITE / name).read_text(encoding="utf-8") for name in ("index.css", "search.css", "mobile.css", "print.css"))
     lines = (line.strip() for line in CSS_COMMENT_RE.sub("", text).splitlines())
     return "\n".join(line for line in lines if line)
 
@@ -574,15 +581,32 @@ def fill(template, **values):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m.group(1)], template)
 
 
+PAGER_RE = re.compile(r'<nav id="pager".*?</nav>', re.S)
+
+
+def render_pager(previous, following):
+    """Links to the chapters before and after, placed above "Last update"."""
+    links = []
+    if previous:
+        links.append('<a rel="prev" href="%s.html"><span>Previous</span>%s</a>' % (previous.slug, previous.title))
+    if following:
+        links.append('<a rel="next" href="%s.html"><span>Next</span>%s</a>' % (following.slug, following.title))
+    return '<nav id="pager" aria-label="Previous and next chapter">%s</nav>' % "".join(links) if links else ""
+
+
 def split_page(text):
-    """Return (content, timestamp) of a previously built page, or None."""
+    """Return (content, timestamp) of a previously built page, or None.
+
+    The pager is left out of the content: it changes when a neighbouring
+    chapter does, which is not a change of this page's text.
+    """
     start = text.find(CONTENT_OPEN)
     stamp = None
     for stamp in TIMESTAMP_RE.finditer(text):
         pass
     if start < 0 or stamp is None:
         return None
-    return text[start + len(CONTENT_OPEN):stamp.start()], stamp.group(1)
+    return PAGER_RE.sub("", text[start + len(CONTENT_OPEN):stamp.start()]), stamp.group(1)
 
 
 TRAILING_SPACE_RE = re.compile(r"[ \t]+((?:</span>)*)$", re.M)
@@ -633,8 +657,8 @@ def build(source, out):
     template = (SITE / "template.html").read_text(encoding="utf-8")
     head = (SITE / "head.html").read_text(encoding="utf-8")
     text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
-    footer = fill(text, view='<a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a>')
-    single_footer = fill(text, view='<a href="/" style="color: inherit; text-decoration: none;">Chapters</a>')
+    footer = fill(text, view='<a href="/all.html">Single page</a>')
+    single_footer = fill(text, view='<a href="/">Chapters</a>')
     groups = parse(source.read_text(encoding="utf-8").replace("\r\n", "\n"))
     pages = [page for group, chapters in groups for page in [group] + chapters]
     slugs = {page.slug for page in pages}
@@ -651,7 +675,7 @@ def build(source, out):
     written = []
     stamps = {}
 
-    def emit(relative, title, sidebar, content, meta):
+    def emit(relative, title, sidebar, content, meta, pager=""):
         """Write one page; `meta(stamp)` gives its head tags."""
         old = read_text(out / relative)
         parts = split_page(old) if old else None
@@ -663,7 +687,7 @@ def build(source, out):
             title=title,
             css=css,
             sidebar=sidebar,
-            content=content + '<div id="timestamp">Last update: %s</div>' % stamp,
+            content=content + pager + '<div id="timestamp">Last update: %s</div>' % stamp,
             meta=meta(stamp),
             head=head,
             footer=footer,
@@ -675,22 +699,34 @@ def build(source, out):
     # Keyed by slug; the INDEX chapter is pages/index.html, not index.html.
     sidebar = render_sidebar(groups, "")
     group_pages = {group.slug for group, chapters in groups}
+    chapters = [page for group, pages_in_group in groups for page in pages_in_group]
+    neighbours = {
+        page.slug: (chapters[i - 1] if i else None, chapters[i + 1] if i + 1 < len(chapters) else None)
+        for i, page in enumerate(chapters)
+    }
     for page in pages:
+        previous, following = neighbours.get(page.slug, (None, None))
+        links = "".join(
+            '<link rel="%s" href="%spages/%s.html">\n' % (rel, base, other.slug)
+            for rel, other in (("prev", previous), ("next", following))
+            if other
+        )
         url = base + "pages/%s.html" % page.slug
         text = description(page, guide)
         if page.slug in group_pages:
             # Only a heading: kept for old links, left out of search results.
             meta = lambda stamp, url=url, text=text, title=page.title: render_meta(base, guide, url, title, text, robots="noindex")
         else:
-            meta = lambda stamp, url=url, text=text, title=page.title: render_meta(
+            meta = lambda stamp, url=url, text=text, title=page.title, links=links: render_meta(
                 base, guide, url, title, text, kind="article", stamp=stamp
-            )
+            ) + links
         stamps[page.slug] = emit(
             "pages/%s.html" % page.slug,
             page.title if page.title == guide else "%s – %s" % (page.title, guide),
-            sidebar,
+            mark_current(sidebar, page.slug),
             extract_images(render_content(page, slugs), images),
             meta,
+            render_pager(previous, following),
         )
     # The first sentence of the quoted paragraph in site/llms.txt.
     quote = re.search(r"^> (.*?)\n\n", intro_text(), re.S | re.M).group(1)
@@ -731,7 +767,7 @@ def build(source, out):
     files.update(grammars)
     files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
     files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, sorted(grammars))
-    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
+    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "site.webmanifest", "content.js", "print.css"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
         if write_text(out / relative, text):
@@ -803,7 +839,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest", "content.js", "print.css")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():
