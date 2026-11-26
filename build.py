@@ -767,7 +767,7 @@ def build(source, out):
     files.update(grammars)
     files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
     files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, sorted(grammars))
-    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "site.webmanifest"):
+    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "site.webmanifest", "content.js"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
         if write_text(out / relative, text):
@@ -839,7 +839,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html", "site.webmanifest", "content.js")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():

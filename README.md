@@ -35,6 +35,7 @@ jbc-lang.org.
 | `build.py` | The site generator. |
 | `site/template.html` | The HTML shell of every page: sidebar and search box. |
 | `site/index.css` | The stylesheet. Its colours are custom properties at the top, with a second set for `prefers-color-scheme: dark`; `search.css` and `mobile.css` use them too. With `search.css` and `mobile.css` it is copied into a `<style>` in every page, in that order, without comments. |
+| `site/content.js` | A "Copy" button on code blocks and a link anchor on section headings, with ids such as `#syntax-elements` (on `all.html`, `#chapter-locate-syntax-elements`). Added in the browser so the pages' compared text, and their dates, stay as they are. |
 | `site/site.webmanifest` | The web app manifest: name, colours and icons for a home-screen shortcut. |
 | `site/sidebar.js` | Keeps the sidebar's scroll position and title filter between pages and marks the current chapter. Loaded before `search.js`. |
 | `site/head.html` | Extra tags for the page head (analytics, search, narrow screens). |
@@ -72,7 +73,7 @@ This writes the site to `_site/`:
 - `index.html`, the home page: the introduction from `site/home.html` and a
   line per group of chapters,
 - `index.css`, `search.css` and `mobile.css`, still published for any page that links them, although the site's own pages carry the rules inline,
-- `sidebar.js`,
+- `sidebar.js` and `content.js`,
 - `site.webmanifest`,
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),

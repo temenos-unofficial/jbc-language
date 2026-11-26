@@ -14,7 +14,7 @@
   const MENTIONS_SHOWN = 30;
   const MARKS_LIMIT = 2000;
   const SNIPPET_RADIUS = 70;
-  const SKIPPED = "#timestamp, #pager, #contact, #links, #search-results, script, style";
+  const SKIPPED = "#timestamp, #pager, #contact, #links, #search-results, .copy-button, .heading-anchor, script, style";
 
   let chapters = null;
   let loading = null;
