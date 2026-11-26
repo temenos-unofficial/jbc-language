@@ -1,5 +1,7 @@
 # Site improvement plan
 
+`[x]` done, `[ ]` open, `[-]` decided against.
+
 A plan for better search ranking, speed and modern browser behaviour of
 <https://jbc-lang.org>. Every item has to fit the rules in `AGENTS.md`:
 `build.py` stays standard-library Python 3.8, no JavaScript build step, no new
@@ -52,9 +54,8 @@ reset the "Last update" dates (head, footer and sidebar do not).
         a second verification method under Settings › Ownership
         verification).
   - [x] Submit `sitemap.xml` in Search Console: submitted 2026-11-26 after
-        #16 was published. It showed "Couldn't fetch" on the day of
-        submission although it serves 200 as `application/xml` with 404
-        valid URLs; check that it reads "Success" a day later.
+        #16 was published. "Couldn't fetch" at first, "Success" with 404
+        discovered pages the same day.
   - [ ] Bing Webmaster Tools: import the site from Search Console.
   - [ ] A week later: read the Page indexing report.
 
@@ -109,9 +110,10 @@ small. The remaining wins:
       locally that `page_view` is still sent.
   - [x] Search Console's Analytics verification expects the script in the
         HTML head, so a `google-site-verification` meta tag is added.
-  - [ ] After publishing: click Verify for the HTML tag method in Search
-        Console (Settings › Ownership verification), and check GA4
-        Realtime.
+  - [x] After publishing: Verify for the HTML tag method in Search
+        Console (Settings › Ownership verification) succeeded on
+        2026-11-26; both methods show as verified.
+  - [ ] Check GA4 Realtime for page views from the live site.
 - [x] Inline `index.css`, `search.css` and `mobile.css` into each page.
       Three render-blocking requests become none, for about 2 KB gzipped
       per page. The files are still published.
@@ -122,17 +124,18 @@ small. The remaining wins:
       and `decoding="async"`. The build writes them out, so the guide's
       Markdown is unchanged. The page drops from 79 KB to 35 KB, and it and
       `all.html` take a new date.
-- [ ] Convert the two screenshots to WebP or optimise the PNGs (35 KB
-      together; the build has no image tools, so by hand).
-- [ ] `search.json` (137 KB gzipped) already loads only when the search is
-      used. Consider splitting it into a small title index and the full
-      text index, so the first results appear sooner on slow connections.
+- [-] Skipped: convert the two screenshots to WebP or optimise the PNGs
+      (35 KB together; the build has no image tools, so by hand).
+- [-] Skipped: `search.json` (137 KB gzipped) already loads only when the
+      search is used. Splitting it into a small title index and the full
+      text index would make the first results appear sooner on slow
+      connections.
 - [x] Prefetch a chapter on hover: a speculation rule (`eagerness:
       moderate`) for `/pages/*.html`. Chromium only; others ignore it. Not
       seen working in the test browser, which has prefetching switched off.
 - [x] Keep the 24 KB sidebar in every page's HTML: it gzips to little,
       helps crawlers and works without JavaScript.
-- [ ] Optional, a bigger step: put Cloudflare (free plan) in front of
+- [-] Skipped: put Cloudflare (free plan) in front of
       GitHub Pages for long cache lifetimes on CSS, JS and images, Brotli,
       real 301 redirects and an `X-Robots-Tag` for the `.md` files. Needs a
       DNS change; decide before doing it.
