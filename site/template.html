@@ -9,13 +9,15 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 {{head}}</head>
 <body>
-<div id="search">
-<input type="text" placeholder="Search..." />
+<a id="skip" href="#scrollable">Skip to content</a>
+<div id="search" role="search">
+<label for="search-input" class="visually-hidden">Search the guide</label>
+<input id="search-input" type="search" placeholder="Search..." autocomplete="off" aria-controls="sidebar">
 </div>
-<div id="sidebar">
-{{sidebar}}</div>
-<div id="scrollable">
+<nav id="sidebar" aria-label="Chapters">
+{{sidebar}}</nav>
+<main id="scrollable" tabindex="-1">
 <div id="content">{{content}}{{footer}}</div>
-</div>
+</main>
 </body>
 </html>

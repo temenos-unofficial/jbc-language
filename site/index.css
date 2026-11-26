@@ -34,6 +34,28 @@ box-shadow: 0 5px 20px #CCC; -webkit-box-shadow: 0 5px 20px #CCC; -moz-box-shado
 margin: 19px 25px; padding: 5px;
 width: 188px;
 border: 1px solid #CCC;
+box-sizing: content-box;
+border-radius: 0; -webkit-appearance: none; appearance: none;
+}
+#search input::-webkit-search-cancel-button, #search input::-webkit-search-decoration {
+-webkit-appearance: none;
+}
+.visually-hidden {
+position: absolute !important;
+width: 1px; height: 1px; padding: 0; margin: -1px;
+overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+#skip {
+position: fixed; top: -100px; left: 8px; z-index: 3;
+padding: 8px 12px;
+background: #302F2D; color: #FFF;
+font-size: 14px; text-decoration: none;
+}
+#skip:focus {
+top: 8px;
+}
+#scrollable:focus {
+outline: none;
 }
 #sidebar h2, #sidebar h2 a {
 color: #242220; font-size: 18px; font-weight: normal;

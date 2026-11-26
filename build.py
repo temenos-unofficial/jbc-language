@@ -429,6 +429,13 @@ def render_sidebar(groups, prefix, suffix=".html"):
     return "".join(out)
 
 
+def mark_current(sidebar, slug):
+    """The sidebar of one chapter page, with its own link marked."""
+    return sidebar.replace(
+        '<li><a href="%s.html">' % slug, '<li class="current"><a href="%s.html" aria-current="page">' % slug, 1
+    )
+
+
 def render_home(groups):
     """Content of index.html: the introduction and one line per group."""
     items = []
@@ -688,7 +695,7 @@ def build(source, out):
         stamps[page.slug] = emit(
             "pages/%s.html" % page.slug,
             page.title if page.title == guide else "%s – %s" % (page.title, guide),
-            sidebar,
+            mark_current(sidebar, page.slug),
             extract_images(render_content(page, slugs), images),
             meta,
         )
