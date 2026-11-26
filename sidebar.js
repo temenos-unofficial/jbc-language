@@ -1,5 +1,5 @@
 // The sidebar keeps its scroll position and the title filter from page to
-// page. The build marks the current chapter. search.js wraps the filter, so
+// page, and shows the current chapter, which the build marks. search.js wraps the filter, so
 // this file is loaded before it and the filter stays the input's onkeyup.
 (function () {
   "use strict";
@@ -46,5 +46,17 @@
   if (saved) {
     inputElement.value = saved;
     inputElement.onkeyup();
+  }
+
+  // The saved position may not show the current chapter, after a jump from
+  // the search box or a link in the text: then it is centred in the sidebar.
+  // Scrolling the sidebar itself, not scrollIntoView, leaves the page alone.
+  const currentElement = sidebarElement.querySelector("li.current");
+  if (currentElement && currentElement.offsetParent && sidebarElement.clientHeight) {
+    const sidebarBox = sidebarElement.getBoundingClientRect();
+    const currentBox = currentElement.getBoundingClientRect();
+    if (currentBox.top < sidebarBox.top || currentBox.bottom > sidebarBox.bottom) {
+      sidebarElement.scrollTop += currentBox.top - sidebarBox.top - (sidebarBox.height - currentBox.height) / 2;
+    }
   }
 })();

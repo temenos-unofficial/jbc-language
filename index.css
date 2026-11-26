@@ -207,6 +207,13 @@ opacity: 0;
 #content h2:hover .heading-anchor, #content h3:hover .heading-anchor, #content .heading-anchor:focus-visible {
 opacity: 1;
 }
+#content pre a.name-link {
+color: inherit;
+text-decoration: none;
+}
+#content pre a.name-link:hover {
+text-decoration: underline;
+}
 #timestamp {
 border-top: 1px dashed var(--faint);
 color: var(--faint);

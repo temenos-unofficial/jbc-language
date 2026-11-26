@@ -303,11 +303,57 @@
     refresh(false);
   }
 
+  // Enter goes straight to a chapter when the query names one: its exact
+  // title, the first word of only one title ("if" for "IF (statement)"), or
+  // the only title the filter leaves. Shift+Enter always shows the results.
+  function chapterFor(query) {
+    const wanted = query.trim().toLowerCase();
+    if (!wanted) return null;
+    const linkElements = [].filter.call(
+      sidebarElement.querySelectorAll("li > a"),
+      (linkElement) => !linkElement.closest("#search-mentions")
+    );
+    const title = (linkElement) => linkElement.textContent.trim().toLowerCase();
+    const exact = linkElements.find((linkElement) => title(linkElement) === wanted);
+    if (exact) return exact;
+    const named = linkElements.filter((linkElement) => title(linkElement).split(/[\s(]/)[0] === wanted);
+    if (named.length === 1) return named[0];
+    const shown = linkElements.filter((linkElement) => title(linkElement).includes(wanted));
+    return shown.length === 1 ? shown[0] : null;
+  }
+
+  function isTyping(element) {
+    return element && (element.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(element.tagName));
+  }
+
+  // "/" or Ctrl+K (Cmd+K) puts the cursor in the search box from anywhere.
+  document.addEventListener("keydown", (event) => {
+    const slash = event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey;
+    const commandK = (event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === "k";
+    if ((slash && !isTyping(document.activeElement)) || commandK) {
+      event.preventDefault();
+      inputElement.focus();
+      inputElement.select();
+    }
+  });
+  if (window.matchMedia && window.matchMedia("(hover: hover)").matches) {
+    inputElement.placeholder = "Search... (press /)";
+  }
+  inputElement.setAttribute("aria-keyshortcuts", "/ Control+K Meta+K");
+
   inputElement.onkeyup = null;
   inputElement.addEventListener("input", update);
   inputElement.addEventListener("focus", load);
   inputElement.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && parse(inputElement.value).length) {
+    if (event.key === "Enter" && !event.shiftKey && chapterFor(inputElement.value)) {
+      // The search is cleared, so the chapter opens without highlights.
+      const linkElement = chapterFor(inputElement.value);
+      inputElement.value = "";
+      update();
+      closeResults();
+      // A click, so that mobile.js closes the sidebar as for any chapter link.
+      linkElement.click();
+    } else if (event.key === "Enter" && parse(inputElement.value).length) {
       refresh(true);
     } else if (event.key === "Escape") {
       if (resultsOpen()) {
