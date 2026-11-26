@@ -573,6 +573,16 @@ def build(source, out):
         "",
         'window.location = "pages/preface.html";',
     )
+    # GitHub Pages answers any missing address with this page, at any depth,
+    # so everything in it is linked from the root.
+    emit(
+        "404.html",
+        "Page not found",
+        "/",
+        render_sidebar(groups, "/pages/"),
+        (SITE / "notfound.html").read_text(encoding="utf-8").strip(),
+        "",
+    )
 
     cname = (SITE / "CNAME").read_text(encoding="utf-8")
     base = "https://%s/" % cname.strip()
@@ -659,7 +669,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():
@@ -686,8 +696,8 @@ def serve(source, out, port):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=str(out), **kwargs)
 
-        def reply(self, body, kind):
-            self.send_response(200)
+        def reply(self, body, kind, status=200):
+            self.send_response(status)
             self.send_header("Content-Type", kind)
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
@@ -705,6 +715,10 @@ def serve(source, out, port):
                 # The reload script is added on the fly; files on disk stay clean.
                 page = local.read_bytes().replace(b"</body>", RELOAD + b"</body>")
                 return self.reply(page, "text/html; charset=utf-8")
+            if not local.exists() and (out / "404.html").is_file():
+                # As GitHub Pages does.
+                page = (out / "404.html").read_bytes().replace(b"</body>", RELOAD + b"</body>")
+                return self.reply(page, "text/html; charset=utf-8", 404)
             return super().do_GET()
 
         def log_message(self, *args):

@@ -80,6 +80,8 @@ This writes the site to `_site/`:
 - `robots.txt` and `sitemap.xml` for search engines. The sitemap lists every
   chapter page with the day of its "Last update" and the grammar pages; it
   leaves out the group pages, which hold only a heading, and `all.html`.
+- `404.html`, which GitHub Pages shows for any missing address (`just dev`
+  does the same). Its text is in `site/notfound.html`.
 
 `_site/` is ignored by git.
 
