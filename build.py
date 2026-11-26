@@ -11,11 +11,13 @@ Only the Python standard library is used.
 """
 
 import argparse
+import base64
 import html
 import importlib.util
 import http.server
 import json
 import re
+import struct
 import sys
 import threading
 import time
@@ -544,6 +546,30 @@ def render_css():
     return "\n".join(line for line in lines if line)
 
 
+DATA_IMAGE_RE = re.compile(r'<img src="data:image/(png|jpeg|gif|webp);base64,([^"]+)" alt="([^"]*)">')
+
+
+def extract_images(content, images):
+    """Move images embedded as base64 into files under /images/.
+
+    The guide embeds its two screenshots; as files they are cached, loaded
+    lazily and keep the page small. `images` collects {path: bytes}.
+    """
+
+    def replace(match):
+        kind, data, alt = match.groups()
+        raw = base64.b64decode(data)
+        name = "images/%s.%s" % (slugify(alt) or "image", "jpg" if kind == "jpeg" else kind)
+        if images.setdefault(name, raw) != raw:
+            raise SystemExit("Two different images would be written to %s" % name)
+        size = ""
+        if raw[:8] == b"\x89PNG\r\n\x1a\n":
+            size = ' width="%d" height="%d"' % struct.unpack(">II", raw[16:24])
+        return '<img src="/%s" alt="%s"%s loading="lazy" decoding="async">' % (name, alt, size)
+
+    return DATA_IMAGE_RE.sub(replace, content)
+
+
 def fill(template, **values):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m.group(1)], template)
 
@@ -621,6 +647,7 @@ def build(source, out):
     base = "https://%s/" % cname.strip()
     guide = groups[0][0].title
     css = render_css()
+    images = {}
     written = []
     stamps = {}
 
@@ -662,7 +689,7 @@ def build(source, out):
             "pages/%s.html" % page.slug,
             page.title if page.title == guide else "%s – %s" % (page.title, guide),
             sidebar,
-            render_content(page, slugs),
+            extract_images(render_content(page, slugs), images),
             meta,
         )
     # The first sentence of the quoted paragraph in site/llms.txt.
@@ -694,7 +721,7 @@ def build(source, out):
         title="%s – all chapters on one page" % guide,
         css=css,
         sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
-        content=render_single(groups, slugs, stamps),
+        content=extract_images(render_single(groups, slugs, stamps), images),
         meta=render_meta(base, guide, base + "all.html", guide, home_text),
         head=head + (SITE / "single.html").read_text(encoding="utf-8"),
         footer=single_footer,
@@ -716,6 +743,11 @@ def build(source, out):
     ]:
         data = source_path.read_bytes()
         if not (out / name).exists() or (out / name).read_bytes() != data:
+            (out / name).write_bytes(data)
+            written.append(name)
+    for name, data in sorted(images.items()):
+        if not (out / name).exists() or (out / name).read_bytes() != data:
+            (out / name).parent.mkdir(parents=True, exist_ok=True)
             (out / name).write_bytes(data)
             written.append(name)
 

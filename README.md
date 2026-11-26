@@ -47,7 +47,7 @@ jbc-lang.org.
 | `justfile` | Shortcuts for the commands below. |
 | `skills/jbc/SKILL.md` | A skill that teaches Claude Code and Codex to answer from the guide. |
 | `.github/workflows/publish.yml` | Rebuilds and publishes the site on every change. |
-| `images/` | Original image files; the guide embeds its images inline. Also the project logo, `jbc-logo.svg` and `jbc-logo.png`. |
+| `images/` | Original image files; the guide embeds its images inline, and the build writes them back out as files (see below). Also the project logo, `jbc-logo.svg` and `jbc-logo.png`. |
 | `markdown.css` | Stylesheet of the old single-file HTML export; not used by the site. |
 
 The built site lives on the `gh-pages` branch, not on `master`.
@@ -86,6 +86,9 @@ This writes the site to `_site/`:
 - `404.html`, which GitHub Pages shows for any missing address (`just dev`
   does the same). Its text is in `site/notfound.html`.
 - `jbc-logo.png`, copied from `images/`, the picture in link previews.
+- `images/*.png`, the images the guide embeds as base64, written out as files
+  and named after their caption. The pages link them with `width`, `height`
+  and `loading="lazy"`.
 
 Every page's head carries a description (the first sentence of the chapter,
 or a stock sentence when it has none), a canonical address, Open Graph tags
