@@ -28,24 +28,23 @@ reset the "Last update" dates (head, footer and sidebar do not).
 
 ## 1. Search engines: the basics
 
-- [ ] Add `site/robots.txt` that allows everything and names the sitemap
+- [x] Add `site/robots.txt` that allows everything and names the sitemap
       (`Sitemap: https://jbc-lang.org/sitemap.xml`).
-- [ ] Generate `sitemap.xml` in `build.py`: every chapter page, `all.html`
-      and the grammar pages, with `<lastmod>` taken from the same stamp as
-      "Last update". Leave out the `.md` files.
-- [ ] Add `/robots.txt`, `/sitemap.xml` and anything new in `site/` to the
+- [x] Generate `sitemap.xml` in `build.py`: the home page, every chapter
+      page and the grammar pages, with `<lastmod>` taken from the same stamp
+      as "Last update". Leave out the `.md` files, the group pages (only a
+      heading) and `all.html` (see section 2).
+- [x] Add `/robots.txt`, `/sitemap.xml` and anything new in `site/` to the
       publish workflow paths if they need it (`site/**` already matches).
-- [ ] Make `/` a real page instead of a JavaScript redirect: a home page
+- [x] Make `/` a real page instead of a JavaScript redirect: a home page
       with the guide title, a short introduction, the chapter groups and
       links to the grammar, playground and jbcc. It is the page with the most
       links pointing to it, so it should carry content and not bounce.
-- [ ] Until the home page exists, add
-      `<meta http-equiv="refresh" content="0; url=pages/preface.html">` and
-      a canonical link to the preface, so crawlers without JavaScript follow
-      it.
-- [ ] Add a custom `404.html` (GitHub Pages serves it automatically) with
+- [x] ~~Until the home page exists, add a meta refresh~~: not needed, the
+      home page came first.
+- [x] Add a custom `404.html` (GitHub Pages serves it automatically) with
       the sidebar and the search box, so a broken link still leads into the
-      guide.
+      guide. `just dev` serves it for missing addresses too.
 - [ ] Register the site in Google Search Console and Bing Webmaster Tools,
       submit the sitemap, and check the coverage report after a week.
 
