@@ -47,6 +47,14 @@ reset the "Last update" dates (head, footer and sidebar do not).
       guide. `just dev` serves it for missing addresses too.
 - [ ] Register the site in Google Search Console and Bing Webmaster Tools,
       submit the sitemap, and check the coverage report after a week.
+  - [x] Google Search Console: URL-prefix property `https://jbc-lang.org/`
+        added 2026-11-26, verified through the GA4 tag (keep the tag, or add
+        a second verification method under Settings › Ownership
+        verification).
+  - [ ] Submit `sitemap.xml` in Search Console once this branch is merged
+        and the file is live.
+  - [ ] Bing Webmaster Tools: import the site from Search Console.
+  - [ ] A week later: read the Page indexing report.
 
 ## 2. Search engines: each page
 
