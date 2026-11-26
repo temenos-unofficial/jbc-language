@@ -142,31 +142,32 @@ small. The remaining wins:
 
 ## 4. Modern browser behaviour
 
-- [ ] Real semantic layout: `<header>` for the search bar, `<nav
-      aria-label="Chapters">` for the sidebar, `<main>` for the chapter,
-      `<footer>` for the contact line. A "Skip to content" link first.
-- [ ] Mark the current chapter with `aria-current="page"` in the built HTML
-      (`build.py` knows it) instead of finding it with JavaScript.
-- [ ] Give the search box a `<label>` (visually hidden), `type="search"`
-      and `aria-controls` for the results.
-- [ ] Add "Previous" and "Next" links at the bottom of every chapter, also
-      as `<link rel="prev">`/`<link rel="next">` in the head.
-- [ ] Dark mode: CSS custom properties for the colours in `index.css` and
-      the syntax highlighting, switched by `prefers-color-scheme`, plus
-      `<meta name="color-scheme" content="light dark">`.
-- [ ] `<meta name="theme-color">` and a `site.webmanifest` with the existing
-      icons, so the site looks right when added to a home screen.
-- [ ] A "copy" button on code blocks (plain JavaScript in an existing
-      script file).
-- [ ] Anchor links on `<h2>`/`<h3>` headings inside chapters, so readers can
-      share links to a section.
-- [ ] Move the inline `style=` attributes in `site/footer.html` into CSS
-      and drop the `!important` overrides in `mobile.css` that they force.
-- [ ] Replace the cookie fallback in the template's `js.store` with a
-      plain `try`/`catch` around `sessionStorage`; every browser in use has
-      it.
-- [ ] Print stylesheet: hide the sidebar and search when printing a
-      chapter or `all.html`.
+- [x] Semantic layout: `<nav aria-label="Chapters">` for the sidebar,
+      `<main>` for the scrolling area, `role="search"` on the search bar,
+      `<footer>` for the contact line, and a "Skip to content" link first.
+      `<div id="content">` stays: the build compares the text after it.
+- [x] Mark the current chapter with `class="current"` and
+      `aria-current="page"` in the built HTML instead of finding it with
+      JavaScript.
+- [x] Give the search box a visually hidden `<label>`, `type="search"`
+      and `aria-controls="sidebar"`.
+- [x] "Previous" and "Next" links above "Last update" on every chapter,
+      also as `<link rel="prev">`/`<link rel="next">`. `split_page` leaves
+      them out of the compared text, so no dates change.
+- [x] Dark mode: custom properties for the colours, switched by
+      `prefers-color-scheme`, plus `<meta name="color-scheme">`. Code blocks
+      were already dark and keep their highlighting colours.
+- [x] `<meta name="theme-color">` for both schemes and a
+      `site.webmanifest` with the existing icons.
+- [x] A "Copy" button on code blocks, in a new `content.js`; it drops the
+      indent the lines share.
+- [x] Anchor links on `<h2>`/`<h3>` headings, added by `content.js` so the
+      compared text stays the same (ids carry the chapter on `all.html`).
+- [x] Move the inline `style=` attributes in `site/footer.html` into CSS
+      and drop the `!important` overrides in `mobile.css`.
+- [x] Replace the cookie fallback in `js.store` with `sessionStorage`
+      behind `try`/`catch` (`sidebar.js` was rewritten).
+- [x] Print stylesheet (`print.css`): only the chapter, black on white.
 
 ## 5. Checking
 
