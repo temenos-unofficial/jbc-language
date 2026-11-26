@@ -1,0 +1,15 @@
+{
+  "name": "jBC Programmers Reference Guide",
+  "short_name": "jBC Guide",
+  "description": "An unofficial reference for jBC, the language of jBASE, TAFC and T24.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F4F4F4",
+  "theme_color": "#302F2D",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/jbc-logo.png", "sizes": "1000x1000", "type": "image/png" }
+  ]
+}
