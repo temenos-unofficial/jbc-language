@@ -414,21 +414,28 @@ CONTENT_OPEN = '<div id="content">'
 TIMESTAMP_RE = re.compile(r'<div id="timestamp">Last update: ([^<]*)</div>')
 
 
-def render_sidebar(groups, prefix, for_index=False, suffix=".html"):
+def render_sidebar(groups, prefix, suffix=".html"):
     out = []
-    for number, (group, pages) in enumerate(groups, 1):
+    for group, pages in groups:
         out.append("<h2>%s</h2>\n" % group.title)
-        if for_index and number == len(groups):
-            # The original index page lost the links of the last group; it
-            # redirects to the preface straight away, so nobody sees it.
-            out.append("\n")
-        elif pages:
+        if pages:
             items = "\n".join(
                 '<li><a href="%s%s%s">%s</a></li>' % (prefix, p.slug, suffix, p.title)
                 for p in pages
             )
             out.append("<ul>%s\n</ul>\n" % items)
     return "".join(out)
+
+
+def render_home(groups):
+    """Content of index.html: the introduction and one line per group."""
+    items = []
+    for group, pages in groups:
+        if pages:
+            count = "1 chapter" if len(pages) == 1 else "%d chapters" % len(pages)
+            items.append('<li><a href="pages/%s.html">%s</a> &middot; %s</li>' % (pages[0].slug, group.title, count))
+    text = (SITE / "home.html").read_text(encoding="utf-8").strip()
+    return fill(text, title=groups[0][0].title, contents="<ul>%s</ul>" % "\n".join(items))
 
 
 def stamp_time(stamp):
@@ -448,13 +455,15 @@ def render_single(groups, slugs, stamps):
     return "\n".join(out)
 
 
-def render_sitemap(base, groups, stamps, others):
-    """sitemap.xml: the chapter pages with their "Last update" day, then `others`.
+def render_sitemap(base, home_stamp, groups, stamps, others):
+    """sitemap.xml: the home page and the chapter pages with their "Last
+    update" day, then `others`.
 
     The group pages hold only a heading and all.html repeats every chapter, so
     neither is listed.
     """
-    urls = [(base + "pages/%s.html" % page.slug, stamps[page.slug]) for group, pages in groups for page in pages]
+    urls = [(base, home_stamp)]
+    urls += [(base + "pages/%s.html" % page.slug, stamps[page.slug]) for group, pages in groups for page in pages]
     urls += [(base + relative, None) for relative in others]
     out = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for loc, stamp in urls:
@@ -535,43 +544,41 @@ def build(source, out):
     written = []
     stamps = {}
 
-    def emit(relative, title, root, sidebar, content, redirect_line):
+    def emit(relative, title, root, sidebar, content):
         old = read_text(out / relative)
         parts = split_page(old) if old else None
         stamp = now
         if parts and same_text(parts[0], content):
             content, stamp = parts
-        stamps[Path(relative).stem] = stamp
         text = fill(
             template,
             title=title,
             root=root,
             sidebar=sidebar,
             content=content + '<div id="timestamp">Last update: %s</div>' % stamp,
-            redirect=redirect_line,
             head=head,
             footer=footer,
         )
         if write_text(out / relative, text):
             written.append(relative)
+        return stamp
 
+    # Keyed by slug; the INDEX chapter is pages/index.html, not index.html.
     sidebar = render_sidebar(groups, "")
     for page in pages:
-        emit(
+        stamps[page.slug] = emit(
             "pages/%s.html" % page.slug,
             page.title,
             "../",
             sidebar,
             render_content(page, slugs),
-            "",
         )
-    emit(
+    home_stamp = emit(
         "index.html",
-        "jBC",
+        groups[0][0].title,
         "",
-        render_sidebar(groups, "pages/", for_index=True),
-        "",
-        'window.location = "pages/preface.html";',
+        render_sidebar(groups, "pages/"),
+        render_home(groups),
     )
     # GitHub Pages answers any missing address with this page, at any depth,
     # so everything in it is linked from the root.
@@ -581,7 +588,6 @@ def build(source, out):
         "/",
         render_sidebar(groups, "/pages/"),
         (SITE / "notfound.html").read_text(encoding="utf-8").strip(),
-        "",
     )
 
     cname = (SITE / "CNAME").read_text(encoding="utf-8")
@@ -596,7 +602,6 @@ def build(source, out):
         root="",
         sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
         content=render_single(groups, slugs, stamps),
-        redirect="",
         head=head + (SITE / "single.html").read_text(encoding="utf-8"),
         footer=single_footer,
     )
@@ -604,7 +609,7 @@ def build(source, out):
     grammars = render_grammars()
     files.update(grammars)
     files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
-    files["sitemap.xml"] = render_sitemap(base, groups, stamps, sorted(grammars))
+    files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, sorted(grammars))
     for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
@@ -669,7 +674,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():

@@ -28,8 +28,8 @@ the list with what the change was meant to do.
 
 - Several things in `build.py` look like bugs and are left over from the tool
   this generator replaced: `&gt` without a semicolon in code, emphasis left
-  alone on some lines, every line of a list block becoming an item, the missing
-  links of the last group on `index.html`, the fallback for a mistyped anchor.
+  alone on some lines, every line of a list block becoming an item, the
+  fallback for a mistyped anchor.
   Fixing one changes the text of every page it touches, and so their dates.
   Do it only when asked.
 - `site/template.html` and `site/index.css` came from the original site and

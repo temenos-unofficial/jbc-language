@@ -67,7 +67,8 @@ just build        # or: python3 build.py
 
 This writes the site to `_site/`:
 
-- `index.html`, which redirects to the preface,
+- `index.html`, the home page: the introduction from `site/home.html` and a
+  line per group of chapters,
 - `index.css`,
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),
