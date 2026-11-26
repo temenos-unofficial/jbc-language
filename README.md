@@ -77,6 +77,9 @@ This writes the site to `_site/`:
   assistants (see below).
 - `grammar/jbc.html` and `grammar/preprocessor.html`, railroad diagrams of
   the grammars in `spec/` (see below).
+- `robots.txt` and `sitemap.xml` for search engines. The sitemap lists every
+  chapter page with the day of its "Last update" and the grammar pages; it
+  leaves out the group pages, which hold only a heading, and `all.html`.
 
 `_site/` is ignored by git.
 

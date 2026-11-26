@@ -448,6 +448,22 @@ def render_single(groups, slugs, stamps):
     return "\n".join(out)
 
 
+def render_sitemap(base, groups, stamps, others):
+    """sitemap.xml: the chapter pages with their "Last update" day, then `others`.
+
+    The group pages hold only a heading and all.html repeats every chapter, so
+    neither is listed.
+    """
+    urls = [(base + "pages/%s.html" % page.slug, stamps[page.slug]) for group, pages in groups for page in pages]
+    urls += [(base + relative, None) for relative in others]
+    out = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, stamp in urls:
+        lastmod = "<lastmod>%s</lastmod>" % stamp_time(stamp).strftime("%Y-%m-%d") if stamp else ""
+        out.append("<url><loc>%s</loc>%s</url>" % (html.escape(loc), lastmod))
+    out.append("</urlset>")
+    return "\n".join(out) + "\n"
+
+
 def fill(template, **values):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m.group(1)], template)
 
@@ -498,7 +514,7 @@ def build(source, out):
     with the whole guide in one page, the full-text search (search.js,
     search.css and its index, search.json), the layout for narrow screens
     (mobile.js, mobile.css) and the railroad diagrams of the grammars in
-    spec/ (grammar/*.html).
+    spec/ (grammar/*.html), and robots.txt and sitemap.xml for search engines.
 
     Returns the list of files that were written.
     """
@@ -575,7 +591,10 @@ def build(source, out):
         footer=single_footer,
     )
     files["search.json"] = render_search_index(groups)
-    files.update(render_grammars())
+    grammars = render_grammars()
+    files.update(grammars)
+    files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
+    files["sitemap.xml"] = render_sitemap(base, groups, stamps, sorted(grammars))
     for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
@@ -640,7 +659,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():
