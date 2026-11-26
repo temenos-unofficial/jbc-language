@@ -33,8 +33,9 @@ jbc-lang.org.
 | `jBC_Programmers_Reference_Guide.markdown` | The guide. This is the file to edit. |
 | [`spec/`](spec/README.md) | jBC and preprocessor grammars, lexer keywords, and function declarations cross-checked against the guide. The site draws the grammars as [railroad diagrams](#grammar-diagrams). |
 | `build.py` | The site generator. |
-| `site/template.html` | The HTML shell of every page: sidebar, search box, scripts. |
-| `site/index.css` | The stylesheet. |
+| `site/template.html` | The HTML shell of every page: sidebar and search box. |
+| `site/index.css` | The stylesheet. With `search.css` and `mobile.css` it is copied into a `<style>` in every page, in that order, without comments. |
+| `site/sidebar.js` | Keeps the sidebar's scroll position and title filter between pages and marks the current chapter. Loaded before `search.js`. |
 | `site/head.html` | Extra tags for the page head (analytics, search, narrow screens). |
 | `site/search.js`, `site/search.css` | The full-text search. |
 | `site/mobile.js`, `site/mobile.css` | The layout for narrow screens. |
@@ -69,7 +70,8 @@ This writes the site to `_site/`:
 
 - `index.html`, the home page: the introduction from `site/home.html` and a
   line per group of chapters,
-- `index.css`,
+- `index.css`, `search.css` and `mobile.css`, still published for any page that links them, although the site's own pages carry the rules inline,
+- `sidebar.js`,
 - `pages/`, one HTML file per chapter (414 at the moment),
 - `all.html`, every chapter in one page (see below),
 - `search.json`, `search.js` and `search.css`, the full-text search (see below),

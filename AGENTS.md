@@ -77,12 +77,12 @@ There are no unit tests. A change to the build is checked with:
 - **The publish workflow** runs only for the paths listed in
   `.github/workflows/publish.yml`. A new top-level file that the build reads
   has to be added there.
-- **`site/search.js`** wraps the title filter of `template.html` instead of
-  replacing it. That filter walks a live list of every link in the sidebar,
+- **`site/search.js`** wraps the title filter of `site/sidebar.js` instead of
+  replacing it, so `head.html` loads `sidebar.js` first; both are `defer`. That filter walks a live list of every link in the sidebar,
   including the ones the search adds, so the search redraws its list after
   the filter has run.
 - **Narrow screens.** `site/mobile.css` overrides `index.css` below 760
-  pixels, and `site/mobile.js` repeats that width. `#links` and `#contact` in
+  pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. `#links` and `#contact` in
   `site/footer.html` carry inline styles, so the overrides for them need
   `!important`. Check a visible change at both widths.
 - **Grammar diagrams.** `build.py` loads `spec/tools/grammar_diagrams.py`

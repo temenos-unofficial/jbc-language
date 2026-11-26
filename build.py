@@ -532,6 +532,18 @@ def render_sitemap(base, home_stamp, groups, stamps, others):
     return "\n".join(out) + "\n"
 
 
+CSS_COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
+
+
+def render_css():
+    """index.css, search.css and mobile.css, in that order, for a <style> in
+    every page: three small files are not worth three requests that block the
+    first paint. Comments and indentation are dropped."""
+    text = "\n".join((SITE / name).read_text(encoding="utf-8") for name in ("index.css", "search.css", "mobile.css"))
+    lines = (line.strip() for line in CSS_COMMENT_RE.sub("", text).splitlines())
+    return "\n".join(line for line in lines if line)
+
+
 def fill(template, **values):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m.group(1)], template)
 
@@ -608,10 +620,11 @@ def build(source, out):
     cname = (SITE / "CNAME").read_text(encoding="utf-8")
     base = "https://%s/" % cname.strip()
     guide = groups[0][0].title
+    css = render_css()
     written = []
     stamps = {}
 
-    def emit(relative, title, root, sidebar, content, meta):
+    def emit(relative, title, sidebar, content, meta):
         """Write one page; `meta(stamp)` gives its head tags."""
         old = read_text(out / relative)
         parts = split_page(old) if old else None
@@ -621,7 +634,7 @@ def build(source, out):
         text = fill(
             template,
             title=title,
-            root=root,
+            css=css,
             sidebar=sidebar,
             content=content + '<div id="timestamp">Last update: %s</div>' % stamp,
             meta=meta(stamp),
@@ -648,7 +661,6 @@ def build(source, out):
         stamps[page.slug] = emit(
             "pages/%s.html" % page.slug,
             page.title if page.title == guide else "%s – %s" % (page.title, guide),
-            "../",
             sidebar,
             render_content(page, slugs),
             meta,
@@ -659,7 +671,6 @@ def build(source, out):
     home_stamp = emit(
         "index.html",
         guide,
-        "",
         render_sidebar(groups, "pages/"),
         render_home(groups),
         lambda stamp: render_meta(base, guide, base, guide, home_text),
@@ -669,7 +680,6 @@ def build(source, out):
     emit(
         "404.html",
         "Page not found – %s" % guide,
-        "/",
         render_sidebar(groups, "/pages/"),
         (SITE / "notfound.html").read_text(encoding="utf-8").strip(),
         lambda stamp: "",
@@ -682,7 +692,7 @@ def build(source, out):
     files["all.html"] = fill(
         template,
         title="%s – all chapters on one page" % guide,
-        root="",
+        css=css,
         sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
         content=render_single(groups, slugs, stamps),
         meta=render_meta(base, guide, base + "all.html", guide, home_text),
@@ -694,7 +704,7 @@ def build(source, out):
     files.update(grammars)
     files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
     files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, sorted(grammars))
-    for name in ("index.css", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
+    for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
         if write_text(out / relative, text):
@@ -761,7 +771,7 @@ RELOAD = b"""<script>
 
 def serve(source, out, port):
     """Serve the site locally and rebuild whenever a source file changes."""
-    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
+    watched = [source] + [SITE / name for name in ("template.html", "head.html", "footer.html", "index.css", "llms.txt", "single.html", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "robots.txt", "notfound.html", "home.html")] + [SPEC / name for name in ("jbc.y", "preprocessor.y", "keywords.tsv", "tools/grammar_diagrams.py")]
     state = {"build": 0}
 
     def stamps():
