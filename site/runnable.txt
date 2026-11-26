@@ -1,0 +1,81 @@
+# Code blocks that jbcc 0.2.0, the playground's compiler, builds and runs
+# prints something and exits with status 0: <chapter file name> <hashes>.
+# Written by check_examples.py (`just examples`); do not edit by hand.
+@date 05a9c1be
+abs 2ce5b5e7
+alpha 7636b5a1
+bitor 8e47222d
+bitxor 7602391b
+case f7a67d13
+clear dafa3731
+clearselect 0a92d939
+col1_and_col2 5f7b2a1c
+compare 4812b467
+convert 1013db3c
+convert_statement acc33a62
+cos d9a540b5
+count 2fe282f9 8039da0c
+counts f03824a5
+data cd5d1404
+date 9e88c89f
+dcount 05f9352d
+del e8c3f295
+delete c7e9ae34
+dimension f6d69975
+div a6e16cc3
+divs 91564cfa
+dround 3e01e892
+dtx 3c349ad1
+ebcdic e78a07a0
+eqs f55db6af
+ereplace 83c3d201
+field d732796f
+find 57d355e5
+findstr dfcdc79a
+for c142bf46
+getenv 131cce41
+group ac86e980
+iconv 910ebdca
+index f7c05244
+int 9de67638
+introduction_to_basiccatalog_and_jcompile 44d44900
+isdigit 57355d5c
+jbasesubroutineexist b25e337d
+latin1 cefec3f6
+left ff91160c
+len 850d3238
+locate eca2b089
+lower 2c227b84
+mat 3e188da8
+matbuild 9952ac09
+matches 021b9947
+matchfield 3c5a7029
+matparse 06a8f026
+maximum 8099c196
+mod f78bf017
+num 928f6bae
+numeric_variables 25a3d509
+oconv 78f5d86f
+ongoto acda2ec9
+other_notes 8f850f3c 0229a59a 49309eb5 ddb46708
+precision 70ff3658 bdc7a612
+prompt 9a659fb8
+pwr 9ba38a2a
+raise 78d38a15
+read c68fd020
+recommendations_not_rules 1a22b991 28bc0319 655424e7 d2a436fd
+remove 73c1d4aa
+rnd 7acd28a1
+sdiv b5c6849c 2190b027
+several_statements_on_the_same_line 0dd43852 9dd8f70c
+smul d94f0ad8 fd9faae8
+splice 56378fd2
+sqrt 2299ce02
+string_variables 9f673c5a 8a4ce289 4725c14f 01672ee4 88b4c60b e2084775
+swap 526934a5
+time 6f439c21
+timedate 2b644b4b
+trim b974dd6d
+utf8 9d6dd987
+weof 58e499b9
+xtd b44a32cd
