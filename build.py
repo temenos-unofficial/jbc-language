@@ -583,6 +583,7 @@ def fill(template, **values):
 
 
 REPORT_ADDRESS = "info@jbc-lang.org"
+REPORT_FORM = "https://github.com/jbc-lang/jbc-language/issues/new"
 
 
 def read_runnable():
@@ -599,13 +600,21 @@ def read_runnable():
 
 
 def render_report(title, url):
-    """A mailto: address for the footer's "Report a problem with this page"
-    link, with the page named in the subject and the body."""
-    query = urllib.parse.urlencode(
+    """The footer's two ways to report a problem with a page, as {"report",
+    "email"}: the "Correction or addition" issue form on GitHub with the title
+    and page address filled in, and a mailto: address naming the page."""
+    form = urllib.parse.urlencode(
+        {"template": "correction.yml", "title": "%s: " % title, "page": url},
+        quote_via=urllib.parse.quote,
+    )
+    mail = urllib.parse.urlencode(
         {"subject": "jbc-lang.org: %s" % title, "body": "Page: %s\r\n\r\nWhat is wrong or missing:\r\n" % url},
         quote_via=urllib.parse.quote,
     )
-    return html.escape("mailto:%s?%s" % (REPORT_ADDRESS, query))
+    return {
+        "report": html.escape("%s?%s" % (REPORT_FORM, form)),
+        "email": html.escape("mailto:%s?%s" % (REPORT_ADDRESS, mail)),
+    }
 
 
 PAGER_RE = re.compile(r'<nav id="pager".*?</nav>', re.S)
@@ -719,7 +728,7 @@ def build(source, out):
             footer=fill(
                 footer_text,
                 view='<a href="/all.html">Single page</a>',
-                report=render_report(*(report or (title, base + relative))),
+                **render_report(*(report or (title, base + relative)))
             ),
         )
         if write_text(out / relative, text):
@@ -801,7 +810,7 @@ def build(source, out):
         footer=fill(
             footer_text,
             view='<a href="/">Chapters</a>',
-            report=render_report("all chapters on one page", base + "all.html"),
+            **render_report("all chapters on one page", base + "all.html")
         ),
     )
     files["search.json"] = render_search_index(groups)
