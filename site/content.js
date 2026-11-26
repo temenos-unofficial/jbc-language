@@ -231,10 +231,17 @@
   }
   for (const [node, fragment] of proseNodes) node.parentNode.replaceChild(fragment, node);
 
-  // The 404 page's report link names the address that was not found.
+  // On the 404 page the report links name the address that was not found.
   const reportElement = document.getElementById("report");
+  const reportEmailElement = document.getElementById("report-email");
   if (reportElement && reportElement.href.indexOf("404.html") !== -1) {
-    reportElement.href = reportElement.href.replace(
+    const form = new URL(reportElement.href);
+    form.searchParams.set("title", "Broken link: " + decodeURIComponent(location.pathname));
+    form.searchParams.set("page", location.href);
+    reportElement.href = form.href;
+  }
+  if (reportEmailElement && reportEmailElement.href.indexOf("404.html") !== -1) {
+    reportEmailElement.href = reportEmailElement.href.replace(
       /Page%3A%20[^&]*?404\.html/,
       "Page%3A%20" + encodeURIComponent(location.href)
     );

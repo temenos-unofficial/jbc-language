@@ -44,7 +44,7 @@ jbc-lang.org.
 | `site/mobile.js`, `site/mobile.css` | The layout for narrow screens. |
 | `site/runnable.txt` | The code blocks that get a "Run" button, written by `check_examples.py`. |
 | `check_examples.py` | Finds the code blocks the playground can run (`just examples`). Not part of the build. |
-| `site/footer.html` | The contact line shown under each page and the links at its top right. `{{report}}` becomes a "Report a problem with this page" mail link whose subject and body name the page. |
+| `site/footer.html` | The contact line shown under each page and the links at its top right. `{{report}}` becomes a "Report a problem with this page" link to the "Correction or addition" issue form on GitHub with the chapter's title and address filled in, and `{{email}}` a mail link naming the page, for readers without a GitHub account. On the 404 page `content.js` puts the missing address in both. |
 | `site/single.html` | Extra tags for the head of the single-page view. |
 | `site/CNAME` | The custom domain for GitHub Pages. |
 | `site/favicon.svg`, `site/favicon-32.png`, `site/apple-touch-icon.png` | The browser-tab icon. The two PNG files are made from the SVG by hand. |
