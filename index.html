@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>jBC</title>
+<title>jBC Programmers Reference Guide</title>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="index.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -448,13 +448,31 @@
 <li><a href="pages/xtd.html">XTD</a></li>
 </ul>
 <h2>Embedded SQL for jBC</h2>
-
+<ul><li><a href="pages/introduction_to_embedded_sql.html">Introduction to embedded SQL</a></li>
+<li><a href="pages/embedded_sql_compiler_option.html">EMBEDDED SQL COMPILER OPTION</a></li>
+<li><a href="pages/troubleshooting.html">TROUBLESHOOTING</a></li>
+</ul>
 </div>
 <div id="scrollable">
-<div id="content"><div id="timestamp">Last update: Wed, 31 Aug 2022 12:55</div><div id="contact" style="color: #767573; font-size: 12px; line-height: 26px;">Questions or corrections: <a href="mailto:info@jbc-lang.org" style="color: inherit;">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language" style="color: inherit;">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt" style="color: inherit;">llms.txt</a></div><div id="links" style="position: absolute; top: 6px; right: 25px; color: #767573; font-size: 12px;"><a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a> &middot; <a href="/grammar/jbc.html" style="color: inherit; text-decoration: none;">Grammar</a> &middot; <a href="https://online.jbc-lang.org/" style="color: inherit; text-decoration: none;">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc" style="color: inherit; text-decoration: none;">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language" style="color: inherit; text-decoration: none;">Source on GitHub</a></div></div>
+<div id="content"><h1>jBC Programmers Reference Guide</h1>
+<p>An unofficial reference for jBC, the Basic-like programming language of the jBASE multi-value database, used in Temenos TAFC and TAFJ and in T24. It covers syntax, compilation, environment variables, data files, system variables and every function and statement, with notes on where TAFJ behaves differently from TAFC. This is not a Temenos document.</p>
+<p>Start with the <a href="pages/preface.html">preface</a>, read the <a href="all.html">whole guide on one page</a>, browse the <a href="grammar/jbc.html">grammar diagrams</a> or try jBC in the <a href="https://online.jbc-lang.org/">online playground</a>. The experimental <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> translates jBC to C.</p>
+<h2>Contents</h2>
+<ul><li><a href="pages/preface.html">jBC Programmers Reference Guide</a> &middot; 5 chapters</li>
+<li><a href="pages/note.html">Introduction to some jBC syntax features</a> &middot; 12 chapters</li>
+<li><a href="pages/recommendations_not_rules.html">Guidelines for writing the source code</a> &middot; 1 chapter</li>
+<li><a href="pages/minimum_set_of_variables_necessary_to_start_development.html">Environment variables relevant to jBC programming</a> &middot; 6 chapters</li>
+<li><a href="pages/introduction_to_basiccatalog_and_jcompile.html">Compilation</a> &middot; 1 chapter</li>
+<li><a href="pages/introduction_to_jbase_tafc_data_files.html">Data files</a> &middot; 6 chapters</li>
+<li><a href="pages/@am_@fm_@vm_@sm_@tm.html">System ("@") variables</a> &middot; 26 chapters</li>
+<li><a href="pages/@.html">jBC Functions and Statements (@ - E)</a> &middot; 104 chapters</li>
+<li><a href="pages/fadd.html">jBC Functions and Statements (F - J)</a> &middot; 65 chapters</li>
+<li><a href="pages/keyin.html">jBC Functions and Statements (K - O)</a> &middot; 59 chapters</li>
+<li><a href="pages/page.html">jBC Functions and Statements (P - T)</a> &middot; 90 chapters</li>
+<li><a href="pages/unassigned.html">jBC Functions and Statements (U - X)</a> &middot; 23 chapters</li>
+<li><a href="pages/introduction_to_embedded_sql.html">Embedded SQL for jBC</a> &middot; 3 chapters</li></ul><div id="timestamp">Last update: Thu, 26 Nov 2026 11:06 UTC</div><div id="contact" style="color: #767573; font-size: 12px; line-height: 26px;">Questions or corrections: <a href="mailto:info@jbc-lang.org" style="color: inherit;">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language" style="color: inherit;">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt" style="color: inherit;">llms.txt</a></div><div id="links" style="position: absolute; top: 6px; right: 25px; color: #767573; font-size: 12px;"><a href="/all.html" style="color: inherit; text-decoration: none;">Single page</a> &middot; <a href="/grammar/jbc.html" style="color: inherit; text-decoration: none;">Grammar</a> &middot; <a href="https://online.jbc-lang.org/" style="color: inherit; text-decoration: none;">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc" style="color: inherit; text-decoration: none;">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language" style="color: inherit; text-decoration: none;">Source on GitHub</a></div></div>
 </div>
 <script type="text/javascript">
-window.location = "pages/preface.html";
 var js = {
 store: (function(){
 if (sessionStorage) {
