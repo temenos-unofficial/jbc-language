@@ -21,6 +21,7 @@ import struct
 import sys
 import threading
 import time
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -581,6 +582,19 @@ def fill(template, **values):
     return re.sub(r"\{\{(\w+)\}\}", lambda m: values[m.group(1)], template)
 
 
+REPORT_ADDRESS = "info@jbc-lang.org"
+
+
+def render_report(title, url):
+    """A mailto: address for the footer's "Report a problem with this page"
+    link, with the page named in the subject and the body."""
+    query = urllib.parse.urlencode(
+        {"subject": "jbc-lang.org: %s" % title, "body": "Page: %s\r\n\r\nWhat is wrong or missing:\r\n" % url},
+        quote_via=urllib.parse.quote,
+    )
+    return html.escape("mailto:%s?%s" % (REPORT_ADDRESS, query))
+
+
 PAGER_RE = re.compile(r'<nav id="pager".*?</nav>', re.S)
 
 
@@ -656,9 +670,7 @@ def build(source, out):
     now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M UTC")
     template = (SITE / "template.html").read_text(encoding="utf-8")
     head = (SITE / "head.html").read_text(encoding="utf-8")
-    text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
-    footer = fill(text, view='<a href="/all.html">Single page</a>')
-    single_footer = fill(text, view='<a href="/">Chapters</a>')
+    footer_text = (SITE / "footer.html").read_text(encoding="utf-8").strip()
     groups = parse(source.read_text(encoding="utf-8").replace("\r\n", "\n"))
     pages = [page for group, chapters in groups for page in [group] + chapters]
     slugs = {page.slug for page in pages}
@@ -675,8 +687,9 @@ def build(source, out):
     written = []
     stamps = {}
 
-    def emit(relative, title, sidebar, content, meta, pager=""):
-        """Write one page; `meta(stamp)` gives its head tags."""
+    def emit(relative, title, sidebar, content, meta, pager="", report=None):
+        """Write one page; `meta(stamp)` gives its head tags and `report` is
+        the (title, address) the footer's report link names."""
         old = read_text(out / relative)
         parts = split_page(old) if old else None
         stamp = now
@@ -690,7 +703,11 @@ def build(source, out):
             content=content + pager + '<div id="timestamp">Last update: %s</div>' % stamp,
             meta=meta(stamp),
             head=head,
-            footer=footer,
+            footer=fill(
+                footer_text,
+                view='<a href="/all.html">Single page</a>',
+                report=render_report(*(report or (title, base + relative))),
+            ),
         )
         if write_text(out / relative, text):
             written.append(relative)
@@ -727,6 +744,7 @@ def build(source, out):
             extract_images(render_content(page, slugs), images),
             meta,
             render_pager(previous, following),
+            (page.title, url),
         )
     # The first sentence of the quoted paragraph in site/llms.txt.
     quote = re.search(r"^> (.*?)\n\n", intro_text(), re.S | re.M).group(1)
@@ -737,6 +755,7 @@ def build(source, out):
         render_sidebar(groups, "pages/"),
         render_home(groups),
         lambda stamp: render_meta(base, guide, base, guide, home_text),
+        report=(guide, base),
     )
     # GitHub Pages answers any missing address with this page, at any depth,
     # so everything in it is linked from the root.
@@ -760,7 +779,11 @@ def build(source, out):
         content=extract_images(render_single(groups, slugs, stamps), images),
         meta=render_meta(base, guide, base + "all.html", guide, home_text),
         head=head + (SITE / "single.html").read_text(encoding="utf-8"),
-        footer=single_footer,
+        footer=fill(
+            footer_text,
+            view='<a href="/">Chapters</a>',
+            report=render_report("all chapters on one page", base + "all.html"),
+        ),
     )
     files["search.json"] = render_search_index(groups)
     grammars = render_grammars()

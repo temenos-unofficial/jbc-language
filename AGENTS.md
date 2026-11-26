@@ -82,6 +82,11 @@ There are no unit tests. A change to the build is checked with:
   replacing it, so `head.html` loads `sidebar.js` first; both are `defer`. That filter walks a live list of every link in the sidebar,
   including the ones the search adds, so the search redraws its list after
   the filter has run.
+- **`<a name="X"/>` in the guide** is not a closed tag in HTML: each of
+  these 204 anchors holds everything up to the end of its block, often a whole
+  chapter. Scripts that walk the page (`site/content.js`, the highlighting in
+  `site/search.js`) must treat `<a>` without `href` as transparent and skip
+  only `a[href]`.
 - **Narrow screens.** `site/mobile.css` overrides `index.css` below 760
   pixels (`render_css` keeps that order when it inlines them), and `site/mobile.js` repeats that width. Check a visible change at both
   widths.
