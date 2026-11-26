@@ -83,6 +83,14 @@ This writes the site to `_site/`:
   leaves out the group pages, which hold only a heading, and `all.html`.
 - `404.html`, which GitHub Pages shows for any missing address (`just dev`
   does the same). Its text is in `site/notfound.html`.
+- `jbc-logo.png`, copied from `images/`, the picture in link previews.
+
+Every page's head carries a description (the first sentence of the chapter,
+or a stock sentence when it has none), a canonical address, Open Graph tags
+for link previews and, on chapter pages, `TechArticle` and `BreadcrumbList`
+structured data whose `dateModified` is the "Last update" stamp. The group
+pages, which hold only a heading, and `all.html` are marked `noindex`. All of
+it is outside the compared text, so it never changes a page's date.
 
 `_site/` is ignored by git.
 

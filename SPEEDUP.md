@@ -51,8 +51,10 @@ reset the "Last update" dates (head, footer and sidebar do not).
         added 2026-11-26, verified through the GA4 tag (keep the tag, or add
         a second verification method under Settings › Ownership
         verification).
-  - [ ] Submit `sitemap.xml` in Search Console once this branch is merged
-        and the file is live.
+  - [x] Submit `sitemap.xml` in Search Console: submitted 2026-11-26 after
+        #16 was published. It showed "Couldn't fetch" on the day of
+        submission although it serves 200 as `application/xml` with 404
+        valid URLs; check that it reads "Success" a day later.
   - [ ] Bing Webmaster Tools: import the site from Search Console.
   - [ ] A week later: read the Page indexing report.
 
@@ -61,32 +63,37 @@ reset the "Last update" dates (head, footer and sidebar do not).
 All of these live in the head, outside the compared text, so they do not
 change the "Last update" dates.
 
-- [ ] `<html lang="en">` in `site/template.html` (and `single.html`, the
-      grammar pages).
-- [ ] Replace `<meta http-equiv="Content-type" ...>` with
+- [x] `<html lang="en">` in `site/template.html` (the grammar pages
+      already had it; `single.html` is only a head fragment).
+- [x] Replace `<meta http-equiv="Content-type" ...>` with
       `<meta charset="utf-8">` as the first element of `<head>`.
-- [ ] Descriptive titles: `{{chapter}} – jBC Programmers Reference Guide`,
-      and for statements and functions say what they are, for example
-      `LOCATE statement – jBC reference`. Keep the `<h1>` as it is.
-- [ ] `<meta name="description">` per page from the existing `summary()`
-      (it already feeds `llms.txt`), trimmed to about 155 characters.
-- [ ] `<link rel="canonical" href="https://jbc-lang.org/pages/<slug>.html">`
+- [x] Descriptive titles: `{{chapter}} – jBC Programmers Reference Guide`.
+      Keep the `<h1>` as it is.
+- [ ] For statements and functions, say what they are in the title, for
+      example `LOCATE statement – jBC reference`. The guide does not mark
+      which chapters are statements and which are functions, so this needs
+      a list or a rule first.
+- [x] `<meta name="description">` per page from the existing `summary()`
+      (it already feeds `llms.txt`), trimmed to about 155 characters. The
+      five chapters without a first sentence get a stock one.
+- [x] `<link rel="canonical" href="https://jbc-lang.org/pages/<slug>.html">`
       on every page, to settle http/https, `www` and trailing-slash
       variants.
-- [ ] `all.html` holds the whole guide and competes with the chapter pages
-      for the same searches. Decide: either `<meta name="robots"
-      content="noindex, follow">` on it, or keep it indexable and accept
-      the overlap. Recommended: noindex.
+- [x] `all.html` holds the whole guide and competes with the chapter pages
+      for the same searches. It already had `<meta name="robots"
+      content="noindex">` from `site/single.html`. The 13 group pages,
+      which hold only a heading, now get `noindex` too.
 - [ ] `pages/*.md` duplicate the chapters as plain text. GitHub Pages cannot
       send `X-Robots-Tag`, so check in Search Console whether Google indexes
       them; if it does, add `Disallow: /pages/*.md` for Googlebot only and
       keep them open to the AI crawlers that `llms.txt` serves.
-- [ ] Open Graph and Twitter card tags (title, description, URL, and an
+- [x] Open Graph and Twitter card tags (title, description, URL, and an
       image built from `images/jbc-logo.png`) so links pasted into Slack,
       Discord, LinkedIn and the like show a proper preview.
-- [ ] JSON-LD in the head: `TechArticle` per chapter with headline,
+- [x] JSON-LD in the head: `TechArticle` per chapter with headline,
       description and `dateModified` from the stamp, plus `BreadcrumbList`
-      (Guide › group › chapter).
+      (Guide › chapter; the group pages are empty, so they are not a
+      level).
 - [ ] Rename chapters with weak titles ("Note", "Note 2", "Other",
       "Other notes") to say what they cover. This changes addresses (see
       "Chapter file names" in `AGENTS.md`), so add redirect stubs at the old

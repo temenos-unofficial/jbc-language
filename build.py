@@ -455,6 +455,65 @@ def render_single(groups, slugs, stamps):
     return "\n".join(out)
 
 
+def description(page, guide):
+    """Text for <meta name="description">: the first sentence of the chapter."""
+    text = re.sub(r",?\s+e\.g$", "", summary(page, limit=155))
+    if not text:
+        return "%s, from the %s: an unofficial reference for jBC, jBASE, TAFC and T24." % (page.title.rstrip(":"), guide)
+    return text if text.endswith(("...", ".", "?", "!")) else text + "."
+
+
+def iso_time(stamp):
+    """A "Last update" stamp in ISO 8601. Stamps without a zone are UTC too."""
+    return stamp_time(stamp).strftime("%Y-%m-%dT%H:%M:00+00:00")
+
+
+def render_meta(base, guide, url, title, text, kind="website", stamp=None, robots=None):
+    """The head tags that differ per page: description, canonical address,
+    link previews and, for chapters, structured data for search engines.
+
+    They sit outside the compared text, so they never change a page's stamp.
+    """
+    attr = lambda value: html.escape(value, quote=True)
+    out = ['<meta name="description" content="%s">' % attr(text)]
+    if robots:
+        out.append('<meta name="robots" content="%s">' % robots)
+    out += [
+        '<link rel="canonical" href="%s">' % attr(url),
+        '<meta property="og:type" content="%s">' % kind,
+        '<meta property="og:site_name" content="%s">' % attr(guide),
+        '<meta property="og:title" content="%s">' % attr(title),
+        '<meta property="og:description" content="%s">' % attr(text),
+        '<meta property="og:url" content="%s">' % attr(url),
+        '<meta property="og:image" content="%sjbc-logo.png">' % base,
+        '<meta name="twitter:card" content="summary">',
+    ]
+    if kind == "article":
+        data = [
+            {
+                "@context": "https://schema.org",
+                "@type": "TechArticle",
+                "headline": title,
+                "description": text,
+                "url": url,
+                "dateModified": iso_time(stamp),
+                "inLanguage": "en",
+                "isPartOf": {"@type": "WebSite", "name": guide, "url": base},
+            },
+            {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": guide, "item": base},
+                    {"@type": "ListItem", "position": 2, "name": title, "item": url},
+                ],
+            },
+        ]
+        text = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        out.append('<script type="application/ld+json">%s</script>' % text)
+    return "\n".join(out) + "\n"
+
+
 def render_sitemap(base, home_stamp, groups, stamps, others):
     """sitemap.xml: the home page and the chapter pages with their "Last
     update" day, then `others`.
@@ -512,6 +571,11 @@ def write_text(path, text):
     return False
 
 
+def intro_text():
+    """site/llms.txt, whose quoted paragraph also describes the home page."""
+    return (SITE / "llms.txt").read_text(encoding="utf-8")
+
+
 def build(source, out):
     """Build the site into `out`.
 
@@ -541,10 +605,14 @@ def build(source, out):
         twice = sorted({n for n in names if names.count(n) > 1})
         raise SystemExit("Two chapters share a file name: %s" % ", ".join(twice))
 
+    cname = (SITE / "CNAME").read_text(encoding="utf-8")
+    base = "https://%s/" % cname.strip()
+    guide = groups[0][0].title
     written = []
     stamps = {}
 
-    def emit(relative, title, root, sidebar, content):
+    def emit(relative, title, root, sidebar, content, meta):
+        """Write one page; `meta(stamp)` gives its head tags."""
         old = read_text(out / relative)
         parts = split_page(old) if old else None
         stamp = now
@@ -556,6 +624,7 @@ def build(source, out):
             root=root,
             sidebar=sidebar,
             content=content + '<div id="timestamp">Last update: %s</div>' % stamp,
+            meta=meta(stamp),
             head=head,
             footer=footer,
         )
@@ -565,43 +634,58 @@ def build(source, out):
 
     # Keyed by slug; the INDEX chapter is pages/index.html, not index.html.
     sidebar = render_sidebar(groups, "")
+    group_pages = {group.slug for group, chapters in groups}
     for page in pages:
+        url = base + "pages/%s.html" % page.slug
+        text = description(page, guide)
+        if page.slug in group_pages:
+            # Only a heading: kept for old links, left out of search results.
+            meta = lambda stamp, url=url, text=text, title=page.title: render_meta(base, guide, url, title, text, robots="noindex")
+        else:
+            meta = lambda stamp, url=url, text=text, title=page.title: render_meta(
+                base, guide, url, title, text, kind="article", stamp=stamp
+            )
         stamps[page.slug] = emit(
             "pages/%s.html" % page.slug,
-            page.title,
+            page.title if page.title == guide else "%s – %s" % (page.title, guide),
             "../",
             sidebar,
             render_content(page, slugs),
+            meta,
         )
+    # The first sentence of the quoted paragraph in site/llms.txt.
+    quote = re.search(r"^> (.*?)\n\n", intro_text(), re.S | re.M).group(1)
+    home_text = SENTENCE_END_RE.split(re.sub(r"\s+", " ", quote.replace("\n> ", " ")))[0]
     home_stamp = emit(
         "index.html",
-        groups[0][0].title,
+        guide,
         "",
         render_sidebar(groups, "pages/"),
         render_home(groups),
+        lambda stamp: render_meta(base, guide, base, guide, home_text),
     )
     # GitHub Pages answers any missing address with this page, at any depth,
     # so everything in it is linked from the root.
     emit(
         "404.html",
-        "Page not found",
+        "Page not found – %s" % guide,
         "/",
         render_sidebar(groups, "/pages/"),
         (SITE / "notfound.html").read_text(encoding="utf-8").strip(),
+        lambda stamp: "",
     )
 
-    cname = (SITE / "CNAME").read_text(encoding="utf-8")
-    base = "https://%s/" % cname.strip()
-    intro = (SITE / "llms.txt").read_text(encoding="utf-8")
+    intro = intro_text()
     # Without .nojekyll GitHub Pages would turn every pages/*.md into an HTML
     # file of the same name as the chapter page.
     files = dict(render_llms(groups, slugs, base, intro), **{".nojekyll": "", "CNAME": cname})
     files["all.html"] = fill(
         template,
-        title=groups[0][0].title,
+        title="%s – all chapters on one page" % guide,
         root="",
         sidebar=render_sidebar(groups, "#" + ANCHOR, suffix=""),
         content=render_single(groups, slugs, stamps),
+        meta=render_meta(base, guide, base + "all.html", guide, home_text),
         head=head + (SITE / "single.html").read_text(encoding="utf-8"),
         footer=single_footer,
     )
@@ -616,8 +700,11 @@ def build(source, out):
         if write_text(out / relative, text):
             written.append(relative)
     # Made from favicon.svg by hand; the build has no way to draw an image.
-    for name in ("favicon-32.png", "apple-touch-icon.png"):
-        data = (SITE / name).read_bytes()
+    # jbc-logo.png is the picture in link previews (og:image).
+    for name, source_path in [(n, SITE / n) for n in ("favicon-32.png", "apple-touch-icon.png")] + [
+        ("jbc-logo.png", ROOT / "images" / "jbc-logo.png")
+    ]:
+        data = source_path.read_bytes()
         if not (out / name).exists() or (out / name).read_bytes() != data:
             (out / name).write_bytes(data)
             written.append(name)
