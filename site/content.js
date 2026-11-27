@@ -93,7 +93,9 @@
       });
       barElement.appendChild(buttonElement);
     }
-    if (barElement.firstChild) preElement.appendChild(barElement);
+    // First in the block and floated right, so a long first line wraps
+    // before the buttons instead of running under them.
+    if (barElement.firstChild) preElement.prepend(barElement);
   }
 
   // Heading anchors. On all.html the ids carry the chapter's id, since the
