@@ -264,8 +264,13 @@ A block that builds, prints something and exits with status 0 is listed in
 hashes in `<meta name="jbc-runnable">` in the head, outside the compared
 text, and `content.js` adds the button to the blocks whose text has a listed
 hash. A block whose text changes loses its button until `just examples`
-runs again; it never gets the wrong one. In November 2026, 94 of the 1,016
-blocks qualified.
+runs again; it never gets the wrong one. A few blocks are written to stop
+with an error, such as the `ABORT` example. They are listed by hash in
+`EXPECTED_ERRORS` in `check_examples.py` and qualify when they stop with a
+message on stderr, which the playground shows with the exit status. Add a
+block there only when its chapter is about that error: a block that fails
+because a file is missing or an emulation differs would show the wrong
+thing. In November 2026, with jbcc 0.3.0, 98 of the 1,016 blocks qualified.
 
 Run `just examples` after changing code in the guide, and when the
 playground moves to another jbcc version (`JBCC_VERSION` in

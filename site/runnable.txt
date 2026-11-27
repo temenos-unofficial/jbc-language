@@ -1,7 +1,9 @@
 # Code blocks that jbcc 0.3.0, the playground's compiler, builds and runs
-# prints something and exits with status 0: <chapter file name> <hashes>.
+# prints something and exits with status 0, or stops with the error it shows:
+# <chapter file name> <hashes>.
 # Written by check_examples.py (`just examples`); do not edit by hand.
 @date 05a9c1be
+abort ca90103a
 abs 2ce5b5e7
 alpha 7636b5a1
 bitand ff642123
