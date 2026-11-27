@@ -11,31 +11,22 @@ For TAFJ it is converted to Java code rather than to C.
 
 This is an unofficial document. Use it at your own risk, and read its license agreement carefully.
 
-The experimental compiler [jbcc](https://github.com/jbc-lang/jbcc) translates the T24 R07 and R10 source corpora to C in about two minutes per release.
+### Get started
 
-### Latest changes
+- **Read the guide**: pick a statement or function from the index, or
+  search for one. Code blocks with a Run button open in the playground.
+- **Run jBC in your browser** with the [jBC Playground](https://online.jbc-lang.org/).
+- **Compile jBC natively** with [jbcc](https://pypi.org/project/jbcc/), an
+  MIT-licensed jBC-to-C compiler. Its grammar has been tested against the
+  T24 R07, R10, R13 and R19 source corpora. With uv and a C99 compiler:
 
-02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see [SENTENCE](#SENTENCE), [OSBREAD](#OSBREAD).
+        printf '%s\n' 'CRT "Hello, jBC!"' > hello.b
+        uvx jbcc --run hello.b
 
-19 Jan 2024. More TAFJ R23 notes. See [LOWER](#LOWER), [RAISE](#RAISE), [XTD](#XTD).
+- **Contribute** through the [jbc-language](https://github.com/jbc-lang/jbc-language)
+  repository, which holds the guide's source, grammar and function catalogue.
 
-07 Dec 2023. More TAFJ R23 notes. See [EREPLACE](#EREPLACE), [IFS](#IFS), [LOCALTIME](#LOCALTIME), [SQRT](#SQRT).
-
-24 Jul 2023. TAFJ R23 notes. See [@](#@), [ECHO](#ECHO), [EXECUTE](#EXECUTE), [System Functions](#System Functions).
-
-18 Apr 2023. [EXECUTE](#EXECUTE) - note how to run OS command under TAFJ.
-
-06 Oct 2022. Tests repeated on TAFJ R22. See [System Functions](#System Functions), [EXECUTE](#EXECUTE), [GROUP](#GROUP), [TRANS](#TRANS).
-
-30-31 Aug 2022. Continued with TAFJ compatibility notes. See [@CALLSTACK](#@CALLSTACK), [@DATA](#@DATA), [OSWRITE](#OSWRITE), [FMT](#FMT), [OCONV](#OCONV), [IOCTL](#IOCTL), [@](#@), [ANDS](#ANDS), [CLEARCOMMON](#CLEARCOMMON), [ASSIGNED](#ASSIGNED), [DECRYPT](#DECRYPT), [ENTER](#ENTER), [CacheBucketList](#CacheBucketList), [CacheKeyList](#CacheKeyList), [FILEINFO](#FILEINFO), [@TTY](#@TTY), [@PID](#@PID), [@LEVEL](#@LEVEL), [GROUP](#GROUP), [GROUPSTORE](#GROUPSTORE), [IN](#IN), [READSEQ](#READSEQ), [ISCNTRL](#ISCNTRL), [ISPRINT](#ISPRINT), [GETENV](#GETENV), [JBASESubroutineExist](#JBASESubroutineExist), [KEYIN](#KEYIN), [INPUT](#INPUT), [XTD](#XTD), [OSBWRITE](#OSBWRITE), [OSREAD](#OSREAD), [READPREV](#READPREV), [REGEXP](#REGEXP), [SADD](#SADD), [SEQS](#SEQS), [SSELECTV](#SSELECTV), [STATUS](#STATUS), [DELETE](#DELETE), [TRANS](#TRANS), [UNASSIGNED](#UNASSIGNED), [UTF8](#UTF8), [HUSH](#HUSH), [DELETESEQ](#DELETESEQ), [COMPARE](#COMPARE), [OSBREAD](#OSBREAD). Also - one more note for [EXECUTE](#EXECUTE) and one more example for [MATCHES](#MATCHES).
-
-24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See [Note 2](#Note 2), [Comments](#Comments), [COLLECTDATA](#COLLECTDATA), [EXECUTE](#EXECUTE), [MSLEEP](#MSLEEP), [SLEEP](#SLEEP), [System Functions](#System Functions) and [To wrap a long line](#To wrap a long line).
-
-Monday, 18 Jul 2022. Another example for [COUNT](#COUNT) function, note corrected.
-
-Saturday, 16 Jul 2022. Made available via github.io.
-
-Tuesday, 30 Sep 2014. Another example for [@](#@) function.
+The guide's [change history](#Change_history) lists what was added and when.
 
 ## What is TAFC
 
@@ -18309,3 +18300,29 @@ error along the lines of...
 SQL Kit and do not have the 'nsqlprep' command, or the 'nsqlprep'
 command does exist but it is not visible to the PATH environment
 variable.
+
+## Change history
+
+<a name="Change_history"/>
+
+02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see [SENTENCE](#SENTENCE), [OSBREAD](#OSBREAD).
+
+19 Jan 2024. More TAFJ R23 notes. See [LOWER](#LOWER), [RAISE](#RAISE), [XTD](#XTD).
+
+07 Dec 2023. More TAFJ R23 notes. See [EREPLACE](#EREPLACE), [IFS](#IFS), [LOCALTIME](#LOCALTIME), [SQRT](#SQRT).
+
+24 Jul 2023. TAFJ R23 notes. See [@](#@), [ECHO](#ECHO), [EXECUTE](#EXECUTE), [System Functions](#System Functions).
+
+18 Apr 2023. [EXECUTE](#EXECUTE) - note how to run OS command under TAFJ.
+
+06 Oct 2022. Tests repeated on TAFJ R22. See [System Functions](#System Functions), [EXECUTE](#EXECUTE), [GROUP](#GROUP), [TRANS](#TRANS).
+
+30-31 Aug 2022. Continued with TAFJ compatibility notes. See [@CALLSTACK](#@CALLSTACK), [@DATA](#@DATA), [OSWRITE](#OSWRITE), [FMT](#FMT), [OCONV](#OCONV), [IOCTL](#IOCTL), [@](#@), [ANDS](#ANDS), [CLEARCOMMON](#CLEARCOMMON), [ASSIGNED](#ASSIGNED), [DECRYPT](#DECRYPT), [ENTER](#ENTER), [CacheBucketList](#CacheBucketList), [CacheKeyList](#CacheKeyList), [FILEINFO](#FILEINFO), [@TTY](#@TTY), [@PID](#@PID), [@LEVEL](#@LEVEL), [GROUP](#GROUP), [GROUPSTORE](#GROUPSTORE), [IN](#IN), [READSEQ](#READSEQ), [ISCNTRL](#ISCNTRL), [ISPRINT](#ISPRINT), [GETENV](#GETENV), [JBASESubroutineExist](#JBASESubroutineExist), [KEYIN](#KEYIN), [INPUT](#INPUT), [XTD](#XTD), [OSBWRITE](#OSBWRITE), [OSREAD](#OSREAD), [READPREV](#READPREV), [REGEXP](#REGEXP), [SADD](#SADD), [SEQS](#SEQS), [SSELECTV](#SSELECTV), [STATUS](#STATUS), [DELETE](#DELETE), [TRANS](#TRANS), [UNASSIGNED](#UNASSIGNED), [UTF8](#UTF8), [HUSH](#HUSH), [DELETESEQ](#DELETESEQ), [COMPARE](#COMPARE), [OSBREAD](#OSBREAD). Also - one more note for [EXECUTE](#EXECUTE) and one more example for [MATCHES](#MATCHES).
+
+24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See [Note 2](#Note 2), [Comments](#Comments), [COLLECTDATA](#COLLECTDATA), [EXECUTE](#EXECUTE), [MSLEEP](#MSLEEP), [SLEEP](#SLEEP), [System Functions](#System Functions) and [To wrap a long line](#To wrap a long line).
+
+Monday, 18 Jul 2022. Another example for [COUNT](#COUNT) function, note corrected.
+
+Saturday, 16 Jul 2022. Made available via github.io.
+
+Tuesday, 30 Sep 2014. Another example for [@](#@) function.
