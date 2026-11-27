@@ -271,7 +271,7 @@ with an error, such as the `ABORT` example. They are listed by hash in
 message on stderr, which the playground shows with the exit status. Add a
 block there only when its chapter is about that error: a block that fails
 because a file is missing or an emulation differs would show the wrong
-thing. In November 2026, with jbcc 0.6.0, 173 of the 1,016 blocks qualified.
+thing. In November 2026, with jbcc 0.7.0, 177 of the 1,018 blocks qualified.
 
 Run `just examples` after changing code in the guide, and when the
 playground moves to another jbcc version (`JBCC_VERSION` in

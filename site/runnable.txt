@@ -1,4 +1,4 @@
-# Code blocks that jbcc 0.6.0, the playground's compiler, builds and runs
+# Code blocks that jbcc 0.7.0, the playground's compiler, builds and runs
 # prints something and exits with status 0, or stops with the error it shows:
 # <chapter file name> <hashes>.
 # Written by check_examples.py (`just examples`); do not edit by hand.
@@ -64,7 +64,7 @@ fdiv ce2c34b7
 field d732796f
 find 57d355e5
 findstr dfcdc79a
-fmt ec641735
+fmt c8700e59 ec641735
 fmts 1360d149
 fold f414b5b2 23ad60bc d989c613 711a3eaf
 for c142bf46
@@ -107,7 +107,7 @@ note_2 a7beced4
 nots c2cd1c35
 num 928f6bae
 numeric_variables 25a3d509
-oconv 78f5d86f
+oconv 78f5d86f 708d15ea ccd118f6
 ongoto acda2ec9
 ors 37ebe905
 other_notes 8f850f3c 0229a59a 49309eb5 ddb46708 a734bf22
