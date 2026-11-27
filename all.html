@@ -202,20 +202,14 @@ position: absolute; top: 6px; right: 6px;
 display: flex; gap: 6px;
 }
 .copy-button {
-padding: 2px 8px;
+display: inline-flex; align-items: center; box-sizing: border-box;
+height: 22px; margin: 0; padding: 0 8px;
 border: 1px solid #5A5856; border-radius: 4px;
 background: #3C3B39; color: #F2F0EE;
-font-size: 11px; line-height: 16px;
+font-family: inherit; font-size: 11px; line-height: 1;
 cursor: pointer;
-opacity: 0; transition: opacity .15s;
 }
 #content a.run-button { color: #F2F0EE; text-decoration: none; }
-#content pre:hover .copy-button, .copy-button:focus-visible {
-opacity: 1;
-}
-@media (hover: none) {
-.copy-button { opacity: 1; }
-}
 #content .heading-anchor {
 margin-left: 0.4em;
 color: var(--faint); font-weight: normal; text-decoration: none;
@@ -472,7 +466,7 @@ break-inside: avoid;
 #content > h1.group:first-of-type, #content > h1.group + h1 { margin-top: 0.67em; }
 #timestamp { margin-top: 4em; }
 </style>
-<meta name="jbc-runnable" content="00901a6a 01672ee4 021b9947 0229a59a 05a9c1be 05f9352d 06a8f026 0a92d939 0dd43852 1013db3c 11c13a7f 131cce41 1360d149 14b7f8c9 17040518 1a22b991 1a991bdf 1f637968 210fe223 2190b027 2299ce02 23ad60bc 25a3d509 2740061d 28199d12 2896ad69 28bc0319 2b644b4b 2c227b84 2cca7330 2ce5b5e7 2e55fb94 2fe282f9 34b2b8c7 36a2e85f 37ebe905 3c349ad1 3c5a7029 3e01e892 3e188da8 3ff9a6f6 44d44900 4725c14f 47c35621 4812b467 49309eb5 496d4169 4c8320c2 4d95aa99 4e86aaa5 526934a5 53ce8e41 56378fd2 565b1aea 57355d5c 57d355e5 58e499b9 59f101cc 5a429f69 5abab97f 5c00968c 5f7b2a1c 60526f65 655424e7 6a07c320 6ac1882c 6d87edd1 6f439c21 70ff3658 711a3eaf 73c1d4aa 7602391b 7636b5a1 769a9ffe 78d38a15 78f5d86f 7acd28a1 8039da0c 8066a262 8099c196 83889bf3 83c3d201 83fb8e7b 850d3238 86025901 88b4c60b 89a2c3ae 8a4ce289 8c94e7c2 8da87c6d 8e47222d 8f850f3c 910ebdca 91564cfa 91cb8e2c 928f6bae 9952ac09 9a659fb8 9ba38a2a 9cad26fe 9d6dd987 9dd8f70c 9de67638 9e88c89f 9f673c5a a3f460cb a6e16cc3 a734bf22 a7beced4 ac86e980 acc33a62 acda2ec9 ad2a823d adb6c4d5 af5d0515 b25e337d b38ff560 b3a2ceb1 b44a32cd b5c6849c b974dd6d bbe1837d bdc7a612 bfd4b9a2 c142bf46 c203d6f2 c2cd1c35 c405e0c3 c4f40a12 c68fd020 c7e9ae34 ca1011bf ca90103a cce89855 cd5d1404 ce2c34b7 cede39e0 cefec3f6 cf8b7f69 d2a436fd d4d799f2 d732796f d94f0ad8 d989c613 d9a540b5 dafa3731 db97791e ddb46708 dfcdc79a e2084775 e662f29f e78a07a0 e8c3f295 ea1569fb ec641735 eca2b089 f03824a5 f26b9e73 f3cec003 f414b5b2 f55db6af f6d69975 f70dd207 f78bf017 f7a67d13 f7c05244 f898c108 f975eee6 f9b0f83b fd9faae8 fe5f3f3a ff642123 ff91160c">
+<meta name="jbc-runnable" content="00901a6a 01672ee4 021b9947 0229a59a 05a9c1be 05f9352d 06a8f026 0a92d939 0dd43852 1013db3c 11c13a7f 131cce41 1360d149 14b7f8c9 17040518 1a22b991 1a991bdf 1f637968 210fe223 2190b027 2299ce02 23ad60bc 25a3d509 2740061d 28199d12 2896ad69 28bc0319 2b644b4b 2c227b84 2cca7330 2ce5b5e7 2e55fb94 2fe282f9 34b2b8c7 36a2e85f 37ebe905 3c349ad1 3c5a7029 3e01e892 3e188da8 3ff9a6f6 44d44900 4725c14f 47c35621 4812b467 49309eb5 496d4169 4c8320c2 4d95aa99 4e86aaa5 526934a5 53ce8e41 56378fd2 565b1aea 57355d5c 57d355e5 58e499b9 59f101cc 5a429f69 5abab97f 5c00968c 5f7b2a1c 60526f65 655424e7 6a07c320 6ac1882c 6d87edd1 6f439c21 70ff3658 711a3eaf 73c1d4aa 7602391b 7636b5a1 769a9ffe 78d38a15 78f5d86f 7acd28a1 8039da0c 8066a262 8099c196 82d92242 83889bf3 83c3d201 83fb8e7b 850d3238 86025901 88b4c60b 89a2c3ae 8a4ce289 8c94e7c2 8da87c6d 8e47222d 8f850f3c 910ebdca 91564cfa 91cb8e2c 928f6bae 9952ac09 9a659fb8 9ba38a2a 9cad26fe 9d6dd987 9dd8f70c 9de67638 9e88c89f 9f673c5a a3f460cb a6e16cc3 a734bf22 a7beced4 ac86e980 acc33a62 acda2ec9 ad2a823d adb6c4d5 af5d0515 b25e337d b38ff560 b3a2ceb1 b44a32cd b5c6849c b974dd6d bbe1837d bdc7a612 bfd4b9a2 c142bf46 c203d6f2 c2cd1c35 c405e0c3 c4f40a12 c68fd020 c7e9ae34 ca1011bf ca90103a cce89855 cd5d1404 ce2c34b7 cede39e0 cefec3f6 cf8b7f69 d2a436fd d4d799f2 d732796f d94f0ad8 d989c613 d9a540b5 dafa3731 db97791e ddb46708 dfcdc79a e2084775 e662f29f e78a07a0 e8c3f295 ea1569fb ec641735 eca2b089 f03824a5 f26b9e73 f3cec003 f414b5b2 f55db6af f6d69975 f70dd207 f78bf017 f7a67d13 f7c05244 f898c108 f975eee6 f9b0f83b fd9faae8 fe5f3f3a ff642123 ff91160c">
 </head>
 <body>
 <a id="skip" href="#scrollable">Skip to content</a>
@@ -481,7 +475,7 @@ break-inside: avoid;
 <input id="search-input" type="search" placeholder="Search..." autocomplete="off" aria-controls="sidebar">
 </div>
 <nav id="sidebar" aria-label="Chapters">
-<h2>jBC Programmers Reference Guide</h2>
+<h2><a href="/">jBC Programmers Reference Guide</a></h2>
 <ul><li><a href="#chapter-preface">Preface</a></li>
 <li><a href="#chapter-what_is_tafc">What is TAFC</a></li>
 <li><a href="#chapter-tafc_releases">TAFC releases</a></li>
@@ -923,19 +917,20 @@ break-inside: avoid;
 <p>This is an unofficial document. Use it at your own risk, and read its license agreement carefully.
 </p>
 <h2>Get started</h2>
-<ul><li><strong>Read the guide</strong>: pick a statement or function from the index, or
-</li><li>search for one. Code blocks with a Run button open in the playground.
+<ul><li><strong>Read the guide</strong>: pick a statement or function from the contents, or search for one. Code blocks with a Run button open in the playground.
 </li><li><strong>Run jBC in your browser</strong> with the <a href="https://online.jbc-lang.org/">jBC Playground</a>.
-</li><li><strong>Compile jBC natively</strong> with <a href="https://pypi.org/project/jbcc/">jbcc</a>, an
-</li><li>MIT-licensed jBC-to-C compiler. Its grammar has been tested against the
-</li><li>T24 R07, R10, R13 and R19 source corpora. With uv and a C99 compiler:
+</li><li><strong>Compile jBC natively</strong> with <a href="https://pypi.org/project/jbcc/">jbcc</a>, an MIT-licensed jBC-to-C compiler tested against the T24 R07, R10, R13 and R19 source corpora.
+</li><li><strong>Contribute</strong> through the <a href="https://github.com/jbc-lang/jbc-language">jbc-language</a> repository, which holds the guide's source, grammar and function catalogue.
 </li></ul>
-<pre><span>        printf <span class="c-4str">'%s\n'</span> <span class="c-4str">'CRT "Hello, jBC!"'</span> &gt hello.b
-</span><span>        uvx jbcc --run hello.b
+<p>With uv and a C99 compiler, jbcc builds and runs a program in one command:
+</p>
+<pre><span>    printf <span class="c-4str">'%s\n'</span> <span class="c-4str">'CRT "Hello, jBC!"'</span> &gt hello.b
+</span><span>    uvx jbcc --run hello.b
 </span></pre>
-<ul><li><strong>Contribute</strong> through the <a href="https://github.com/jbc-lang/jbc-language">jbc-language</a>
-</li><li>repository, which holds the guide's source, grammar and function catalogue.
-</li></ul>
+<p>The program in hello.b is one line of jBC, which you can also run in the playground:
+</p>
+<pre><span>    <span class="c-1com">CRT</span> <span class="c-4str">"Hello, jBC!"</span>
+</span></pre>
 <p>The guide's <a href="#chapter-change_history">change history</a> lists what was added and when.
 </p>
 <h1 id="chapter-what_is_tafc">What is TAFC</h1>
@@ -16576,7 +16571,7 @@ break-inside: avoid;
 </p>
 <p>Tuesday, 30 Sep 2014. Another example for <a href="#chapter-@">@</a> function.
 </p>
-<div id="timestamp">Last update: Fri, 27 Nov 2026 11:01 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=all%20chapters%20on%20one%20page%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fall.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20all%20chapters%20on%20one%20page&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fall.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/">Chapters</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
+<div id="timestamp">Last update: Fri, 27 Nov 2026 11:16 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=all%20chapters%20on%20one%20page%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fall.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20all%20chapters%20on%20one%20page&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fall.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/">Chapters</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
 </main>
 </body>
 </html>

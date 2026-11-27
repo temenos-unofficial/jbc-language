@@ -205,20 +205,14 @@ position: absolute; top: 6px; right: 6px;
 display: flex; gap: 6px;
 }
 .copy-button {
-padding: 2px 8px;
+display: inline-flex; align-items: center; box-sizing: border-box;
+height: 22px; margin: 0; padding: 0 8px;
 border: 1px solid #5A5856; border-radius: 4px;
 background: #3C3B39; color: #F2F0EE;
-font-size: 11px; line-height: 16px;
+font-family: inherit; font-size: 11px; line-height: 1;
 cursor: pointer;
-opacity: 0; transition: opacity .15s;
 }
 #content a.run-button { color: #F2F0EE; text-decoration: none; }
-#content pre:hover .copy-button, .copy-button:focus-visible {
-opacity: 1;
-}
-@media (hover: none) {
-.copy-button { opacity: 1; }
-}
 #content .heading-anchor {
 margin-left: 0.4em;
 color: var(--faint); font-weight: normal; text-decoration: none;
@@ -476,8 +470,8 @@ break-inside: avoid;
 <input id="search-input" type="search" placeholder="Search..." autocomplete="off" aria-controls="sidebar">
 </div>
 <nav id="sidebar" aria-label="Chapters">
-<h2>jBC Programmers Reference Guide</h2>
-<ul><li><a href="preface.html">Preface</a></li>
+<h2><a href="/">jBC Programmers Reference Guide</a></h2>
+<ul><li><a href="contents.html">Contents</a></li>
 <li class="current"><a href="what_is_tafc.html" aria-current="page">What is TAFC</a></li>
 <li><a href="tafc_releases.html">TAFC releases</a></li>
 <li><a href="what_is_t24.html">What is T24</a></li>

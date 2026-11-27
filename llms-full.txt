@@ -13,18 +13,19 @@ This is an unofficial document. Use it at your own risk, and read its license ag
 
 ### Get started
 
-- **Read the guide**: pick a statement or function from the index, or
-  search for one. Code blocks with a Run button open in the playground.
+- **Read the guide**: pick a statement or function from the contents, or search for one. Code blocks with a Run button open in the playground.
 - **Run jBC in your browser** with the [jBC Playground](https://online.jbc-lang.org/).
-- **Compile jBC natively** with [jbcc](https://pypi.org/project/jbcc/), an
-  MIT-licensed jBC-to-C compiler. Its grammar has been tested against the
-  T24 R07, R10, R13 and R19 source corpora. With uv and a C99 compiler:
+- **Compile jBC natively** with [jbcc](https://pypi.org/project/jbcc/), an MIT-licensed jBC-to-C compiler tested against the T24 R07, R10, R13 and R19 source corpora.
+- **Contribute** through the [jbc-language](https://github.com/jbc-lang/jbc-language) repository, which holds the guide's source, grammar and function catalogue.
 
-        printf '%s\n' 'CRT "Hello, jBC!"' > hello.b
-        uvx jbcc --run hello.b
+With uv and a C99 compiler, jbcc builds and runs a program in one command:
 
-- **Contribute** through the [jbc-language](https://github.com/jbc-lang/jbc-language)
-  repository, which holds the guide's source, grammar and function catalogue.
+    printf '%s\n' 'CRT "Hello, jBC!"' > hello.b
+    uvx jbcc --run hello.b
+
+The program in hello.b is one line of jBC, which you can also run in the playground:
+
+    CRT "Hello, jBC!"
 
 The guide's [change history](https://jbc-lang.org/pages/change_history.md) lists what was added and when.
 

@@ -12,6 +12,7 @@
 <meta property="og:url" content="https://jbc-lang.org/">
 <meta property="og:image" content="https://jbc-lang.org/jbc-logo.png">
 <meta name="twitter:card" content="summary">
+<meta name="jbc-runnable" content="82d92242">
 <style>:root {
 color-scheme: light dark;
 --page: #F4F4F4; --panel: #FFF; --text: #302F2D; --strong: #242220;
@@ -202,20 +203,14 @@ position: absolute; top: 6px; right: 6px;
 display: flex; gap: 6px;
 }
 .copy-button {
-padding: 2px 8px;
+display: inline-flex; align-items: center; box-sizing: border-box;
+height: 22px; margin: 0; padding: 0 8px;
 border: 1px solid #5A5856; border-radius: 4px;
 background: #3C3B39; color: #F2F0EE;
-font-size: 11px; line-height: 16px;
+font-family: inherit; font-size: 11px; line-height: 1;
 cursor: pointer;
-opacity: 0; transition: opacity .15s;
 }
 #content a.run-button { color: #F2F0EE; text-decoration: none; }
-#content pre:hover .copy-button, .copy-button:focus-visible {
-opacity: 1;
-}
-@media (hover: none) {
-.copy-button { opacity: 1; }
-}
 #content .heading-anchor {
 margin-left: 0.4em;
 color: var(--faint); font-weight: normal; text-decoration: none;
@@ -473,8 +468,8 @@ break-inside: avoid;
 <input id="search-input" type="search" placeholder="Search..." autocomplete="off" aria-controls="sidebar">
 </div>
 <nav id="sidebar" aria-label="Chapters">
-<h2>jBC Programmers Reference Guide</h2>
-<ul><li><a href="pages/preface.html">Preface</a></li>
+<h2><a href="/">jBC Programmers Reference Guide</a></h2>
+<ul><li><a href="pages/contents.html">Contents</a></li>
 <li><a href="pages/what_is_tafc.html">What is TAFC</a></li>
 <li><a href="pages/tafc_releases.html">TAFC releases</a></li>
 <li><a href="pages/what_is_t24.html">What is T24</a></li>
@@ -904,22 +899,32 @@ break-inside: avoid;
 </nav>
 <main id="scrollable" tabindex="-1">
 <div id="content"><h1>jBC Programmers Reference Guide</h1>
-<p>An unofficial reference for jBC, the Basic-like programming language of the jBASE multi-value database, used in Temenos TAFC and TAFJ and in T24. It covers syntax, compilation, environment variables, data files, system variables and every function and statement, with notes on where TAFJ behaves differently from TAFC. This is not a Temenos document.</p>
-<p>Start with the <a href="pages/preface.html">preface</a>, read the <a href="all.html">whole guide on one page</a>, browse the <a href="grammar/jbc.html">grammar diagrams</a> or try jBC in the <a href="https://online.jbc-lang.org/">online playground</a>. The experimental <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> translates jBC to C.</p>
-<h2>Contents</h2>
-<ul><li><a href="pages/preface.html">jBC Programmers Reference Guide</a> &middot; 5 chapters</li>
-<li><a href="pages/note.html">Introduction to some jBC syntax features</a> &middot; 12 chapters</li>
-<li><a href="pages/recommendations_not_rules.html">Guidelines for writing the source code</a> &middot; 1 chapter</li>
-<li><a href="pages/minimum_set_of_variables_necessary_to_start_development.html">Environment variables relevant to jBC programming</a> &middot; 6 chapters</li>
-<li><a href="pages/introduction_to_basiccatalog_and_jcompile.html">Compilation</a> &middot; 1 chapter</li>
-<li><a href="pages/introduction_to_jbase_tafc_data_files.html">Data files</a> &middot; 6 chapters</li>
-<li><a href="pages/@am_@fm_@vm_@sm_@tm.html">System ("@") variables</a> &middot; 26 chapters</li>
-<li><a href="pages/@.html">jBC Functions and Statements (@ - E)</a> &middot; 104 chapters</li>
-<li><a href="pages/fadd.html">jBC Functions and Statements (F - J)</a> &middot; 65 chapters</li>
-<li><a href="pages/keyin.html">jBC Functions and Statements (K - O)</a> &middot; 59 chapters</li>
-<li><a href="pages/page.html">jBC Functions and Statements (P - T)</a> &middot; 90 chapters</li>
-<li><a href="pages/unassigned.html">jBC Functions and Statements (U - X)</a> &middot; 23 chapters</li>
-<li><a href="pages/introduction_to_embedded_sql.html">Embedded SQL for jBC</a> &middot; 4 chapters</li></ul><div id="timestamp">Last update: Fri, 27 Nov 2026 11:01 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=jBC%20Programmers%20Reference%20Guide%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2F">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20jBC%20Programmers%20Reference%20Guide&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2F%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
+<p>jBC is a programming language that is used in jBASE post-relational
+ (multi-value) DBMS. Syntax is Basic-like; compilation process firstly
+ converts the source code to C which in turn is compiled for the target platform
+ with the usage of standard C compiler.
+</p>
+<p>For TAFJ it is converted to Java code rather than to C.
+</p>
+<p>This is an unofficial document. Use it at your own risk, and read its license agreement carefully.
+</p>
+<h2>Get started</h2>
+<ul><li><strong>Read the guide</strong>: pick a statement or function from the contents, or search for one. Code blocks with a Run button open in the playground.
+</li><li><strong>Run jBC in your browser</strong> with the <a href="https://online.jbc-lang.org/">jBC Playground</a>.
+</li><li><strong>Compile jBC natively</strong> with <a href="https://pypi.org/project/jbcc/">jbcc</a>, an MIT-licensed jBC-to-C compiler tested against the T24 R07, R10, R13 and R19 source corpora.
+</li><li><strong>Contribute</strong> through the <a href="https://github.com/jbc-lang/jbc-language">jbc-language</a> repository, which holds the guide's source, grammar and function catalogue.
+</li></ul>
+<p>With uv and a C99 compiler, jbcc builds and runs a program in one command:
+</p>
+<pre><span>    printf <span class="c-4str">'%s\n'</span> <span class="c-4str">'CRT "Hello, jBC!"'</span> &gt hello.b
+</span><span>    uvx jbcc --run hello.b
+</span></pre>
+<p>The program in hello.b is one line of jBC, which you can also run in the playground:
+</p>
+<pre><span>    <span class="c-1com">CRT</span> <span class="c-4str">"Hello, jBC!"</span>
+</span></pre>
+<p>The guide's <a href="pages/change_history.html">change history</a> lists what was added and when.
+</p><div id="timestamp">Last update: Fri, 27 Nov 2026 11:16 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=jBC%20Programmers%20Reference%20Guide%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2F">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20jBC%20Programmers%20Reference%20Guide&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2F%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
 </main>
 </body>
 </html>
