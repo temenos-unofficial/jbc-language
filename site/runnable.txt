@@ -1,9 +1,11 @@
-# Code blocks that jbcc 0.2.0, the playground's compiler, builds and runs
+# Code blocks that jbcc 0.3.0, the playground's compiler, builds and runs
 # prints something and exits with status 0: <chapter file name> <hashes>.
 # Written by check_examples.py (`just examples`); do not edit by hand.
 @date 05a9c1be
 abs 2ce5b5e7
 alpha 7636b5a1
+bitand ff642123
+bitnot 4c8320c2
 bitor 8e47222d
 bitxor 7602391b
 case f7a67d13
@@ -39,6 +41,7 @@ iconv 910ebdca
 index f7c05244
 int 9de67638
 introduction_to_basiccatalog_and_jcompile 44d44900
+isalnum 34b2b8c7
 isdigit 57355d5c
 jbasesubroutineexist b25e337d
 latin1 cefec3f6

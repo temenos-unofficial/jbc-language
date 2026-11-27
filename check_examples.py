@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 # Keep in step with `version` in jbc-playground/jbcc-wheel.mjs.
-JBCC_VERSION = "0.2.0"
+JBCC_VERSION = "0.3.0"
 RUN_SECONDS = 5
 
 CONTENT_RE = re.compile(r'<div id="content">(.*?)<div id="timestamp">', re.S)
