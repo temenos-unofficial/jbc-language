@@ -1,14 +1,17 @@
-# Code blocks that jbcc 0.7.0, the playground's compiler, builds and runs
+# Code blocks that jbcc 0.8.1, the playground's compiler, builds and runs
 # prints something and exits with status 0, or stops with the error it shows:
 # <chapter file name> <hashes>.
 # Written by check_examples.py (`just examples`); do not edit by hand.
 @date 05a9c1be
+@day a9f93df3
+@eof 137876ec
 abort ca90103a
 abs 2ce5b5e7
 abss 28199d12
 adds d4d799f2
 alpha 7636b5a1
 ands ea1569fb 60526f65
+assigned f7fbe523
 bitand ff642123
 bitchange 2e55fb94
 bitnot 4c8320c2
@@ -17,6 +20,7 @@ bitreset 8066a262
 bitset 14b7f8c9
 bitxor 7602391b
 break 2896ad69 8da87c6d
+bytelen 854c1cfa
 cachebucketlist 2740061d
 cacheclear 4d95aa99
 cacheclearall 86025901
@@ -29,13 +33,18 @@ cacheput 59f101cc
 cachestats 2cca7330
 case f7a67d13
 cats f3cec003
+chain cebaec27
 change 5abab97f
 changetimestamp e662f29f
+char 19ba9e1d
 chars 9cad26fe
+checksum 40a335dc
 clear dafa3731
 clearcommon cede39e0
 clearselect 0a92d939
 col1_and_col2 5f7b2a1c
+collectdata 7241320b
+common 50710db1 9c8d168e
 compare 4812b467
 continue 5c00968c
 convert 1013db3c
@@ -56,6 +65,7 @@ dtx 3c349ad1
 dynamic_arrays c4f40a12
 ebcdic e78a07a0
 eqs f55db6af
+equate 501e34e7
 ereplace 83c3d201
 exit f975eee6
 extract af5d0515
@@ -72,6 +82,7 @@ fsub 00901a6a
 getenv 131cce41
 gosub 83889bf3
 group ac86e980
+groupstore 51cfa4c6
 iconv 910ebdca 6d87edd1
 ifs 83fb8e7b
 index f7c05244
@@ -110,10 +121,12 @@ numeric_variables 25a3d509
 oconv 78f5d86f 708d15ea 93ffb9d2
 ongoto acda2ec9
 ors 37ebe905
-other_notes 8f850f3c 0229a59a 49309eb5 ddb46708 a734bf22
+other_notes 8f850f3c 0229a59a 49309eb5 8fb5997a ddb46708 a734bf22
+out 8091155d
 precision 70ff3658 bdc7a612
 preface 82d92242
-prompt 9a659fb8
+printerr bb481033
+procread 305154e0
 pwr 9ba38a2a
 raise 8c94e7c2 78d38a15
 read c68fd020
@@ -129,11 +142,11 @@ seqs 6ac1882c
 several_statements_on_the_same_line 0dd43852 9dd8f70c
 smul d94f0ad8 fd9faae8
 sort 3ff9a6f6
-soundex adb6c4d5
 splice 56378fd2
 sqrt 2299ce02
 ssub fe5f3f3a
-string_variables 9f673c5a 8a4ce289 4725c14f 01672ee4 88b4c60b e2084775
+status fd534dc6
+string_variables 9f673c5a 8a4ce289 4725c14f 01672ee4 88b4c60b e2084775 29577c3b
 strs 11c13a7f
 sum c405e0c3
 swap 526934a5
