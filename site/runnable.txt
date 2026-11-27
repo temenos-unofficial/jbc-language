@@ -1,4 +1,4 @@
-# Code blocks that jbcc 0.4.0, the playground's compiler, builds and runs
+# Code blocks that jbcc 0.5.0, the playground's compiler, builds and runs
 # prints something and exits with status 0, or stops with the error it shows:
 # <chapter file name> <hashes>.
 # Written by check_examples.py (`just examples`); do not edit by hand.
@@ -8,14 +8,30 @@ abs 2ce5b5e7
 abss 28199d12
 adds d4d799f2
 alpha 7636b5a1
+ands ea1569fb 60526f65
 bitand ff642123
+bitchange 2e55fb94
 bitnot 4c8320c2
 bitor 8e47222d
+bitreset 8066a262
+bitset 14b7f8c9
 bitxor 7602391b
 break 2896ad69 8da87c6d
+cachebucketlist 2740061d
+cacheclear 4d95aa99
+cacheclearall 86025901
+cachedelete 496d4169
+cacheexists 47c35621
+cacheget f70dd207
+cachegetoption 4e86aaa5
+cachekeylist bfd4b9a2
+cacheput 59f101cc
+cachestats 2cca7330
 case f7a67d13
 cats f3cec003
 change 5abab97f
+changetimestamp e662f29f
+chars 9cad26fe
 clear dafa3731
 clearcommon cede39e0
 clearselect 0a92d939
@@ -43,6 +59,8 @@ eqs f55db6af
 ereplace 83c3d201
 exit f975eee6
 extract af5d0515
+fadd 210fe223
+fdiv ce2c34b7
 field d732796f
 find 57d355e5
 findstr dfcdc79a
@@ -53,19 +71,24 @@ fsub 00901a6a
 getenv 131cce41
 gosub 83889bf3
 group ac86e980
-iconv 910ebdca
+iconv 910ebdca 6d87edd1
+ifs 83fb8e7b
 index f7c05244
 ins 1a991bdf
 insert ca1011bf
 int 9de67638
 introduction_to_basiccatalog_and_jcompile 44d44900
 isalnum 34b2b8c7
+iscntrl 565b1aea cce89855
 isdigit 57355d5c
+isprint 6a07c320
 isspace f9b0f83b
 jbasesubroutineexist b25e337d
 latin1 cefec3f6
 left ff91160c
 len 850d3238
+localdate cf8b7f69
+localtime 17040518
 locate eca2b089
 lower f26b9e73 2c227b84
 maketimestamp b38ff560
@@ -76,6 +99,7 @@ matchfield 3c5a7029
 matparse 06a8f026
 maximum 8099c196
 mod f78bf017
+mods b3a2ceb1
 muls a3f460cb
 negs f898c108
 note_2 a7beced4
@@ -84,6 +108,7 @@ num 928f6bae
 numeric_variables 25a3d509
 oconv 78f5d86f
 ongoto acda2ec9
+ors 37ebe905
 other_notes 8f850f3c 0229a59a 49309eb5 ddb46708 a734bf22
 precision 70ff3658 bdc7a612
 prompt 9a659fb8
@@ -91,18 +116,26 @@ pwr 9ba38a2a
 raise 8c94e7c2 78d38a15
 read c68fd020
 recommendations_not_rules 1a22b991 28bc0319 655424e7 d2a436fd
+regexp ad2a823d
 remove 73c1d4aa
 replace 1f637968
 rnd 7acd28a1
+sadd 89a2c3ae 5a429f69 c203d6f2
 sdiv b5c6849c 2190b027
+seq 91cb8e2c
+seqs 6ac1882c
 several_statements_on_the_same_line 0dd43852 9dd8f70c
 smul d94f0ad8 fd9faae8
 sort 3ff9a6f6
+soundex adb6c4d5
 splice 56378fd2
 sqrt 2299ce02
+ssub fe5f3f3a
 string_variables 9f673c5a 8a4ce289 4725c14f 01672ee4 88b4c60b e2084775
+strs 11c13a7f
 sum c405e0c3
 swap 526934a5
+tan bbe1837d
 time 6f439c21
 timedate 2b644b4b
 timestamp 36a2e85f
