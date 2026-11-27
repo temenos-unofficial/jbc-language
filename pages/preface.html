@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://jbc-lang.org/pages/preface.html">
 <meta property="og:image" content="https://jbc-lang.org/jbc-logo.png">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"Preface","description":"jBC is a programming language that is used in jBASE post-relational (multi-value) DBMS.","url":"https://jbc-lang.org/pages/preface.html","dateModified":"2026-11-24T19:32:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"Preface","item":"https://jbc-lang.org/pages/preface.html"}]}]</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"Preface","description":"jBC is a programming language that is used in jBASE post-relational (multi-value) DBMS.","url":"https://jbc-lang.org/pages/preface.html","dateModified":"2026-11-27T11:01:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"Preface","item":"https://jbc-lang.org/pages/preface.html"}]}]</script>
 <link rel="next" href="https://jbc-lang.org/pages/what_is_tafc.html">
 <style>:root {
 color-scheme: light dark;
@@ -901,6 +901,7 @@ break-inside: avoid;
 <ul><li><a href="introduction_to_embedded_sql.html">Introduction to embedded SQL</a></li>
 <li><a href="embedded_sql_compiler_option.html">EMBEDDED SQL COMPILER OPTION</a></li>
 <li><a href="troubleshooting.html">TROUBLESHOOTING</a></li>
+<li><a href="change_history.html">Change history</a></li>
 </ul>
 </nav>
 <main id="scrollable" tabindex="-1">
@@ -914,31 +915,22 @@ break-inside: avoid;
 </p>
 <p>This is an unofficial document. Use it at your own risk, and read its license agreement carefully.
 </p>
-<p>The experimental compiler <a href="https://github.com/jbc-lang/jbcc">jbcc</a> translates the T24 R07 and R10 source corpora to C in about two minutes per release.
-</p>
-<h2>Latest changes</h2>
-<p>02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see <a href="sentence.html">SENTENCE</a>, <a href="osbread.html">OSBREAD</a>.
-</p>
-<p>19 Jan 2024. More TAFJ R23 notes. See <a href="lower.html">LOWER</a>, <a href="raise.html">RAISE</a>, <a href="xtd.html">XTD</a>.
-</p>
-<p>07 Dec 2023. More TAFJ R23 notes. See <a href="ereplace.html">EREPLACE</a>, <a href="ifs.html">IFS</a>, <a href="localtime.html">LOCALTIME</a>, <a href="sqrt.html">SQRT</a>.
-</p>
-<p>24 Jul 2023. TAFJ R23 notes. See <a href="@.html">@</a>, <a href="echo.html">ECHO</a>, <a href="execute.html">EXECUTE</a>, <a href="system_functions.html">System Functions</a>.
-</p>
-<p>18 Apr 2023. <a href="execute.html">EXECUTE</a> - note how to run OS command under TAFJ.
-</p>
-<p>06 Oct 2022. Tests repeated on TAFJ R22. See <a href="system_functions.html">System Functions</a>, <a href="execute.html">EXECUTE</a>, <a href="group.html">GROUP</a>, <a href="trans.html">TRANS</a>.
-</p>
-<p>30-31 Aug 2022. Continued with TAFJ compatibility notes. See <a href="@callstack.html">@CALLSTACK</a>, <a href="@data.html">@DATA</a>, <a href="oswrite.html">OSWRITE</a>, <a href="fmt.html">FMT</a>, <a href="oconv.html">OCONV</a>, <a href="ioctl.html">IOCTL</a>, <a href="@.html">@</a>, <a href="ands.html">ANDS</a>, <a href="clearcommon.html">CLEARCOMMON</a>, <a href="assigned.html">ASSIGNED</a>, <a href="decrypt.html">DECRYPT</a>, <a href="enter.html">ENTER</a>, <a href="cachebucketlist.html">CacheBucketList</a>, <a href="cachekeylist.html">CacheKeyList</a>, <a href="fileinfo.html">FILEINFO</a>, <a href="@tty.html">@TTY</a>, <a href="@pid.html">@PID</a>, <a href="@level.html">@LEVEL</a>, <a href="group.html">GROUP</a>, <a href="groupstore.html">GROUPSTORE</a>, <a href="in.html">IN</a>, <a href="readseq.html">READSEQ</a>, <a href="iscntrl.html">ISCNTRL</a>, <a href="isprint.html">ISPRINT</a>, <a href="getenv.html">GETENV</a>, <a href="jbasesubroutineexist.html">JBASESubroutineExist</a>, <a href="keyin.html">KEYIN</a>, <a href="input.html">INPUT</a>, <a href="xtd.html">XTD</a>, <a href="osbwrite.html">OSBWRITE</a>, <a href="osread.html">OSREAD</a>, <a href="readprev.html">READPREV</a>, <a href="regexp.html">REGEXP</a>, <a href="sadd.html">SADD</a>, <a href="seqs.html">SEQS</a>, <a href="sselectv.html">SSELECTV</a>, <a href="status.html">STATUS</a>, <a href="delete.html">DELETE</a>, <a href="trans.html">TRANS</a>, <a href="unassigned.html">UNASSIGNED</a>, <a href="utf8.html">UTF8</a>, <a href="hush.html">HUSH</a>, <a href="deleteseq.html">DELETESEQ</a>, <a href="compare.html">COMPARE</a>, <a href="osbread.html">OSBREAD</a>. Also - one more note for <a href="execute.html">EXECUTE</a> and one more example for <a href="matches.html">MATCHES</a>.
-</p>
-<p>24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See <a href="note_2.html">Note 2</a>, <a href="comments.html">Comments</a>, <a href="collectdata.html">COLLECTDATA</a>, <a href="execute.html">EXECUTE</a>, <a href="msleep.html">MSLEEP</a>, <a href="sleep.html">SLEEP</a>, <a href="system_functions.html">System Functions</a> and <a href="to_wrap_a_long_line.html">To wrap a long line</a>.
-</p>
-<p>Monday, 18 Jul 2022. Another example for <a href="count.html">COUNT</a> function, note corrected.
-</p>
-<p>Saturday, 16 Jul 2022. Made available via github.io.
-</p>
-<p>Tuesday, 30 Sep 2014. Another example for <a href="@.html">@</a> function.
-</p><nav id="pager" aria-label="Previous and next chapter"><a rel="next" href="what_is_tafc.html"><span>Next</span>What is TAFC</a></nav><div id="timestamp">Last update: Tue, 24 Nov 2026 19:32 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=Preface%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fpages%2Fpreface.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20Preface&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fpages%2Fpreface.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
+<h2>Get started</h2>
+<ul><li><strong>Read the guide</strong>: pick a statement or function from the index, or
+</li><li>search for one. Code blocks with a Run button open in the playground.
+</li><li><strong>Run jBC in your browser</strong> with the <a href="https://online.jbc-lang.org/">jBC Playground</a>.
+</li><li><strong>Compile jBC natively</strong> with <a href="https://pypi.org/project/jbcc/">jbcc</a>, an
+</li><li>MIT-licensed jBC-to-C compiler. Its grammar has been tested against the
+</li><li>T24 R07, R10, R13 and R19 source corpora. With uv and a C99 compiler:
+</li></ul>
+<pre><span>        printf <span class="c-4str">'%s\n'</span> <span class="c-4str">'CRT "Hello, jBC!"'</span> &gt hello.b
+</span><span>        uvx jbcc --run hello.b
+</span></pre>
+<ul><li><strong>Contribute</strong> through the <a href="https://github.com/jbc-lang/jbc-language">jbc-language</a>
+</li><li>repository, which holds the guide's source, grammar and function catalogue.
+</li></ul>
+<p>The guide's <a href="change_history.html">change history</a> lists what was added and when.
+</p><nav id="pager" aria-label="Previous and next chapter"><a rel="next" href="what_is_tafc.html"><span>Next</span>What is TAFC</a></nav><div id="timestamp">Last update: Fri, 27 Nov 2026 11:01 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=Preface%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fpages%2Fpreface.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20Preface&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fpages%2Fpreface.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
 </main>
 </body>
 </html>

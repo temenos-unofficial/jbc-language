@@ -907,6 +907,7 @@ break-inside: avoid;
 <ul><li><a href="#chapter-introduction_to_embedded_sql">Introduction to embedded SQL</a></li>
 <li><a href="#chapter-embedded_sql_compiler_option">EMBEDDED SQL COMPILER OPTION</a></li>
 <li><a href="#chapter-troubleshooting">TROUBLESHOOTING</a></li>
+<li><a href="#chapter-change_history">Change history</a></li>
 </ul>
 </nav>
 <main id="scrollable" tabindex="-1">
@@ -921,30 +922,21 @@ break-inside: avoid;
 </p>
 <p>This is an unofficial document. Use it at your own risk, and read its license agreement carefully.
 </p>
-<p>The experimental compiler <a href="https://github.com/jbc-lang/jbcc">jbcc</a> translates the T24 R07 and R10 source corpora to C in about two minutes per release.
-</p>
-<h2>Latest changes</h2>
-<p>02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see <a href="#chapter-sentence">SENTENCE</a>, <a href="#chapter-osbread">OSBREAD</a>.
-</p>
-<p>19 Jan 2024. More TAFJ R23 notes. See <a href="#chapter-lower">LOWER</a>, <a href="#chapter-raise">RAISE</a>, <a href="#chapter-xtd">XTD</a>.
-</p>
-<p>07 Dec 2023. More TAFJ R23 notes. See <a href="#chapter-ereplace">EREPLACE</a>, <a href="#chapter-ifs">IFS</a>, <a href="#chapter-localtime">LOCALTIME</a>, <a href="#chapter-sqrt">SQRT</a>.
-</p>
-<p>24 Jul 2023. TAFJ R23 notes. See <a href="#chapter-@">@</a>, <a href="#chapter-echo">ECHO</a>, <a href="#chapter-execute">EXECUTE</a>, <a href="#chapter-system_functions">System Functions</a>.
-</p>
-<p>18 Apr 2023. <a href="#chapter-execute">EXECUTE</a> - note how to run OS command under TAFJ.
-</p>
-<p>06 Oct 2022. Tests repeated on TAFJ R22. See <a href="#chapter-system_functions">System Functions</a>, <a href="#chapter-execute">EXECUTE</a>, <a href="#chapter-group">GROUP</a>, <a href="#chapter-trans">TRANS</a>.
-</p>
-<p>30-31 Aug 2022. Continued with TAFJ compatibility notes. See <a href="#chapter-@callstack">@CALLSTACK</a>, <a href="#chapter-@data">@DATA</a>, <a href="#chapter-oswrite">OSWRITE</a>, <a href="#chapter-fmt">FMT</a>, <a href="#chapter-oconv">OCONV</a>, <a href="#chapter-ioctl">IOCTL</a>, <a href="#chapter-@">@</a>, <a href="#chapter-ands">ANDS</a>, <a href="#chapter-clearcommon">CLEARCOMMON</a>, <a href="#chapter-assigned">ASSIGNED</a>, <a href="#chapter-decrypt">DECRYPT</a>, <a href="#chapter-enter">ENTER</a>, <a href="#chapter-cachebucketlist">CacheBucketList</a>, <a href="#chapter-cachekeylist">CacheKeyList</a>, <a href="#chapter-fileinfo">FILEINFO</a>, <a href="#chapter-@tty">@TTY</a>, <a href="#chapter-@pid">@PID</a>, <a href="#chapter-@level">@LEVEL</a>, <a href="#chapter-group">GROUP</a>, <a href="#chapter-groupstore">GROUPSTORE</a>, <a href="#chapter-in">IN</a>, <a href="#chapter-readseq">READSEQ</a>, <a href="#chapter-iscntrl">ISCNTRL</a>, <a href="#chapter-isprint">ISPRINT</a>, <a href="#chapter-getenv">GETENV</a>, <a href="#chapter-jbasesubroutineexist">JBASESubroutineExist</a>, <a href="#chapter-keyin">KEYIN</a>, <a href="#chapter-input">INPUT</a>, <a href="#chapter-xtd">XTD</a>, <a href="#chapter-osbwrite">OSBWRITE</a>, <a href="#chapter-osread">OSREAD</a>, <a href="#chapter-readprev">READPREV</a>, <a href="#chapter-regexp">REGEXP</a>, <a href="#chapter-sadd">SADD</a>, <a href="#chapter-seqs">SEQS</a>, <a href="#chapter-sselectv">SSELECTV</a>, <a href="#chapter-status">STATUS</a>, <a href="#chapter-delete">DELETE</a>, <a href="#chapter-trans">TRANS</a>, <a href="#chapter-unassigned">UNASSIGNED</a>, <a href="#chapter-utf8">UTF8</a>, <a href="#chapter-hush">HUSH</a>, <a href="#chapter-deleteseq">DELETESEQ</a>, <a href="#chapter-compare">COMPARE</a>, <a href="#chapter-osbread">OSBREAD</a>. Also - one more note for <a href="#chapter-execute">EXECUTE</a> and one more example for <a href="#chapter-matches">MATCHES</a>.
-</p>
-<p>24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See <a href="#chapter-note_2">Note 2</a>, <a href="#chapter-comments">Comments</a>, <a href="#chapter-collectdata">COLLECTDATA</a>, <a href="#chapter-execute">EXECUTE</a>, <a href="#chapter-msleep">MSLEEP</a>, <a href="#chapter-sleep">SLEEP</a>, <a href="#chapter-system_functions">System Functions</a> and <a href="#chapter-to_wrap_a_long_line">To wrap a long line</a>.
-</p>
-<p>Monday, 18 Jul 2022. Another example for <a href="#chapter-count">COUNT</a> function, note corrected.
-</p>
-<p>Saturday, 16 Jul 2022. Made available via github.io.
-</p>
-<p>Tuesday, 30 Sep 2014. Another example for <a href="#chapter-@">@</a> function.
+<h2>Get started</h2>
+<ul><li><strong>Read the guide</strong>: pick a statement or function from the index, or
+</li><li>search for one. Code blocks with a Run button open in the playground.
+</li><li><strong>Run jBC in your browser</strong> with the <a href="https://online.jbc-lang.org/">jBC Playground</a>.
+</li><li><strong>Compile jBC natively</strong> with <a href="https://pypi.org/project/jbcc/">jbcc</a>, an
+</li><li>MIT-licensed jBC-to-C compiler. Its grammar has been tested against the
+</li><li>T24 R07, R10, R13 and R19 source corpora. With uv and a C99 compiler:
+</li></ul>
+<pre><span>        printf <span class="c-4str">'%s\n'</span> <span class="c-4str">'CRT "Hello, jBC!"'</span> &gt hello.b
+</span><span>        uvx jbcc --run hello.b
+</span></pre>
+<ul><li><strong>Contribute</strong> through the <a href="https://github.com/jbc-lang/jbc-language">jbc-language</a>
+</li><li>repository, which holds the guide's source, grammar and function catalogue.
+</li></ul>
+<p>The guide's <a href="#chapter-change_history">change history</a> lists what was added and when.
 </p>
 <h1 id="chapter-what_is_tafc">What is TAFC</h1>
 <p>TAFC stands for "Temenos application framework for C". This name was adopted to
@@ -16559,7 +16551,32 @@ break-inside: avoid;
  command does exist but it is not visible to the PATH environment
  variable.
 </p>
-<div id="timestamp">Last update: Thu, 26 Nov 2026 11:22 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=all%20chapters%20on%20one%20page%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fall.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20all%20chapters%20on%20one%20page&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fall.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/">Chapters</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
+<h1 id="chapter-change_history">Change history</h1>
+<p><a name="Change_history"/>
+</p>
+<p>02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see <a href="#chapter-sentence">SENTENCE</a>, <a href="#chapter-osbread">OSBREAD</a>.
+</p>
+<p>19 Jan 2024. More TAFJ R23 notes. See <a href="#chapter-lower">LOWER</a>, <a href="#chapter-raise">RAISE</a>, <a href="#chapter-xtd">XTD</a>.
+</p>
+<p>07 Dec 2023. More TAFJ R23 notes. See <a href="#chapter-ereplace">EREPLACE</a>, <a href="#chapter-ifs">IFS</a>, <a href="#chapter-localtime">LOCALTIME</a>, <a href="#chapter-sqrt">SQRT</a>.
+</p>
+<p>24 Jul 2023. TAFJ R23 notes. See <a href="#chapter-@">@</a>, <a href="#chapter-echo">ECHO</a>, <a href="#chapter-execute">EXECUTE</a>, <a href="#chapter-system_functions">System Functions</a>.
+</p>
+<p>18 Apr 2023. <a href="#chapter-execute">EXECUTE</a> - note how to run OS command under TAFJ.
+</p>
+<p>06 Oct 2022. Tests repeated on TAFJ R22. See <a href="#chapter-system_functions">System Functions</a>, <a href="#chapter-execute">EXECUTE</a>, <a href="#chapter-group">GROUP</a>, <a href="#chapter-trans">TRANS</a>.
+</p>
+<p>30-31 Aug 2022. Continued with TAFJ compatibility notes. See <a href="#chapter-@callstack">@CALLSTACK</a>, <a href="#chapter-@data">@DATA</a>, <a href="#chapter-oswrite">OSWRITE</a>, <a href="#chapter-fmt">FMT</a>, <a href="#chapter-oconv">OCONV</a>, <a href="#chapter-ioctl">IOCTL</a>, <a href="#chapter-@">@</a>, <a href="#chapter-ands">ANDS</a>, <a href="#chapter-clearcommon">CLEARCOMMON</a>, <a href="#chapter-assigned">ASSIGNED</a>, <a href="#chapter-decrypt">DECRYPT</a>, <a href="#chapter-enter">ENTER</a>, <a href="#chapter-cachebucketlist">CacheBucketList</a>, <a href="#chapter-cachekeylist">CacheKeyList</a>, <a href="#chapter-fileinfo">FILEINFO</a>, <a href="#chapter-@tty">@TTY</a>, <a href="#chapter-@pid">@PID</a>, <a href="#chapter-@level">@LEVEL</a>, <a href="#chapter-group">GROUP</a>, <a href="#chapter-groupstore">GROUPSTORE</a>, <a href="#chapter-in">IN</a>, <a href="#chapter-readseq">READSEQ</a>, <a href="#chapter-iscntrl">ISCNTRL</a>, <a href="#chapter-isprint">ISPRINT</a>, <a href="#chapter-getenv">GETENV</a>, <a href="#chapter-jbasesubroutineexist">JBASESubroutineExist</a>, <a href="#chapter-keyin">KEYIN</a>, <a href="#chapter-input">INPUT</a>, <a href="#chapter-xtd">XTD</a>, <a href="#chapter-osbwrite">OSBWRITE</a>, <a href="#chapter-osread">OSREAD</a>, <a href="#chapter-readprev">READPREV</a>, <a href="#chapter-regexp">REGEXP</a>, <a href="#chapter-sadd">SADD</a>, <a href="#chapter-seqs">SEQS</a>, <a href="#chapter-sselectv">SSELECTV</a>, <a href="#chapter-status">STATUS</a>, <a href="#chapter-delete">DELETE</a>, <a href="#chapter-trans">TRANS</a>, <a href="#chapter-unassigned">UNASSIGNED</a>, <a href="#chapter-utf8">UTF8</a>, <a href="#chapter-hush">HUSH</a>, <a href="#chapter-deleteseq">DELETESEQ</a>, <a href="#chapter-compare">COMPARE</a>, <a href="#chapter-osbread">OSBREAD</a>. Also - one more note for <a href="#chapter-execute">EXECUTE</a> and one more example for <a href="#chapter-matches">MATCHES</a>.
+</p>
+<p>24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See <a href="#chapter-note_2">Note 2</a>, <a href="#chapter-comments">Comments</a>, <a href="#chapter-collectdata">COLLECTDATA</a>, <a href="#chapter-execute">EXECUTE</a>, <a href="#chapter-msleep">MSLEEP</a>, <a href="#chapter-sleep">SLEEP</a>, <a href="#chapter-system_functions">System Functions</a> and <a href="#chapter-to_wrap_a_long_line">To wrap a long line</a>.
+</p>
+<p>Monday, 18 Jul 2022. Another example for <a href="#chapter-count">COUNT</a> function, note corrected.
+</p>
+<p>Saturday, 16 Jul 2022. Made available via github.io.
+</p>
+<p>Tuesday, 30 Sep 2014. Another example for <a href="#chapter-@">@</a> function.
+</p>
+<div id="timestamp">Last update: Fri, 27 Nov 2026 11:01 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=all%20chapters%20on%20one%20page%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fall.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20all%20chapters%20on%20one%20page&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fall.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/">Chapters</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
 </main>
 </body>
 </html>

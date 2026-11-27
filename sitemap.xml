@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://jbc-lang.org/</loc><lastmod>2026-11-26</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/preface.html</loc><lastmod>2026-11-24</lastmod></url>
+<url><loc>https://jbc-lang.org/</loc><lastmod>2026-11-27</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/preface.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/what_is_tafc.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/tafc_releases.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/what_is_t24.html</loc><lastmod>2022-07-16</lastmod></url>
@@ -402,6 +402,7 @@
 <url><loc>https://jbc-lang.org/pages/introduction_to_embedded_sql.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/embedded_sql_compiler_option.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/troubleshooting.html</loc><lastmod>2022-07-16</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/change_history.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/grammar/jbc.html</loc></url>
 <url><loc>https://jbc-lang.org/grammar/preprocessor.html</loc></url>
 </urlset>
