@@ -7,7 +7,7 @@
 > differently from TAFC.
 
 Every chapter below is a Markdown file. The whole guide in one file is at
-https://jbc-lang.org/llms-full.txt (575 KB). This is not a Temenos document.
+https://jbc-lang.org/llms-full.txt (576 KB). This is not a Temenos document.
 
 ## jBC Programmers Reference Guide
 
@@ -448,4 +448,4 @@ https://jbc-lang.org/llms-full.txt (575 KB). This is not a Temenos document.
 - [Introduction to embedded SQL](https://jbc-lang.org/pages/introduction_to_embedded_sql.md): The name "SQL" is an abbreviation for "Structured Query Language"
 - [EMBEDDED SQL COMPILER OPTION](https://jbc-lang.org/pages/embedded_sql_compiler_option.md): In order to compile jBC programs containing Embedded SQL statements the TAFC compiler option "Jq" must be invoked with the jBC compiler...
 - [TROUBLESHOOTING](https://jbc-lang.org/pages/troubleshooting.md): When attempting to compile a program with Embedded SQL and you get an error along the lines of
-- [Change history](https://jbc-lang.org/pages/change_history.md): 02 Feb 2024
+- [Change history](https://jbc-lang.org/pages/change_history.md): 27 Nov 2026

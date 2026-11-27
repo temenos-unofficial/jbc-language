@@ -88,10 +88,10 @@ See also: [OCONV](https://jbc-lang.org/pages/oconv.md) for date/time/numeric mas
        CRT FMT(X, 'R2*10')                     ;*  ***1234.56
        X = 123456.78
        CRT DQUOTE( FMT(X, 'R2,$#15') )         ;*  "    $123,456.78"
-       CRT DQUOTE( FMT(X, 'R2,&$#15') )        ;*  "     123,456.78"
+       CRT DQUOTE( FMT(X, 'R2,&$#15') )        ;*  "$$$$$123,456.78"
        CRT DQUOTE( FMT(X, 'R2,& $#15') )       ;*  "    $123,456.78"
        X = -123456.78
-       CRT DQUOTE( FMT(X, 'R2,C&*$#15') )      ;*  "  $123,456.78CR"
+       CRT DQUOTE( FMT(X, 'R2,C&*$#15') )      ;*  "**$123,456.78CR"
        X = 1234567890
        CRT FMT(X, 'R((###) ###-###)')          ;*  (234) 567-890
        CRT FMT(X, 'R((#3) #2-#4)')             ;*  (234) 56-7890

@@ -1,5 +1,7 @@
 # Change history
 
+27 Nov 2026. Checked against TAFC PB201214; see [FMT](https://jbc-lang.org/pages/fmt.md), [ISCNTRL](https://jbc-lang.org/pages/iscntrl.md), [LOCALDATE](https://jbc-lang.org/pages/localdate.md), [LOCATE](https://jbc-lang.org/pages/locate.md), [OCONV](https://jbc-lang.org/pages/oconv.md), [TIMEDIFF](https://jbc-lang.org/pages/timediff.md).
+
 02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see [SENTENCE](https://jbc-lang.org/pages/sentence.md), [OSBREAD](https://jbc-lang.org/pages/osbread.md).
 
 19 Jan 2024. More TAFJ R23 notes. See [LOWER](https://jbc-lang.org/pages/lower.md), [RAISE](https://jbc-lang.org/pages/raise.md), [XTD](https://jbc-lang.org/pages/xtd.md).

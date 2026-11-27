@@ -161,7 +161,7 @@ Numbers:
        amount_fcy += 0.56
        CRT FMT(amount_fcy, 'R2*19')              ;*  ************1234.56
        CRT SQUOTE( FMT(amount_fcy, 'L2,#19') )     ;*  '1,234.56           '
-       CRT FMT(-amount_fcy, 'R2,C&*$#15')        ;*           $1,234.56CR
+       CRT FMT(-amount_fcy, 'R2,C&*$#15')        ;*  ****$1,234.56CR
        CRT FMT(amount_fcy,'L0')                  ;* 1235
     * phone numbers
        CRT FMT(1234567890, 'R((###) ###-###)')       ;* (234) 567-890

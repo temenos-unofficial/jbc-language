@@ -10,8 +10,10 @@ array.
 ## SYNTAX ELEMENTS
 
 The TIMEDIFF function returns the interval between two timestamp values
-by subtracting the value of Timestamp2 from Timestamp1. The interval is
-returned as an attribute delimited array of the time difference.
+by subtracting the value of Timestamp1 from Timestamp2, so every field is
+negative when Timestamp2 is earlier (checked with TAFC PB201214). The
+interval is returned as an attribute delimited array of the time
+difference.
 
 The Mask is an integer from 0 to 7 and selects one of the following
 output formats:

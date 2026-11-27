@@ -19,3 +19,6 @@ date format.
     time_shift = 100  ;  time_shift<8> = ''    ;* add 100 years to current date
     end_time = CHANGETIMESTAMP(start_time, time_shift)
     CRT OCONV(LOCALDATE(end_time, ''), 'D')               ;* e.g. 20 JUN 2113
+
+TAFC PB201214 prints a date in 1990 for this example: its CHANGETIMESTAMP
+and LOCALDATE overflow past the year 2038.

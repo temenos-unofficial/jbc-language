@@ -24,7 +24,7 @@ of each character is determined according to the Unicode Standard.
        V.STRING = CHAR(13) : CHAR(10)
        CRT ISCNTRL(V.STRING)        ;* 1
        V.STRING = @FM : V.STRING
-       CRT ISCNTRL(V.STRING)        ;* 1
+       CRT ISCNTRL(V.STRING)        ;* 0 - @FM is not a control character
 
 ***TAFJ note: an example that works incorrectly:***
 

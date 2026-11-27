@@ -12,10 +12,10 @@
 <meta property="og:url" content="https://jbc-lang.org/pages/iscntrl.html">
 <meta property="og:image" content="https://jbc-lang.org/jbc-logo.png">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"ISCNTRL","description":"The ISCNTRL function will check that the expression consists entirely of control characters.","url":"https://jbc-lang.org/pages/iscntrl.html","dateModified":"2022-08-30T14:23:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"ISCNTRL","item":"https://jbc-lang.org/pages/iscntrl.html"}]}]</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"ISCNTRL","description":"The ISCNTRL function will check that the expression consists entirely of control characters.","url":"https://jbc-lang.org/pages/iscntrl.html","dateModified":"2026-11-27T19:59:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"ISCNTRL","item":"https://jbc-lang.org/pages/iscntrl.html"}]}]</script>
 <link rel="prev" href="https://jbc-lang.org/pages/isalnum.html">
 <link rel="next" href="https://jbc-lang.org/pages/isdigit.html">
-<meta name="jbc-runnable" content="565b1aea cce89855">
+<meta name="jbc-runnable" content="7e8cef5b cce89855">
 <style>:root {
 color-scheme: light dark;
 --page: #F4F4F4; --panel: #FFF; --text: #302F2D; --strong: #242220;
@@ -924,7 +924,7 @@ break-inside: avoid;
 <pre><span>       V.STRING = <span class="c-0fun">CHAR</span>(<span class="c-2num">13</span>) : <span class="c-0fun">CHAR</span>(<span class="c-2num">10</span>)
 </span><span>       <span class="c-1com">CRT</span> <span class="c-0fun">ISCNTRL</span>(V.STRING)        ;<span class="c-5com">* <span class="c-2num">1</span></span>
 </span><span>       V.STRING = <span class="c-3typ">@FM</span> : V.STRING
-</span><span>       <span class="c-1com">CRT</span> <span class="c-0fun">ISCNTRL</span>(V.STRING)        ;<span class="c-5com">* <span class="c-2num">1</span></span>
+</span><span>       <span class="c-1com">CRT</span> <span class="c-0fun">ISCNTRL</span>(V.STRING)        ;<span class="c-5com">* <span class="c-2num">0</span> - <span class="c-3typ">@FM</span> is not a control character</span>
 </span></pre>
 <p><strong><em>TAFJ note: an example that works incorrectly:</strong></em>
 </p>
@@ -935,7 +935,7 @@ break-inside: avoid;
 <p>Expected result: NOT ISCNTRL().
 </p>
 <p>Result: ISCNTRL().
-</p><nav id="pager" aria-label="Previous and next chapter"><a rel="prev" href="isalnum.html"><span>Previous</span>ISALNUM</a><a rel="next" href="isdigit.html"><span>Next</span>ISDIGIT</a></nav><div id="timestamp">Last update: Tue, 30 Aug 2022 14:23</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=ISCNTRL%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fpages%2Fiscntrl.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20ISCNTRL&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fpages%2Fiscntrl.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
+</p><nav id="pager" aria-label="Previous and next chapter"><a rel="prev" href="isalnum.html"><span>Previous</span>ISALNUM</a><a rel="next" href="isdigit.html"><span>Next</span>ISDIGIT</a></nav><div id="timestamp">Last update: Fri, 27 Nov 2026 19:59 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=ISCNTRL%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fpages%2Fiscntrl.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20ISCNTRL&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fpages%2Fiscntrl.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
 </main>
 </body>
 </html>

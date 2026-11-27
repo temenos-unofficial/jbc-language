@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://jbc-lang.org/pages/locate.html">
 <meta property="og:image" content="https://jbc-lang.org/jbc-logo.png">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"LOCATE","description":"LOCATE statement finds the position of an element within a specified dimension of a dynamic array.","url":"https://jbc-lang.org/pages/locate.html","dateModified":"2022-07-16T15:34:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"LOCATE","item":"https://jbc-lang.org/pages/locate.html"}]}]</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"TechArticle","headline":"LOCATE","description":"LOCATE statement finds the position of an element within a specified dimension of a dynamic array.","url":"https://jbc-lang.org/pages/locate.html","dateModified":"2026-11-27T19:59:00+00:00","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"jBC Programmers Reference Guide","url":"https://jbc-lang.org/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"jBC Programmers Reference Guide","item":"https://jbc-lang.org/"},{"@type":"ListItem","position":2,"name":"LOCATE","item":"https://jbc-lang.org/pages/locate.html"}]}]</script>
 <link rel="prev" href="https://jbc-lang.org/pages/localtime.html">
 <link rel="next" href="https://jbc-lang.org/pages/lock.html">
 <meta name="jbc-runnable" content="eca2b089">
@@ -951,6 +951,18 @@ break-inside: avoid;
  will.
 </p>
 <h2>NOTES</h2>
+<p>What expression3 and expression4 search depends on the emulation, and
+ TAFC decides it when the program runs (checked with TAFC PB201214):
+</p>
+<ul><li>under prime emulation, as T24 runs, the last of them is where the search
+</li><li>starts: `LOCATE x IN A<1>` searches the fields of A from field 1, and
+</li><li>`LOCATE x IN A<2,1>` the values of field 2 from value 1; expression5 is
+</li><li>then ignored;
+</li><li>under jbase emulation, `LOCATE x IN A<1>` searches the values of field 1
+</li><li>and `LOCATE x IN A<2,1>` the subvalues of value 1 of field 2.
+</li></ul>
+<p>A trailing zero coordinate is dropped in both, so `A<2,0>` means `A<2>`.
+</p>
 <p>See also: <a href="find.html">FIND</a>, <a href="findstr.html">FINDSTR</a>
 </p>
 <h2>EXAMPLE</h2>
@@ -968,7 +980,7 @@ break-inside: avoid;
 </span><span>       <span class="c-1com">NEXT</span> V.I
 </span><span>       <span class="c-1com">CRT</span> <span class="c-0fun">MINIMUM</span>(V.ARR), <span class="c-0fun">MAXIMUM</span>(V.ARR)  ;<span class="c-5com">* e.g. <span class="c-4str">"0       998"</span></span>
 </span><span>       <span class="c-1com">CRT</span> V.SORTED&lt;<span class="c-2num">1</span>&gt, V.SORTED&lt;<span class="c-2num">1000</span>&gt     ;<span class="c-5com">* numbers should be the same as above</span>
-</span></pre><nav id="pager" aria-label="Previous and next chapter"><a rel="prev" href="localtime.html"><span>Previous</span>LOCALTIME</a><a rel="next" href="lock.html"><span>Next</span>LOCK</a></nav><div id="timestamp">Last update: Sat, 16 Jul 2022 15:34</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=LOCATE%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fpages%2Flocate.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20LOCATE&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fpages%2Flocate.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
+</span></pre><nav id="pager" aria-label="Previous and next chapter"><a rel="prev" href="localtime.html"><span>Previous</span>LOCALTIME</a><a rel="next" href="lock.html"><span>Next</span>LOCK</a></nav><div id="timestamp">Last update: Fri, 27 Nov 2026 19:59 UTC</div><footer><div id="contact"><a id="report" href="https://github.com/jbc-lang/jbc-language/issues/new?template=correction.yml&amp;title=LOCATE%3A%20&amp;page=https%3A%2F%2Fjbc-lang.org%2Fpages%2Flocate.html">Report a problem with this page</a> or email <a id="report-email" href="mailto:info@jbc-lang.org?subject=jbc-lang.org%3A%20LOCATE&amp;body=Page%3A%20https%3A%2F%2Fjbc-lang.org%2Fpages%2Flocate.html%0D%0A%0D%0AWhat%20is%20wrong%20or%20missing%3A%0D%0A">info@jbc-lang.org</a> &middot; Source and contributions: <a href="https://github.com/jbc-lang/jbc-language">github.com/jbc-lang/jbc-language</a> &middot; For AI assistants: <a href="/llms.txt">llms.txt</a></div><div id="links"><a href="/all.html">Single page</a> &middot; <a href="/grammar/jbc.html">Grammar</a> &middot; <a href="https://online.jbc-lang.org/">Playground</a> &middot; <a href="https://github.com/jbc-lang/jbcc">jbcc compiler</a> &middot; <a id="source" href="https://github.com/jbc-lang/jbc-language">Source on GitHub</a></div></footer></div>
 </main>
 </body>
 </html>

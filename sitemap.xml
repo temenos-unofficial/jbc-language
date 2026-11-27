@@ -173,7 +173,7 @@
 <url><loc>https://jbc-lang.org/pages/findstr.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/formlist.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/flush.html</loc><lastmod>2022-07-16</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/fmt.html</loc><lastmod>2022-08-31</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/fmt.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/fmts.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/fold.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/footing.html</loc><lastmod>2022-07-16</lastmod></url>
@@ -210,7 +210,7 @@
 <url><loc>https://jbc-lang.org/pages/ioctl.html</loc><lastmod>2022-08-30</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/isalpha.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/isalnum.html</loc><lastmod>2022-07-16</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/iscntrl.html</loc><lastmod>2022-08-30</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/iscntrl.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/isdigit.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/islower.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/isprint.html</loc><lastmod>2022-08-30</lastmod></url>
@@ -235,9 +235,9 @@
 <url><loc>https://jbc-lang.org/pages/lens.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/les.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/ln.html</loc><lastmod>2022-07-16</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/localdate.html</loc><lastmod>2022-07-16</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/localdate.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/localtime.html</loc><lastmod>2023-12-07</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/locate.html</loc><lastmod>2022-07-16</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/locate.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/lock.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/logger.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/loop.html</loc><lastmod>2022-07-16</lastmod></url>
@@ -268,7 +268,7 @@
 <url><loc>https://jbc-lang.org/pages/num.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/nums.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/objexcallback.html</loc><lastmod>2022-07-16</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/oconv.html</loc><lastmod>2022-08-30</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/oconv.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/oconvs.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/ongoto.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/open.html</loc><lastmod>2022-07-16</lastmod></url>
@@ -363,7 +363,7 @@
 <url><loc>https://jbc-lang.org/pages/tan.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/time.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/timedate.html</loc><lastmod>2022-07-16</lastmod></url>
-<url><loc>https://jbc-lang.org/pages/timediff.html</loc><lastmod>2022-07-16</lastmod></url>
+<url><loc>https://jbc-lang.org/pages/timediff.html</loc><lastmod>2026-11-27</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/timeout.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/timestamp.html</loc><lastmod>2022-07-16</lastmod></url>
 <url><loc>https://jbc-lang.org/pages/trans.html</loc><lastmod>2022-10-06</lastmod></url>

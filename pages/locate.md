@@ -57,6 +57,18 @@ will.
 
 ## NOTES
 
+What expression3 and expression4 search depends on the emulation, and
+TAFC decides it when the program runs (checked with TAFC PB201214):
+
+- under prime emulation, as T24 runs, the last of them is where the search
+  starts: `LOCATE x IN A<1>` searches the fields of A from field 1, and
+  `LOCATE x IN A<2,1>` the values of field 2 from value 1; expression5 is
+  then ignored;
+- under jbase emulation, `LOCATE x IN A<1>` searches the values of field 1
+  and `LOCATE x IN A<2,1>` the subvalues of value 1 of field 2.
+
+A trailing zero coordinate is dropped in both, so `A<2,0>` means `A<2>`.
+
 See also: [FIND](https://jbc-lang.org/pages/find.md), [FINDSTR](https://jbc-lang.org/pages/findstr.md)
 
 ## EXAMPLE
