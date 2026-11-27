@@ -423,7 +423,7 @@ Some conventions for the text:
   such as `COMMAND SYNTAX`, `SYNTAX ELEMENTS`, `NOTES` and `EXAMPLE`.
 - Indent code by four spaces or more.
 - Note differences between TAFC and TAFJ in the chapter they belong to, and
-  add a line to "Latest changes" in the preface.
+  add a line at the top of the "Change history" chapter.
 
 ## Contact
 
