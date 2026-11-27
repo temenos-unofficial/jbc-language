@@ -7103,10 +7103,10 @@ See also: [OCONV](#OCONV) for date/time/numeric masks and [FMTS](#FMTS).
        CRT FMT(X, 'R2*10')                     ;*  ***1234.56
        X = 123456.78
        CRT DQUOTE( FMT(X, 'R2,$#15') )         ;*  "    $123,456.78"
-       CRT DQUOTE( FMT(X, 'R2,&$#15') )        ;*  "     123,456.78"
+       CRT DQUOTE( FMT(X, 'R2,&$#15') )        ;*  "$$$$$123,456.78"
        CRT DQUOTE( FMT(X, 'R2,& $#15') )       ;*  "    $123,456.78"
        X = -123456.78
-       CRT DQUOTE( FMT(X, 'R2,C&*$#15') )      ;*  "  $123,456.78CR"
+       CRT DQUOTE( FMT(X, 'R2,C&*$#15') )      ;*  "**$123,456.78CR"
        X = 1234567890
        CRT FMT(X, 'R((###) ###-###)')          ;*  (234) 567-890
        CRT FMT(X, 'R((#3) #2-#4)')             ;*  (234) 56-7890
@@ -8992,7 +8992,7 @@ of each character is determined according to the Unicode Standard.
        V.STRING = CHAR(13) : CHAR(10)
        CRT ISCNTRL(V.STRING)        ;* 1
        V.STRING = @FM : V.STRING
-       CRT ISCNTRL(V.STRING)        ;* 1
+       CRT ISCNTRL(V.STRING)        ;* 0 - @FM is not a control character
 
 ***TAFJ note: an example that works incorrectly:***
 
@@ -10006,6 +10006,9 @@ date format.
     end_time = CHANGETIMESTAMP(start_time, time_shift)
     CRT OCONV(LOCALDATE(end_time, ''), 'D')               ;* e.g. 20 JUN 2113
 
+TAFC PB201214 prints a date in 1990 for this example: its CHANGETIMESTAMP
+and LOCALDATE overflow past the year 2038.
+
 ## LOCALTIME
 
 LOCALTIME returns an internal time using the specified Timestamp and
@@ -10096,6 +10099,18 @@ which each string is considered less than or greater than the other
 will.
 
 ### NOTES
+
+What expression3 and expression4 search depends on the emulation, and
+TAFC decides it when the program runs (checked with TAFC PB201214):
+
+- under prime emulation, as T24 runs, the last of them is where the search
+  starts: `LOCATE x IN A<1>` searches the fields of A from field 1, and
+  `LOCATE x IN A<2,1>` the values of field 2 from value 1; expression5 is
+  then ignored;
+- under jbase emulation, `LOCATE x IN A<1>` searches the values of field 1
+  and `LOCATE x IN A<2,1>` the subvalues of value 1 of field 2.
+
+A trailing zero coordinate is dropped in both, so `A<2,0>` means `A<2>`.
 
 See also: [FIND](#FIND), [FINDSTR](#FINDSTR)
 
@@ -11592,7 +11607,7 @@ Numbers:
        amount_fcy += 0.56
        CRT FMT(amount_fcy, 'R2*19')              ;*  ************1234.56
        CRT SQUOTE( FMT(amount_fcy, 'L2,#19') )     ;*  '1,234.56           '
-       CRT FMT(-amount_fcy, 'R2,C&*$#15')        ;*           $1,234.56CR
+       CRT FMT(-amount_fcy, 'R2,C&*$#15')        ;*  ****$1,234.56CR
        CRT FMT(amount_fcy,'L0')                  ;* 1235
     * phone numbers
        CRT FMT(1234567890, 'R((###) ###-###)')       ;* (234) 567-890
@@ -16399,8 +16414,10 @@ array.
 ### SYNTAX ELEMENTS
 
 The TIMEDIFF function returns the interval between two timestamp values
-by subtracting the value of Timestamp2 from Timestamp1. The interval is
-returned as an attribute delimited array of the time difference.
+by subtracting the value of Timestamp1 from Timestamp2, so every field is
+negative when Timestamp2 is earlier (checked with TAFC PB201214). The
+interval is returned as an attribute delimited array of the time
+difference.
 
 The Mask is an integer from 0 to 7 and selects one of the following
 output formats:
@@ -18305,6 +18322,8 @@ variable.
 ## Change history
 
 <a name="Change_history"/>
+
+27 Nov 2026. Checked against TAFC PB201214; see [FMT](#FMT), [ISCNTRL](#ISCNTRL), [LOCALDATE](#LOCALDATE), [LOCATE](#LOCATE), [OCONV](#OCONV), [TIMEDIFF](#TIMEDIFF).
 
 02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see [SENTENCE](#SENTENCE), [OSBREAD](#OSBREAD).
 
