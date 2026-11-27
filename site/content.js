@@ -46,7 +46,8 @@
     const code = btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
     // The playground names the file after the chapter: "locate" opens as locate.b.
     const name = chapter.replace(/[^A-Za-z0-9_.-]/g, "_").replace(/^[.-]+/, "").slice(0, 64);
-    return PLAYGROUND + "#" + (name ? "name=" + name + "&" : "") + "code=" + code;
+    // run=1 asks the playground to run the block at once.
+    return PLAYGROUND + "#" + (name ? "name=" + name + "&" : "") + "code=" + code + "&run=1";
   }
 
   function codeButton(text, label) {

@@ -243,9 +243,10 @@ On `all.html` the links go to the chapter's place in the page.
 
 Code blocks that the [jBC playground](https://online.jbc-lang.org/) can run
 have a "Run" button next to "Copy". It opens the block in the playground in
-a new tab, as a file named after the chapter (`locate.b`), without running
-it. The source travels in the address after `#`
-(`#name=locate&code=<base64url>`), which the browser never sends to a server.
+a new tab, as a file named after the chapter (`locate.b`), and runs it at
+once. The source travels in the address after `#`
+(`#name=locate&code=<base64url>&run=1`), which the browser never sends to a
+server; `run=1` is what makes the playground run it.
 Locally, `just dev` pages open a playground served on
 `http://127.0.0.1:18767/` (`just dev` in jbc-playground).
 
