@@ -191,6 +191,7 @@ line-height: 110%;
 margin: 1.5em 0px 3em 0px;
 padding: 15px 0;
 white-space: pre-wrap;
+white-space: break-spaces;
 }
 #content pre > span{
 display: block;
@@ -199,7 +200,8 @@ display: block;
 position: relative;
 }
 .code-buttons {
-position: absolute; top: 6px; right: 6px;
+float: right; position: relative; z-index: 1;
+margin: -9px 6px 4px 12px;
 display: flex; gap: 6px;
 }
 .copy-button {
