@@ -1,20 +1,27 @@
-# Code blocks that jbcc 0.3.0, the playground's compiler, builds and runs
+# Code blocks that jbcc 0.4.0, the playground's compiler, builds and runs
 # prints something and exits with status 0, or stops with the error it shows:
 # <chapter file name> <hashes>.
 # Written by check_examples.py (`just examples`); do not edit by hand.
 @date 05a9c1be
 abort ca90103a
 abs 2ce5b5e7
+abss 28199d12
+adds d4d799f2
 alpha 7636b5a1
 bitand ff642123
 bitnot 4c8320c2
 bitor 8e47222d
 bitxor 7602391b
+break 2896ad69 8da87c6d
 case f7a67d13
+cats f3cec003
+change 5abab97f
 clear dafa3731
+clearcommon cede39e0
 clearselect 0a92d939
 col1_and_col2 5f7b2a1c
 compare 4812b467
+continue 5c00968c
 convert 1013db3c
 convert_statement acc33a62
 cos d9a540b5
@@ -30,27 +37,38 @@ div a6e16cc3
 divs 91564cfa
 dround 3e01e892
 dtx 3c349ad1
+dynamic_arrays c4f40a12
 ebcdic e78a07a0
 eqs f55db6af
 ereplace 83c3d201
+exit f975eee6
+extract af5d0515
 field d732796f
 find 57d355e5
 findstr dfcdc79a
+fmts 1360d149
+fold f414b5b2 23ad60bc d989c613 711a3eaf
 for c142bf46
+fsub 00901a6a
 getenv 131cce41
+gosub 83889bf3
 group ac86e980
 iconv 910ebdca
 index f7c05244
+ins 1a991bdf
+insert ca1011bf
 int 9de67638
 introduction_to_basiccatalog_and_jcompile 44d44900
 isalnum 34b2b8c7
 isdigit 57355d5c
+isspace f9b0f83b
 jbasesubroutineexist b25e337d
 latin1 cefec3f6
 left ff91160c
 len 850d3238
 locate eca2b089
-lower 2c227b84
+lower f26b9e73 2c227b84
+maketimestamp b38ff560
 mat 3e188da8
 matbuild 9952ac09
 matches 021b9947
@@ -58,29 +76,39 @@ matchfield 3c5a7029
 matparse 06a8f026
 maximum 8099c196
 mod f78bf017
+muls a3f460cb
+negs f898c108
+note_2 a7beced4
+nots c2cd1c35
 num 928f6bae
 numeric_variables 25a3d509
 oconv 78f5d86f
 ongoto acda2ec9
-other_notes 8f850f3c 0229a59a 49309eb5 ddb46708
+other_notes 8f850f3c 0229a59a 49309eb5 ddb46708 a734bf22
 precision 70ff3658 bdc7a612
 prompt 9a659fb8
 pwr 9ba38a2a
-raise 78d38a15
+raise 8c94e7c2 78d38a15
 read c68fd020
 recommendations_not_rules 1a22b991 28bc0319 655424e7 d2a436fd
 remove 73c1d4aa
+replace 1f637968
 rnd 7acd28a1
 sdiv b5c6849c 2190b027
 several_statements_on_the_same_line 0dd43852 9dd8f70c
 smul d94f0ad8 fd9faae8
+sort 3ff9a6f6
 splice 56378fd2
 sqrt 2299ce02
 string_variables 9f673c5a 8a4ce289 4725c14f 01672ee4 88b4c60b e2084775
+sum c405e0c3
 swap 526934a5
 time 6f439c21
 timedate 2b644b4b
+timestamp 36a2e85f
 trim b974dd6d
+trimbs 769a9ffe
+trimfs db97791e
 utf8 9d6dd987
 weof 58e499b9
 xtd b44a32cd

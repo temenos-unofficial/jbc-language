@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 # Keep in step with `version` in jbc-playground/jbcc-wheel.mjs.
-JBCC_VERSION = "0.3.0"
+JBCC_VERSION = "0.4.0"
 RUN_SECONDS = 5
 # Blocks written to stop with an error, by hash: they get a Run button when
 # they build and stop with a message on stderr, which the playground shows
