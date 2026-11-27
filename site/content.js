@@ -60,7 +60,10 @@
   }
 
   // On all.html each chapter starts with an <h1 id="chapter-...">.
-  let codeChapter = location.pathname.replace(/^.*\/|\.html$/g, "");
+  // The home page (the site root, not pages/index.html, the INDEX chapter)
+  // has no chapter name; its hello example opens as hello.b.
+  const atHome = /^\/(index\.html)?$/.test(location.pathname);
+  let codeChapter = atHome ? "hello" : location.pathname.replace(/^.*\/|\.html$/g, "");
   for (const preElement of contentElement.querySelectorAll("h1[id^='chapter-'], pre")) {
     if (preElement.tagName === "H1") {
       codeChapter = preElement.id.slice("chapter-".length);
