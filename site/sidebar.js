@@ -37,6 +37,8 @@
       headingElement.style.display = query === "" ? "" : "none";
     }
     for (const linkElement of linkElements) {
+      // The guide's title in the first heading links home; it is no chapter.
+      if (linkElement.parentNode.tagName === "H2") continue;
       const shown = query === "" || linkElement.textContent.toLowerCase().includes(query);
       linkElement.parentNode.style.display = shown ? "" : "none";
     }

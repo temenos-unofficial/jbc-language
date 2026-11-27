@@ -419,8 +419,10 @@ TIMESTAMP_RE = re.compile(r'<div id="timestamp">Last update: ([^<]*)</div>')
 
 def render_sidebar(groups, prefix, suffix=".html"):
     out = []
-    for group, pages in groups:
-        out.append("<h2>%s</h2>\n" % group.title)
+    for index, (group, pages) in enumerate(groups):
+        # The guide's title, the first group, links to the home page.
+        title = '<a href="/">%s</a>' % group.title if index == 0 else group.title
+        out.append("<h2>%s</h2>\n" % title)
         if pages:
             items = "\n".join(
                 '<li><a href="%s%s%s">%s</a></li>' % (prefix, p.slug, suffix, p.title)
@@ -437,15 +439,37 @@ def mark_current(sidebar, slug):
     )
 
 
-def render_home(groups):
-    """Content of index.html: the introduction and one line per group."""
+# The home page shows the preface; the page that lists the parts of the
+# guide, pages/contents.html, takes the preface's place in the sidebar.
+PREFACE = "preface"
+CONTENTS = "contents"
+
+
+def render_contents(groups):
+    """Content of pages/contents.html: the introduction and one line per group."""
     items = []
     for group, pages in groups:
         if pages:
             count = "1 chapter" if len(pages) == 1 else "%d chapters" % len(pages)
-            items.append('<li><a href="pages/%s.html">%s</a> &middot; %s</li>' % (pages[0].slug, group.title, count))
+            href = "../" if pages[0].slug == PREFACE else "%s.html" % pages[0].slug
+            items.append('<li><a href="%s">%s</a> &middot; %s</li>' % (href, group.title, count))
     text = (SITE / "home.html").read_text(encoding="utf-8").strip()
-    return fill(text, title=groups[0][0].title, contents="<ul>%s</ul>" % "\n".join(items))
+    return fill(text, title="Contents", contents="<ul>%s</ul>" % "\n".join(items))
+
+
+def contents_sidebar(sidebar, prefix):
+    """The sidebar with Contents in place of the Preface, which is the home page."""
+    return sidebar.replace(
+        '<li><a href="%s%s.html">' % (prefix, PREFACE), '<li><a href="%s%s.html">' % (prefix, CONTENTS), 1
+    ).replace('%s.html">Preface</a>' % CONTENTS, '%s.html">Contents</a>' % CONTENTS, 1)
+
+
+def render_home(page, slugs, guide):
+    """Content of index.html: the preface, with its chapter links made
+    relative to pages/ and the guide's title as its heading."""
+    content = render_content(page, slugs).replace("<h1>%s</h1>" % page.title, "<h1>%s</h1>" % guide, 1)
+    content = re.sub(r'href="(?![a-z]+:|/|#)([^"]+)"', r'href="pages/\1"', content)
+    return content
 
 
 def stamp_time(stamp):
@@ -736,7 +760,7 @@ def build(source, out):
         return stamp
 
     # Keyed by slug; the INDEX chapter is pages/index.html, not index.html.
-    sidebar = render_sidebar(groups, "")
+    sidebar = contents_sidebar(render_sidebar(groups, ""), "")
     group_pages = {group.slug for group, chapters in groups}
     chapters = [page for group, pages_in_group in groups for page in pages_in_group]
     neighbours = {
@@ -775,20 +799,33 @@ def build(source, out):
     # The first sentence of the quoted paragraph in site/llms.txt.
     quote = re.search(r"^> (.*?)\n\n", intro_text(), re.S | re.M).group(1)
     home_text = SENTENCE_END_RE.split(re.sub(r"\s+", " ", quote.replace("\n> ", " ")))[0]
+    preface = next(page for page in pages if page.slug == PREFACE)
+    home_runnable = (
+        '<meta name="jbc-runnable" content="%s">\n' % runnable[PREFACE] if PREFACE in runnable else ""
+    )
     home_stamp = emit(
         "index.html",
         guide,
-        render_sidebar(groups, "pages/"),
-        render_home(groups),
-        lambda stamp: render_meta(base, guide, base, guide, home_text),
+        contents_sidebar(render_sidebar(groups, "pages/"), "pages/"),
+        render_home(preface, slugs, guide),
+        lambda stamp: render_meta(base, guide, base, guide, home_text) + home_runnable,
         report=(guide, base),
+    )
+    contents_url = base + "pages/%s.html" % CONTENTS
+    stamps[CONTENTS] = emit(
+        "pages/%s.html" % CONTENTS,
+        "Contents – %s" % guide,
+        mark_current(sidebar, CONTENTS),
+        render_contents(groups),
+        lambda stamp: render_meta(base, guide, contents_url, "Contents", home_text),
+        report=("Contents", contents_url),
     )
     # GitHub Pages answers any missing address with this page, at any depth,
     # so everything in it is linked from the root.
     emit(
         "404.html",
         "Page not found – %s" % guide,
-        render_sidebar(groups, "/pages/"),
+        contents_sidebar(render_sidebar(groups, "/pages/"), "/pages/"),
         (SITE / "notfound.html").read_text(encoding="utf-8").strip(),
         lambda stamp: "",
     )
@@ -817,7 +854,7 @@ def build(source, out):
     grammars = render_grammars()
     files.update(grammars)
     files["robots.txt"] = fill((SITE / "robots.txt").read_text(encoding="utf-8"), base=base)
-    files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, sorted(grammars))
+    files["sitemap.xml"] = render_sitemap(base, home_stamp, groups, stamps, ["pages/%s.html" % CONTENTS] + sorted(grammars))
     for name in ("index.css", "sidebar.js", "search.js", "search.css", "mobile.js", "mobile.css", "favicon.svg", "site.webmanifest", "content.js", "print.css"):
         files[name] = (SITE / name).read_text(encoding="utf-8")
     for relative, text in files.items():
@@ -839,7 +876,7 @@ def build(source, out):
             written.append(name)
 
     # Chapters that were renamed or removed leave no page behind.
-    wanted = {"%s.html" % slug for slug in slugs}
+    wanted = {"%s.html" % slug for slug in slugs | {CONTENTS}}
     wanted |= {Path(relative).name for relative in files if relative.startswith("pages/")}
     for path in sorted(p for p in (out / "pages").iterdir() if p.suffix in (".html", ".md")):
         if path.name not in wanted:
