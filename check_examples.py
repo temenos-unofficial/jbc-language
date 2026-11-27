@@ -30,8 +30,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 # Keep in step with `version` in jbc-playground/jbcc-wheel.mjs.
-JBCC_VERSION = "0.2.0"
+JBCC_VERSION = "0.3.0"
 RUN_SECONDS = 5
+# Blocks written to stop with an error, by hash: they get a Run button when
+# they build and stop with a message on stderr, which the playground shows
+# with the exit status. List only blocks whose chapter is about the error;
+# a hash goes stale when the text changes and then the block loses its button.
+EXPECTED_ERRORS = {
+    "ca90103a",  # abort: ABORT 201 on a file with a random name
+}
 
 CONTENT_RE = re.compile(r'<div id="content">(.*?)<div id="timestamp">', re.S)
 PRE_RE = re.compile(r"<pre[^>]*>(.*?)</pre>", re.S)
@@ -113,7 +120,8 @@ def browser_translates(codes):
 
 def check(jbcc, work, code):
     """True if jbcc builds the code and the program prints something and
-    exits with status 0. A program that prints nothing, such as "CLEAR"
+    exits with status 0, or, for a block in EXPECTED_ERRORS, stops with a
+    message on stderr. A program that prints nothing, such as "CLEAR"
     alone, shows nothing in the playground either."""
     if not has_statements(code):
         return False
@@ -129,6 +137,8 @@ def check(jbcc, work, code):
         ran = subprocess.run(
             [str(program)], cwd=str(work), stdin=subprocess.DEVNULL, capture_output=True, timeout=RUN_SECONDS
         )
+        if name in EXPECTED_ERRORS:
+            return ran.returncode != 0 and ran.stderr.strip() != b""
         return ran.returncode == 0 and ran.stdout.strip() != b""
     except subprocess.TimeoutExpired:
         return False
@@ -166,7 +176,8 @@ def main():
                 runnable[slug].append(fnv1a(code))
     lines = [
         "# Code blocks that jbcc %s, the playground's compiler, builds and runs" % JBCC_VERSION,
-        "# prints something and exits with status 0: <chapter file name> <hashes>.",
+        "# prints something and exits with status 0, or stops with the error it shows:",
+        "# <chapter file name> <hashes>.",
         "# Written by check_examples.py (`just examples`); do not edit by hand.",
     ] + ["%s %s" % (slug, " ".join(runnable[slug])) for slug in sorted(runnable)]
     args.out.write_text("\n".join(lines) + "\n", encoding="utf-8")
