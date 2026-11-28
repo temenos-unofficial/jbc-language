@@ -15,6 +15,7 @@ This is an unofficial document. Use it at your own risk, and read its license ag
 
 - **Read the guide**: pick a statement or function from the contents, or search for one. Code blocks with a Run button open in the playground.
 - **Run jBC in your browser** with the [jBC Playground](https://online.jbc-lang.org/).
+- **Edit jBC in VS Code** with the [jBC extension](https://marketplace.visualstudio.com/items?itemName=alexander-demin.jbc-vscode). It highlights jBC programs (.b) and T24 test cases (.tut). [Source code](https://github.com/jbc-lang/jbc-vscode).
 - **Compile jBC natively** with [jbcc](https://pypi.org/project/jbcc/), an MIT-licensed jBC-to-C compiler tested against the T24 R07, R10, R13 and R19 source corpora.
 - **Contribute** through the [jbc-language](https://github.com/jbc-lang/jbc-language) repository, which holds the guide's source, grammar and function catalogue.
 
